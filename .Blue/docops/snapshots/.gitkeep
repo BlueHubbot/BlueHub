@@ -1,0 +1,13 @@
+# Automatic Snapshots Directory
+
+This directory contains automatic project snapshots generated every 6 hours.
+
+Format: `YYYY-MM-DD_HH-MM-SS.md`
+
+Example: `2026-06-10_09-00-00.md`
+
+Snapshots include:
+- Task progress metrics
+- Current blockers
+- Recent decisions
+- Next actions

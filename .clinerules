@@ -1,0 +1,42 @@
+# .clinerules - Roo Code Execution Rules for BlueHub Platform
+
+This file contains strict instructions that Roo Code MUST read and adhere to during every session. These rules override any general instructions.
+
+---
+
+## 1. Bootstrapping & Memory Bank Sync
+1. At the beginning of any session, you MUST immediately scan the `memory/` directory.
+2. Read `memory/CURRENT_STATE.md`, `memory/PROGRESS.md`, and `memory/BUGS.md` before writing any code or running any terminal command.
+3. Keep these files updated dynamically as you work. You must not finish a session or task without reflecting the latest progress in `memory/PROGRESS.md` and logging any resolved/unresolved issues in `memory/BUGS.md`.
+
+---
+
+## 2. Core Architectural Invariants
+- **API-First**: No direct database access or business logic implementation is allowed in `bot/` or `web/`. Everything MUST go through FastAPI routes in `api/v1/`.
+- **Modular Plug-and-Play**: Every service (VPN, VPS, etc.) must exist as an independent folder in `/modules` and register itself via its `metadata.py` file. Core engine files in `/core` must never import from `/modules`.
+- **Multi-Tenancy & White-Label**: Every request must be parsed by `TenantMiddleware` to extract the active tenant ID from host headers or `X-Tenant-Id` headers. Database queries must always filter by `tenant_id`.
+- **i18n**: All customer-facing messages, errors, and notifications must use the `I18nEngine` dictionary-based translation system. Fallback to English (`en`) if Persian (`fa`) translation is missing.
+
+---
+
+## 3. Specific Infrastructure Rules
+- **Database Partitioning**: Large time-series tables (`vpn_sessions` and `audit_logs`) MUST use TimescaleDB hypertables partitioned by month. Ensure queries always filter on partition range keys (`connected_at` / `created_at`).
+- **Secrets Management**: Plaintext environment files are prohibited in git. All secrets must be loaded via Pydantic Settings in `config/settings.py`. Prepare configuration structures to integrate with Kubernetes Secrets.
+- **Circuit Breaker**: Calls to Paymenter, Proxmox, or MaxMind must use the `pybreaker` implementation. You must write explicit fallback handlers to handle open-circuit states gracefully.
+- **Rate Limiting**: Enforce rate limits on FastAPI routes using `slowapi` backed by Redis. Authenticated routes must have higher thresholds than unauthenticated auth routes.
+
+---
+
+## 4. Feature Exclusions (Strict)
+Do not attempt to write or plan any of the following Phase 7 features unless explicitly instructed by the operator:
+- Anti-Crack system (obfuscation, ECDSA client licenses).
+- AI Adaptive Obfuscation (A²OE).
+- Hybrid P2P Relay Network.
+- Quantum-Resistant Encryption (NIST algorithms).
+- Self-healing infrastructure alerts.
+
+---
+
+## 5. Execution Protocol
+- Before applying a code patch, verify it complies with `requirements.md` and `.blue/decisions/ADR.md`.
+- Follow the step-by-step diagnostic protocol in `DEBUG_PROTOCOLS.md` when encountering runtime or compilation errors.

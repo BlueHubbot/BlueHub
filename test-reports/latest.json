@@ -1,0 +1,26 @@
+{
+  "execution_time": "2026-06-12T01:36:40.243275Z",
+  "total_errors": 3,
+  "stages": [
+    {
+      "name": "Static Analysis (Linter)",
+      "status": "FAIL",
+      "details": "Ruff not installed in environment."
+    },
+    {
+      "name": "Unit Testing",
+      "status": "FAIL",
+      "details": "./test.sh: line 58: pytest: command not found"
+    },
+    {
+      "name": "Integration Testing",
+      "status": "FAIL",
+      "details": "./test.sh: line 81: pytest: command not found"
+    },
+    {
+      "name": "Smoke Handshake Test",
+      "status": "PASS",
+      "details": "Local loopback response valid. Health is optimal."
+    }
+  ]
+}
