@@ -1,0 +1,209 @@
+{
+  "app": {
+    "name": "BlueHub",
+    "tagline": "Internet Services Sales Platform",
+    "description": "Multi-tenant Internet Services Sales Platform"
+  },
+  "auth": {
+    "login_success": "Login successful",
+    "login_failed": "Login failed. Please check your credentials",
+    "logout_success": "Logout successful",
+    "register_success": "Registration successful",
+    "token_expired": "Your session has expired. Please login again",
+    "token_invalid": "Invalid session",
+    "password_reset_sent": "Password reset email sent",
+    "password_reset_success": "Password reset successful",
+    "email_verified": "Email verified successfully",
+    "invalid_credentials": "Invalid username or password",
+    "account_locked": "Your account has been locked. Please contact support",
+    "account_disabled": "Your account has been disabled",
+    "two_factor_required": "Two-factor authentication required",
+    "two_factor_invalid": "Invalid two-factor authentication code"
+  },
+  "user": {
+    "not_found": "User not found",
+    "created": "User created successfully",
+    "updated": "User updated successfully",
+    "deleted": "User deleted successfully",
+    "email_exists": "This email is already registered",
+    "telegram_linked": "Telegram account linked successfully",
+    "telegram_unlinked": "Telegram account unlinked successfully",
+    "wallet_credited": "Your wallet has been credited with {amount}",
+    "wallet_debited": "{amount} has been debited from your wallet",
+    "wallet_insufficient": "Insufficient wallet balance"
+  },
+  "errors": {
+    "module_disabled": "Module {module_name} is disabled",
+    "module_stopped": "Sales for module {module_name} have been stopped",
+    "module_terminated": "Services for module {module_name} are being terminated",
+    "not_found": "The requested resource was not found",
+    "validation_error": "Validation error",
+    "internal_error": "Internal server error",
+    "permission_denied": "You do not have permission to access this resource",
+    "unauthorized": "Authentication required",
+    "rate_limited": "You are being rate limited. Please wait {seconds} seconds",
+    "service_unavailable": "Service temporarily unavailable",
+    "bad_request": "Invalid request",
+    "method_not_allowed": "Method not allowed for this endpoint",
+    "conflict": "Request conflicts with current state",
+    "too_many_requests": "Too many requests",
+    "not_implemented": "This feature is not yet implemented"
+  },
+  "billing": {
+    "invoice_created": "Invoice created successfully",
+    "invoice_paid": "Invoice paid successfully",
+    "invoice_cancelled": "Invoice cancelled",
+    "invoice_overdue": "Your invoice is {days} days overdue",
+    "payment_success": "Payment successful",
+    "payment_failed": "Payment failed. Please try again",
+    "payment_pending": "Payment pending confirmation",
+    "refund_issued": "Refund of {amount} issued",
+    "subscription_created": "Subscription created successfully",
+    "subscription_cancelled": "Subscription cancelled",
+    "subscription_expired": "Your subscription has expired",
+    "credit_applied": "Credit of {amount} applied",
+    "tax_calculated": "Tax calculated: {amount}",
+    "discount_applied": "Discount of {amount} applied"
+  },
+  "service": {
+    "created": "Service created successfully",
+    "suspended": "Your service has been suspended",
+    "activated": "Service activated successfully",
+    "terminated": "Service terminated",
+    "renewed": "Service renewed successfully",
+    "upgraded": "Service upgraded successfully",
+    "downgraded": "Service downgraded successfully",
+    "expires_soon": "Your service will expire in {days} days",
+    "expired": "Your service has expired",
+    "not_found": "Service not found"
+  },
+  "module": {
+    "vpn": {
+      "name": "VPN",
+      "description": "Virtual Private Network Service",
+      "config_generated": "VPN configuration generated successfully",
+      "server_added": "VPN server added successfully",
+      "server_removed": "VPN server removed successfully",
+      "bandwidth_exceeded": "Your bandwidth usage has exceeded the limit",
+      "connection_limit": "Concurrent connections limited to {limit}"
+    },
+    "vps": {
+      "name": "VPS",
+      "description": "Virtual Private Server",
+      "created": "Virtual server created successfully",
+      "started": "Virtual server started",
+      "stopped": "Virtual server stopped",
+      "restarted": "Virtual server restarted",
+      "rebuild": "Virtual server rebuilt",
+      "os_change": "Operating system changed successfully",
+      "rescue_mode": "Rescue mode activated"
+    },
+    "smartdns": {
+      "name": "Smart DNS",
+      "description": "Smart DNS Service",
+      "enabled": "Smart DNS enabled",
+      "disabled": "Smart DNS disabled",
+      "ip_updated": "IP updated successfully"
+    },
+    "streaming": {
+      "name": "Streaming",
+      "description": "Streaming Service",
+      "unlock_success": "Streaming service unlocked successfully",
+      "unlock_failed": "Streaming service unlock failed",
+      "region_changed": "Streaming region changed"
+    },
+    "game": {
+      "name": "Game",
+      "description": "Game Boosting Service",
+      "ping_reduced": "Game ping reduced",
+      "lag_reduction": "Lag reduction activated",
+      "server_optimized": "Game server optimized"
+    }
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "user_management": "User Management",
+    "system_settings": "System Settings",
+    "module_management": "Module Management",
+    "audit_log": "Audit Log",
+    "reports": "Reports",
+    "backup_created": "Backup created successfully",
+    "backup_restored": "Backup restored successfully",
+    "cache_cleared": "Cache cleared successfully",
+    "maintenance_mode": "Maintenance mode activated"
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "loading": "Loading...",
+    "no_data": "No data available",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "retry": "Retry",
+    "success": "Operation completed successfully",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info",
+    "status": "Status",
+    "actions": "Actions",
+    "all_rights_reserved": "All rights reserved"
+  },
+  "time": {
+    "just_now": "Just now",
+    "minutes_ago": "{minutes} minutes ago",
+    "hours_ago": "{hours} hours ago",
+    "days_ago": "{days} days ago",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "this_week": "This week",
+    "last_week": "Last week",
+    "this_month": "This month",
+    "last_month": "Last month"
+  },
+  "pagination": {
+    "showing": "Showing {from} to {to} of {total}",
+    "page": "Page {page} of {total_pages}",
+    "per_page": "Per page",
+    "no_results": "No results found"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "min_length": "Minimum length is {length} characters",
+    "max_length": "Maximum length is {length} characters",
+    "min_value": "Minimum value is {value}",
+    "max_value": "Maximum value is {value}",
+    "invalid_format": "Invalid format",
+    "password_mismatch": "Passwords do not match",
+    "password_weak": "Password must be at least 8 characters and contain uppercase, lowercase and numbers"
+  },
+  "notification": {
+    "new_ticket": "New ticket received",
+    "ticket_reply": "Reply to your ticket has been posted",
+    "invoice_reminder": "Reminder: Your invoice is due in {days} days",
+    "service_expiry": "Service {service} will expire in {days} days",
+    "payment_received": "Your payment has been received",
+    "welcome": "Welcome to BlueHub!",
+    "security_alert": "Security alert: Login from new device"
+  },
+  "bot": {
+    "start_message": "Welcome to BlueHub Bot!",
+    "help_message": "BlueHub Bot Help Guide",
+    "settings": "Settings",
+    "profile": "Profile",
+    "services": "My Services",
+    "invoices": "Invoices",
+    "support": "Support",
+    "language_changed": "Language changed successfully",
+    "invalid_command": "Invalid command. Use /help for assistance"
+  }
+}

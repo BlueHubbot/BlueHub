@@ -1,4 +1,4 @@
-# .clinerules - Roo Code Execution Rules for BlueHub Platform
+# .clinerules - Code Execution Rules for BlueHub Platform
 
 This file contains strict instructions that Roo Code MUST read and adhere to during every session. These rules override any general instructions.
 
@@ -40,3 +40,10 @@ Do not attempt to write or plan any of the following Phase 7 features unless exp
 ## 5. Execution Protocol
 - Before applying a code patch, verify it complies with `requirements.md` and `.blue/decisions/ADR.md`.
 - Follow the step-by-step diagnostic protocol in `DEBUG_PROTOCOLS.md` when encountering runtime or compilation errors.
+
+---
+## 6. Cursor Editor & Windows execution rules
+- You are operating inside the Cursor Editor.
+- Windows/PowerShell Terminal Rules: Do not use complex, chained shell commands (like `&&`, `2>nul`, or loops) for directory creation or file filtering that cause agentic loops.
+- Always verify if a directory or file exists before running creation commands.
+- Focus strictly on file-system updates through Cursor's Composer or direct file writes without invoking redundant docker or make tests unless explicitly asked.

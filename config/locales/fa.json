@@ -1,0 +1,209 @@
+{
+  "app": {
+    "name": "BlueHub",
+    "tagline": "پلتفرم فروش خدمات اینترنتی",
+    "description": "پلتفرم چندمستاجری فروش خدمات اینترنتی"
+  },
+  "auth": {
+    "login_success": "ورود با موفقیت انجام شد",
+    "login_failed": "ورود ناموفق. لطفاً اطلاعات خود را بررسی کنید",
+    "logout_success": "خروج با موفقیت انجام شد",
+    "register_success": "ثبت‌نام با موفقیت انجام شد",
+    "token_expired": "نشست شما منقضی شده است. لطفاً دوباره وارد شوید",
+    "token_invalid": "نشست نامعتبر",
+    "password_reset_sent": "ایمیل بازیابی رمز عبور ارسال شد",
+    "password_reset_success": "رمز عبور با موفقیت بازیابی شد",
+    "email_verified": "ایمیل با موفقیت تأیید شد",
+    "invalid_credentials": "نام کاربری یا رمز عبور اشتباه است",
+    "account_locked": "حساب کاربری شما قفل شده است. لطفاً با پشتیبانی تماس بگیرید",
+    "account_disabled": "حساب کاربری شما غیرفعال شده است",
+    "two_factor_required": "احراز هویت دو مرحله‌ای الزامی است",
+    "two_factor_invalid": "کد احراز هویت دو مرحله‌ای نامعتبر است"
+  },
+  "user": {
+    "not_found": "کاربر یافت نشد",
+    "created": "کاربر با موفقیت ایجاد شد",
+    "updated": "کاربر با موفقیت به‌روزرسانی شد",
+    "deleted": "کاربر با موفقیت حذف شد",
+    "email_exists": "این ایمیل قبلاً ثبت شده است",
+    "telegram_linked": "حساب تلگرام با موفقیت متصل شد",
+    "telegram_unlinked": "حساب تلگرام با موفقیت جدا شد",
+    "wallet_credited": "کیف پول شما به مبلغ {amount} شارژ شد",
+    "wallet_debited": "مبلغ {amount} از کیف پول شما کسر شد",
+    "wallet_insufficient": "موجودی کیف پول کافی نیست"
+  },
+  "errors": {
+    "module_disabled": "ماژول {module_name} غیرفعال است",
+    "module_stopped": "فروش ماژول {module_name} متوقف شده است",
+    "module_terminated": "سرویس‌های ماژول {module_name} در حال خاتمه هستند",
+    "not_found": "منبع درخواستی یافت نشد",
+    "validation_error": "خطای اعتبارسنجی",
+    "internal_error": "خطای داخلی سرور",
+    "permission_denied": "شما مجوز دسترسی به این منبع را ندارید",
+    "unauthorized": "احراز هویت نشده‌اید",
+    "rate_limited": "تعداد درخواست‌های شما محدود شده است. لطفاً {seconds} ثانیه صبر کنید",
+    "service_unavailable": "سرویس موقتاً در دسترس نیست",
+    "bad_request": "درخواست نامعتبر",
+    "method_not_allowed": "این روش برای این مسیر مجاز نیست",
+    "conflict": "درخواست با وضعیت فعلی تداخل دارد",
+    "too_many_requests": "تعداد درخواست‌ها بیش از حد مجاز است",
+    "not_implemented": "این قابلیت هنوز پیاده‌سازی نشده است"
+  },
+  "billing": {
+    "invoice_created": "صورتحساب با موفقیت ایجاد شد",
+    "invoice_paid": "صورتحساب با موفقیت پرداخت شد",
+    "invoice_cancelled": "صورتحساب لغو شد",
+    "invoice_overdue": "صورتحساب شما {days} روز از سررسید گذشته است",
+    "payment_success": "پرداخت با موفقیت انجام شد",
+    "payment_failed": "پرداخت ناموفق بود. لطفاً دوباره تلاش کنید",
+    "payment_pending": "پرداخت در انتظار تأیید است",
+    "refund_issued": "مبلغ {amount} بازگشت داده شد",
+    "subscription_created": "اشتراک با موفقیت ایجاد شد",
+    "subscription_cancelled": "اشتراک لغو شد",
+    "subscription_expired": "اشتراک شما منقضی شده است",
+    "credit_applied": "اعتبار به مبلغ {amount} اعمال شد",
+    "tax_calculated": "مالیات محاسبه شد: {amount}",
+    "discount_applied": "تخفیف به مبلغ {amount} اعمال شد"
+  },
+  "service": {
+    "created": "سرویس با موفقیت ایجاد شد",
+    "suspended": "سرویس شما به حالت تعلیق درآمد",
+    "activated": "سرویس با موفقیت فعال شد",
+    "terminated": "سرویس خاتمه یافت",
+    "renewed": "سرویس با موفقیت تمدید شد",
+    "upgraded": "سرویس با موفقیت ارتقا یافت",
+    "downgraded": "سرویس با موفقیت کاهش یافت",
+    "expires_soon": "سرویس شما در {days} روز دیگر منقضی می‌شود",
+    "expired": "سرویس شما منقضی شده است",
+    "not_found": "سرویس یافت نشد"
+  },
+  "module": {
+    "vpn": {
+      "name": "وی‌پی‌ان",
+      "description": "سرویس شبکه خصوصی مجازی",
+      "config_generated": "تنظیمات وی‌پی‌ان با موفقیت تولید شد",
+      "server_added": "سرور وی‌پی‌ان با موفقیت اضافه شد",
+      "server_removed": "سرور وی‌پی‌ان با موفقیت حذف شد",
+      "bandwidth_exceeded": "میزان مصرف پهنای باند شما از حد مجاز فراتر رفته است",
+      "connection_limit": "تعداد اتصالات همزمان به {limit} محدود شده است"
+    },
+    "vps": {
+      "name": "وی‌پی‌اس",
+      "description": "سرور خصوصی مجازی",
+      "created": "سرور مجازی با موفقیت ایجاد شد",
+      "started": "سرور مجازی روشن شد",
+      "stopped": "سرور مجازی خاموش شد",
+      "restarted": "سرور مجازی راه‌اندازی مجدد شد",
+      "rebuild": "سرور مجازی بازسازی شد",
+      "os_change": "سیستم عامل با موفقیت تغییر یافت",
+      "rescue_mode": "حالت نجات فعال شد"
+    },
+    "smartdns": {
+      "name": "اسمارت دی‌ان‌اس",
+      "description": "سرویس اسمارت دی‌ان‌اس",
+      "enabled": "اسمارت دی‌ان‌اس فعال شد",
+      "disabled": "اسمارت دی‌ان‌اس غیرفعال شد",
+      "ip_updated": "آی‌پی با موفقیت به‌روزرسانی شد"
+    },
+    "streaming": {
+      "name": "استریمینگ",
+      "description": "سرویس استریمینگ",
+      "unlock_success": "سرویس استریمینگ با موفقیت رفع انسداد شد",
+      "unlock_failed": "رفع انسداد سرویس استریمینگ ناموفق بود",
+      "region_changed": "منطقه استریمینگ تغییر یافت"
+    },
+    "game": {
+      "name": "گیم",
+      "description": "سرویس بهبود بازی",
+      "ping_reduced": "پینگ بازی کاهش یافت",
+      "lag_reduction": "کاهش لگ فعال شد",
+      "server_optimized": "سرور بازی بهینه‌سازی شد"
+    }
+  },
+  "admin": {
+    "dashboard": "پنل مدیریت",
+    "user_management": "مدیریت کاربران",
+    "system_settings": "تنظیمات سیستم",
+    "module_management": "مدیریت ماژول‌ها",
+    "audit_log": "لاگ ممیزی",
+    "reports": "گزارشات",
+    "backup_created": "پشتیبان با موفقیت ایجاد شد",
+    "backup_restored": "پشتیبان با موفقیت بازیابی شد",
+    "cache_cleared": "کش با موفقیت پاک شد",
+    "maintenance_mode": "حالت تعمیر و نگهداری فعال شد"
+  },
+  "common": {
+    "yes": "بله",
+    "no": "خیر",
+    "save": "ذخیره",
+    "cancel": "انصراف",
+    "delete": "حذف",
+    "edit": "ویرایش",
+    "create": "ایجاد",
+    "search": "جستجو",
+    "loading": "در حال بارگذاری...",
+    "no_data": "داده‌ای وجود ندارد",
+    "confirm": "تأیید",
+    "back": "بازگشت",
+    "next": "بعدی",
+    "previous": "قبلی",
+    "close": "بستن",
+    "retry": "تلاش مجدد",
+    "success": "عملیات با موفقیت انجام شد",
+    "error": "خطا",
+    "warning": "هشدار",
+    "info": "اطلاعات",
+    "status": "وضعیت",
+    "actions": "عملیات",
+    "all_rights_reserved": "تمامی حقوق محفوظ است"
+  },
+  "time": {
+    "just_now": "همین الان",
+    "minutes_ago": "{minutes} دقیقه پیش",
+    "hours_ago": "{hours} ساعت پیش",
+    "days_ago": "{days} روز پیش",
+    "today": "امروز",
+    "yesterday": "دیروز",
+    "this_week": "این هفته",
+    "last_week": "هفته گذشته",
+    "this_month": "این ماه",
+    "last_month": "ماه گذشته"
+  },
+  "pagination": {
+    "showing": "نمایش {from} تا {to} از {total}",
+    "page": "صفحه {page} از {total_pages}",
+    "per_page": "تعداد در صفحه",
+    "no_results": "نتیجه‌ای یافت نشد"
+  },
+  "validation": {
+    "required": "این فیلد الزامی است",
+    "email": "لطفاً یک ایمیل معتبر وارد کنید",
+    "min_length": "حداقل طول {length} کاراکتر",
+    "max_length": "حداکثر طول {length} کاراکتر",
+    "min_value": "حداقل مقدار {value}",
+    "max_value": "حداکثر مقدار {value}",
+    "invalid_format": "فرمت نامعتبر",
+    "password_mismatch": "رمز عبور و تکرار آن مطابقت ندارند",
+    "password_weak": "رمز عبور باید حداقل ۸ کاراکتر و شامل حروف بزرگ، کوچک و اعداد باشد"
+  },
+  "notification": {
+    "new_ticket": "تیکت جدید دریافت شد",
+    "ticket_reply": "پاسخ به تیکت شما ارسال شد",
+    "invoice_reminder": "یادآوری: صورتحساب شما {days} روز دیگر سررسید می‌شود",
+    "service_expiry": "سرویس {service} در {days} روز دیگر منقضی می‌شود",
+    "payment_received": "پرداخت شما دریافت شد",
+    "welcome": "به BlueHub خوش آمدید!",
+    "security_alert": "هشدار امنیتی: ورود از دستگاه جدید"
+  },
+  "bot": {
+    "start_message": "به ربات BlueHub خوش آمدید!",
+    "help_message": "راهنمای ربات BlueHub",
+    "settings": "تنظیمات",
+    "profile": "پروفایل",
+    "services": "سرویس‌های من",
+    "invoices": "صورتحساب‌ها",
+    "support": "پشتیبانی",
+    "language_changed": "زبان با موفقیت تغییر یافت",
+    "invalid_command": "دستور نامعتبر. از /help برای راهنما استفاده کنید"
+  }
+}

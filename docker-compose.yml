@@ -1,0 +1,191 @@
+services:
+  # --- PostgreSQL 16 ---
+  postgres:
+    image: postgres:16-alpine
+    container_name: bluehub-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-bluehub}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/init-db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-bluehub}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - bluehub-network
+
+  # --- Redis 7 ---
+  redis:
+    image: redis:7-alpine
+    container_name: bluehub-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - bluehub-network
+
+  # --- MinIO Object Storage ---
+  minio:
+    image: minio/minio:latest
+    container_name: bluehub-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_BROWSER: "on"
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - bluehub-network
+
+  # --- MySQL 8 for Paymenter ---
+  mysql-paymenter:
+    image: mysql:8.0
+    container_name: bluehub-mysql-paymenter
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PAYMENTER_DB_ROOT_PASSWORD:-paymenter_root}
+      MYSQL_DATABASE: ${PAYMENTER_DB_NAME:-paymenter}
+      MYSQL_USER: ${PAYMENTER_DB_USER:-paymenter}
+      MYSQL_PASSWORD: ${PAYMENTER_DB_PASSWORD:-paymenter_pass}
+    ports:
+      - "${PAYMENTER_DB_PORT:-3307}:3306"
+    volumes:
+      - paymenter_mysql_data:/var/lib/mysql
+      - ./infrastructure/init-db/paymenter:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${PAYMENTER_DB_ROOT_PASSWORD:-paymenter_root}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - bluehub-network
+
+  # --- Paymenter Billing Application ---
+  paymenter:
+    image: paymenter/paymenter:latest
+    container_name: bluehub-paymenter
+    restart: unless-stopped
+    environment:
+      # Database
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-paymenter
+      DB_PORT: "3306"
+      DB_DATABASE: ${PAYMENTER_DB_NAME:-paymenter}
+      DB_USERNAME: ${PAYMENTER_DB_USER:-paymenter}
+      DB_PASSWORD: ${PAYMENTER_DB_PASSWORD:-paymenter_pass}
+      # App
+      APP_NAME: ${PAYMENTER_APP_NAME:-BlueHub Billing}
+      APP_ENV: ${PAYMENTER_APP_ENV:-local}
+      APP_DEBUG: ${PAYMENTER_APP_DEBUG:-true}
+      APP_URL: ${PAYMENTER_APP_URL:-http://localhost:8080}
+      APP_KEY: ${PAYMENTER_APP_KEY:-base64:CHANGEME_32CHAR_RANDOM_STRING_HERE_PLEASE}
+      # Mail
+      MAIL_MAILER: ${PAYMENTER_MAIL_MAILER:-log}
+      MAIL_HOST: ${PAYMENTER_MAIL_HOST:-}
+      MAIL_PORT: ${PAYMENTER_MAIL_PORT:-587}
+      MAIL_USERNAME: ${PAYMENTER_MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${PAYMENTER_MAIL_PASSWORD:-}
+      MAIL_ENCRYPTION: ${PAYMENTER_MAIL_ENCRYPTION:-tls}
+      MAIL_FROM_ADDRESS: ${PAYMENTER_MAIL_FROM_ADDRESS:-noreply@bluehub.com}
+      # Webhook configuration
+      WEBHOOK_ENDPOINT: ${PAYMENTER_WEBHOOK_ENDPOINT:-http://host.docker.internal:8000/api/v1/webhooks/paymenter}
+      WEBHOOK_SECRET: ${PAYMENTER_WEBHOOK_SECRET:-paymenter_webhook_secret_change_me}
+      # Payment gateways
+      STRIPE_KEY: ${PAYMENTER_STRIPE_KEY:-}
+      STRIPE_SECRET: ${PAYMENTER_STRIPE_SECRET:-}
+      STRIPE_WEBHOOK_SECRET: ${PAYMENTER_STRIPE_WEBHOOK_SECRET:-}
+    ports:
+      - "${PAYMENTER_PORT:-8080}:80"
+    volumes:
+      - paymenter_storage:/var/www/paymenter/storage
+    depends_on:
+      mysql-paymenter:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - bluehub-network
+
+  # --- Paymenter Scheduler (Cron) ---
+  paymenter-scheduler:
+    image: paymenter/paymenter:latest
+    container_name: bluehub-paymenter-scheduler
+    restart: unless-stopped
+    entrypoint: ["cron", "-f"]
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-paymenter
+      DB_PORT: "3306"
+      DB_DATABASE: ${PAYMENTER_DB_NAME:-paymenter}
+      DB_USERNAME: ${PAYMENTER_DB_USER:-paymenter}
+      DB_PASSWORD: ${PAYMENTER_DB_PASSWORD:-paymenter_pass}
+      APP_ENV: ${PAYMENTER_APP_ENV:-local}
+      APP_KEY: ${PAYMENTER_APP_KEY:-}
+    depends_on:
+      mysql-paymenter:
+        condition: service_healthy
+    networks:
+      - bluehub-network
+
+volumes:
+  postgres_data:
+    name: bluehub-postgres-data
+    driver: local
+  redis_data:
+    name: bluehub-redis-data
+    driver: local
+  minio_data:
+    name: bluehub-minio-data
+    driver: local
+  paymenter_mysql_data:
+    name: bluehub-paymenter-mysql-data
+    driver: local
+  paymenter_storage:
+    name: bluehub-paymenter-storage
+    driver: local
+
+networks:
+  bluehub-network:
+    name: bluehub-network
+    driver: bridge

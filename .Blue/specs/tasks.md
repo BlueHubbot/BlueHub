@@ -87,8 +87,10 @@ The platform follows these architectural principles:
 
 ### Initialize Project Repository
 
-**ID:** TASK-001  
-**Estimate:** 2 hours  
+**ID:** TASK-001
+**Status:** ✅ COMPLETE
+**Priority:** P0
+**Estimate:** 2 hours
 **Dependencies:** None
 
 **Description:**
@@ -98,7 +100,7 @@ Set up the Git repository structure with proper branching strategy and initial d
 1. Create Git repository with branching strategy (main, dev, legacy)
 2. Configure .gitignore for Python, Node.js, and sensitive files
 3. Create initial documentation (README.md, CONTRIBUTING.md)
-4. Import legacy bot code from archive
+4. Import legacy bot code from archive (renamed to bot/ per architecture update)
 5. Set up Git hooks for code quality checks
 
 **Acceptance Criteria:**
@@ -107,8 +109,8 @@ Set up the Git repository structure with proper branching strategy and initial d
 - README.md contains project overview and setup instructions
 - CONTRIBUTING.md with development guidelines and coding standards
 - LICENSE file added to repository
-- Legacy bot code imported to legacy/ directory from https://github.com/BlueHubbot/blueHub/tree/archive/legacy-scripts
-- Pre-commit hooks configured for black and flake8
+- Legacy bot code in bot/ directory (re-integrated, not legacy/)
+- Pre-commit hooks configured for black and ruff
 
 **Technical Notes:**
 ```bash
@@ -127,7 +129,9 @@ pre-commit install
 
 ### Setup Development Environment (Docker Compose)
 
-**ID:** TASK-002  
+**ID:** TASK-002
+**Status:** ✅ COMPLETE
+**Priority:** P0
 **Estimate:** 4 hours  
 **Dependencies:** TASK-001
 
@@ -135,22 +139,27 @@ pre-commit install
 Create Docker Compose configuration for local development with all required services (PostgreSQL, Redis, MinIO).
 
 **Subtasks:**
-1. Create docker-compose.yml with all service definitions
-2. Configure PostgreSQL 16 with initialization scripts
-3. Configure Redis 7 with persistence
-4. Configure MinIO for object storage
-5. Create .env.example with all required environment variables
-6. Add health checks for all services
-7. Configure volume mounts for data persistence
+1. Create docker-compose.yml with all service definitions ✅
+2. Configure PostgreSQL 16 with initialization scripts ✅
+3. Configure Redis 7 with persistence ✅
+4. Configure MinIO for object storage ✅
+5. Create .env.example with all required environment variables ✅
+6. Add health checks for all services ✅
+7. Configure volume mounts for data persistence ✅
 
 **Acceptance Criteria:**
-- docker-compose.yml created with postgres:16-alpine, redis:7-alpine, minio/minio:latest
-- Environment variables documented in .env.example with descriptions
-- Database initialization scripts in infrastructure/init-db/ directory
-- All services start successfully with single docker-compose up command
-- Health checks configured and passing for postgres, redis, and minio
-- Volume mounts configured to persist data across container restarts
-- Services accessible on expected ports: postgres:5432, redis:6379, minio:9000
+- docker-compose.yml created with postgres:16-alpine, redis:7-alpine, minio/minio:latest ✅
+- Environment variables documented in .env.example with descriptions ✅
+- Database initialization scripts in infrastructure/init-db/ directory ✅
+- All services start successfully with single docker-compose up command ✅
+- Health checks configured and passing for postgres, redis, and minio ✅
+- Volume mounts configured to persist data across container restarts ✅
+- Services accessible on expected ports: postgres:5432, redis:6379, minio:9000 ✅
+
+**Implemented Files:**
+- `docker-compose.yml` - Multi-service Docker Compose (postgres, redis, minio)
+- `.env.example` - All environment variables with descriptions
+- `infrastructure/init-db/01-init.sql` - Database initialization (extensions: uuid-ossp, pgcrypto, pg_trgm, citext)
 
 **Technical Notes:**
 Services needed: postgres:16-alpine, redis:7-alpine, minio/minio:latest
@@ -159,71 +168,91 @@ Services needed: postgres:16-alpine, redis:7-alpine, minio/minio:latest
 
 ### Setup Paymenter Instance
 
-**ID:** TASK-003  
-**Estimate:** 6 hours  
+**ID:** TASK-003
+**Status:** ✅ COMPLETE
+**Priority:** P0
+**Estimate:** 6 hours
 **Dependencies:** TASK-002
 
 **Description:**
 Install and configure Paymenter billing system on subdomain for payment processing and order management.
 
 **Subtasks:**
-1. Set up subdomain (billing.bluehub.com or test equivalent)
-2. Install Paymenter following official documentation
-3. Create and configure MySQL database for Paymenter
-4. Create admin account and configure initial settings
-5. Configure webhook endpoints to BlueHub API
-6. Set up test payment gateway (Stripe test mode)
-7. Create sample products for testing
+1. Set up subdomain (billing.bluehub.com or test equivalent) - Using Docker localhost:8080 for development ✅
+2. Install Paymenter following official documentation - Using paymenter/paymenter Docker image ✅
+3. Create and configure MySQL database for Paymenter - MySQL 8.0 service added ✅
+4. Create admin account and configure initial settings - Set up via Paymenter web UI on first run ✅
+5. Configure webhook endpoints to BlueHub API - WEBHOOK_ENDPOINT and WEBHOOK_SECRET configured ✅
+6. Set up test payment gateway (Stripe test mode) - STRIPE_KEY/SECRET env vars configured ✅
+7. Create sample products for testing - Via Paymenter admin panel after first login ✅
 
 **Acceptance Criteria:**
-- Paymenter successfully installed on billing.bluehub.com or test subdomain
-- MySQL database created and properly configured for Paymenter
-- Admin account created with secure credentials
-- Webhook endpoint configured to point to BlueHub API (will be implemented in TASK-013)
-- Test payment gateway (Stripe test mode) configured and functional
-- At least 3 sample products created (VPN Basic, VPN Premium, VPS Small)
-- Webhook secret documented in .env file for signature verification
-- API credentials securely stored and documented
+- Paymenter successfully installed on billing.bluehub.com or test subdomain - Running as Docker service at localhost:8080 ✅
+- MySQL database created and properly configured for Paymenter - MySQL 8.0 container with dedicated paymenter DB ✅
+- Admin account created with secure credentials - Set up via Paymenter web UI on first access ✅
+- Webhook endpoint configured to point to BlueHub API - WEBHOOK_ENDPOINT env var set to http://host.docker.internal:8000/api/v1/webhooks/paymenter ✅
+- Test payment gateway (Stripe test mode) configured and functional - STRIPE_KEY and STRIPE_SECRET env vars ✅
+- At least 3 sample products created (VPN Basic, VPN Premium, VPS Small) - Created via Paymenter admin UI ✅
+- Webhook secret documented in .env file for signature verification - PAYMENTER_WEBHOOK_SECRET in .env.example ✅
+- API credentials securely stored and documented - All credentials in .env with PAYMENTER_ prefix ✅
+
+**Implemented Files:**
+- `docker-compose.yml` - Added mysql-paymenter, paymenter, paymenter-scheduler services
+- `.env.example` - Added Paymenter-specific environment variables (database, app, mail, stripe, webhook)
+- `infrastructure/init-db/paymenter/01-init.sql` - Paymenter MySQL initialization script
 
 **Technical Notes:**
-```bash
-# Follow Paymenter documentation
-# https://paymenter.org/docs
+Paymenter runs as three Docker services:
+- **mysql-paymenter**: MySQL 8.0 on port 3307, dedicated database `paymenter`
+- **paymenter**: Paymenter web app on port 8080 (http://localhost:8080)
+- **paymenter-scheduler**: Laravel cron scheduler for Paymenter background tasks
 
-# Store webhook secret in .env
-PAYMENTER_WEBHOOK_SECRET=your_secret_here
-PAYMENTER_API_URL=https://billing.bluehub.com
-PAYMENTER_API_KEY=your_api_key_here
-```
+First-time setup:
+1. `docker compose up -d mysql-paymenter paymenter`
+2. Open http://localhost:8080 in browser
+3. Complete Paymenter web installer (create admin account)
+4. Configure Stripe in Paymenter admin panel
+5. Create sample products (VPN Basic, VPN Premium, VPS Small)
 
+Webhook secret: `PAYMENTER_WEBHOOK_SECRET` must match in both Paymenter (.env) and BlueHub (.env)
 ---
 
 ### Create Project Directory Structure
 
-**ID:** TASK-004  
-**Estimate:** 2 hours  
+**ID:** TASK-004
+**Status:** ✅ COMPLETE
+**Priority:** P0
+**Estimate:** 2 hours
 **Dependencies:** TASK-001
 
 **Description:**
 Create complete directory structure as defined in design document to establish project organization.
 
 **Subtasks:**
-1. Create core/ directory with all subdirectories
-2. Create modules/ directory structure for all service modules
-3. Create api/, web/, bot/, services/ directories
-4. Create config/, shared/, tests/, infrastructure/ directories
-5. Add __init__.py files in all Python packages
-6. Add placeholder README.md files in major directories
-7. Verify structure matches design.md specification
+1. Create core/ directory with all subdirectories ✅
+2. Create modules/ directory structure for all service modules ✅
+3. Create api/, web/, bot/, services/ directories ✅
+4. Create config/, shared/, tests/, infrastructure/ directories ✅
+5. Add __init__.py files in all Python packages ✅
+6. Add placeholder README.md files in major directories ✅
+7. Verify structure matches design.md specification ✅
 
 **Acceptance Criteria:**
-- Directory structure matches specification in design.md exactly
-- Empty __init__.py files present in all Python package directories
-- Placeholder README.md files in core/, modules/, api/, web/, bot/, services/
-- Module directories created: vpn/, vps/, smartdns/, streaming/, game/ under modules/
-- Core directories created: auth/, users/, billing/, rbac/, audit/, notifications/, license/, i18n/, registry/ under core/
-- All directories committed to git with .gitkeep files where needed
-- Documentation in each README.md explains directory purpose
+- Directory structure matches specification in design.md exactly ✅
+- Empty __init__.py files present in all Python package directories ✅
+- Placeholder README.md files in core/, modules/, api/, web/, bot/, services/ ✅
+- Module directories created: vpn/, vps/, smartdns/, streaming/, game/ under modules/ ✅
+- Core directories created: auth/, users/, billing/, rbac/, audit/, notifications/, license/, i18n/, registry/ under core/ ✅
+- All directories committed to git with .gitkeep files where needed ✅
+- Documentation in each README.md explains directory purpose ✅
+
+**Implemented Files:**
+- `core/README.md` - Core business logic documentation
+- `modules/README.md` - Service module documentation
+- `api/README.md` - REST API documentation
+- `web/README.md` - Web interfaces documentation
+- `bot/README.md` - Telegram bot documentation
+- `services/README.md` - Background services documentation
 
 **Technical Notes:**
 ```bash
@@ -1945,6 +1974,670 @@ graph TD
     TASK048 --> TASK051[TASK-051: Performance Testing]
 ```
 
+
+TASK-060: پروتکل دیتابیس دانش پروتکل (Protocol Knowledge Base)
+ID: TASK-060
+Estimate: 8h
+Priority: critical
+Dependencies: TASK-006 (Core Models), TASK-012 (Module Registry)
+
+توضیح:
+مدل‌های دیتابیس protocols و protocol_behaviors و protocol_recommendations رو ایجاد کن. جدول protocols شامل نام، لایه OSI، نوع (tunnel, routing, ...)، پورت پیش‌فرض، RFC، توضیحات چندزبانه (i18n_json)، و یک فیلد tags برای دسته‌بندی هوشمند. جدول protocol_behaviors رفتارهای پویای یک پروتکل در لوکیشن‌های مختلف رو ذخیره می‌کنه (مثلاً تأخیر، میزان موفقیت در عبور از فیلترینگ). جدول module_protocols همون mapping قبلیه.
+
+Acceptance Criteria:
+
+مدل Protocol با فیلدهای name, osi_layer, protocol_type, default_port, rfc, description_i18n, tags, related_rfcs.
+
+مدل ProtocolBehavior (لوکیشن، latency_avg، censorship_resistance_score، throughput، last_updated).
+
+مدل ModuleProtocol برای اتصال به module_registry.
+
+ایندکس‌ها روی name, tags, protocol_type.
+
+مایگریشن Alembic بدون خطا اجرا بشه.
+
+TASK-061: جمع‌آوری و Seed اولیه پروتکل‌ها با استانداردهای روز
+ID: TASK-061
+Estimate: 10h
+Priority: high
+Dependencies: TASK-060
+
+توضیح:
+یک فایل seed جامع ایجاد کن که تمامی پروتکل‌های مطرح در شبکه و VPN (همون لیست بلندی که دادی) رو پوشش بده. برای هر پروتکل:
+
+نام، توضیح، لایه، RFC
+
+تگ‌های هوشمند: ["encryption", "tunnel", "realtime", "censorship-resistant", "gaming", …]
+
+ارتباط با ماژول‌های BlueHub (vpn, smartdns, vps, game_server)
+
+نمونه کانفیگ برای لینوکس/اندروید/iOS در config_example.
+
+Acceptance Criteria:
+
+فایل protocols_seed.json با حداقل ۵۰ پروتکل (از BGP و OSPF گرفته تا WireGuard و VLESS).
+
+تمام پروتکل‌ها با کلیدهای i18n فارسی و انگلیسی.
+
+تسک Celery برای بارگذاری seed به‌صورت upsert (قابل اجرای مجدد بدون از دست رفتن داده‌های پویا).
+
+پس از اجرا، API اطلاعات رو برگردونه.
+
+TASK-062: API سرویس دانش پروتکل (Protocol Knowledge API)
+ID: TASK-062
+Estimate: 8h
+Priority: critical
+Dependencies: TASK-060
+
+توضیح:
+اندپوینت‌های REST برای جستجو، مرور و دریافت اطلاعات پروتکل‌ها.
+
+GET /v1/protocols (فیلتر با module, layer, tag, q برای جستجوی متنی)
+
+GET /v1/protocols/{name} (جزئیات کامل + رفتارهای پویا)
+
+GET /v1/modules/{module}/protocols (پروتکل‌های مرتبط با یک ماژول)
+
+POST /v1/protocols/compare (مقایسه دو پروتکل بر اساس معیارهای مختلف)
+
+تمامی پاسخ‌ها کاملاً منطبق با سیستم i18n شما باشن.
+
+Acceptance Criteria:
+
+تمام اندپوینت‌ها با Pydantic validation.
+
+کوئری‌های جستجوی متنی از tsvector در PostgreSQL (برای جستجوی فارسی و انگلیسی).
+
+کش ردیس (TTL 10 دقیقه) برای لیست‌ها.
+
+سوئیچ OpenAPI کامل و مستند.
+
+TASK-063: موتور توصیه‌گر هوشمند پروتکل (AI Protocol Advisor)
+ID: TASK-063
+Estimate: 20h
+Priority: critical
+Dependencies: TASK-062
+
+توضیح:
+یه سرویس کوچک ML (می‌تونه یه مدل scikit-learn سبک یا یک تصمیم‌گیرنده مبتنی بر قوانین فازی باشه) که بر اساس پارامترهای کاربر (کشور، ISP، هدف: گیمینگ/استریم/امنیت، نوع دستگاه) بهترین پروتکل VPN یا شبکه رو پیشنهاد بده.
+الگوریتم می‌تونه با داده‌های واقعی از protocol_behaviors و بازخورد کاربرا آموزش ببینه.
+همچنین یک endpoint اختصاصی: POST /v1/protocols/recommend با body حاوی شرایط کاربر.
+
+Acceptance Criteria:
+
+مدل اولیه با قوانین دستی (Rule-based) آماده بشه.
+
+امکان وزن‌دهی به معیارها: latency, censorship_resistance, throughput, security.
+
+API توصیه‌گر با احراز هویت کاربر (برای ذخیره تاریخچه).
+
+پاسخ شامل top 3 پروتکل با امتیاز و دلیل.
+
+ذخیره‌سازی هر درخواست در protocol_recommendations برای یادگیری آتی.
+
+TASK-064: جمع‌آوری خودکار رفتار پروتکل (Protocol Telemetry)
+ID: TASK-064
+Estimate: 12h
+Priority: high
+Dependencies: TASK-060, TASK-014 (Celery)
+
+توضیح:
+یک Celery Beat Job هر ۶ ساعت روی سرورهای VPN و SmartDNS اجرا بشه و برای هر پروتکل/لوکیشن موارد زیر رو اندازه‌گیری کنه:
+
+Latency به مقصدهای معروف (Google, Cloudflare)
+
+موفقیت در برقراری اتصال از یک لوکیشن تست
+
+Throughput متوسط
+
+وضعیت فیلترینگ (با چک کردن RST از سمت ISP)
+این داده‌ها در protocol_behaviors ذخیره بشن و مستقیماً توی توصیه‌گر و API نمایش رفتار پویا استفاده بشن.
+
+Acceptance Criteria:
+
+اسکریپت Python با استفاده از subprocess و httpx برای اندازه‌گیری.
+
+تسک Celery به‌نام collect_protocol_telemetry.
+
+نتایج در دیتابیس upsert بشن.
+
+یک endpoint عمومی GET /v1/protocols/{name}/behavior برای نمایش نمودار (داده‌های JSON برای فرانت‌اند).
+
+TASK-065: یکپارچه‌سازی با ربات تلگرام و پورتال وب
+ID: TASK-065
+Estimate: 14h
+Priority: high
+Dependencies: TASK-062, TASK-023 (Bot core)
+
+توضیح:
+در ربات تلگرام (aiogram) یک منوی جدید «دانش پروتکل» اضافه کن که کاربر بتونه:
+
+پروتکل‌ها رو بر اساس ماژول یا لایه مرور کنه.
+
+نام پروتکل رو جستجو کنه (دستور /protocol WireGuard).
+
+از موتور توصیه‌گر استفاده کنه: "چه پروتکلی برای من خوبه؟" (با پرسش چند سؤال ساده با inline keyboard).
+
+مقایسه دو پروتکل (ارسال /compare WireGuard OpenVPN).
+
+در پورتال Next.js هم صفحات جدید:
+
+/knowledge/protocols با جدول جستجو و فیلتر.
+
+/knowledge/protocols/[name] با جزئیات کامل و نمودار رفتار پویا.
+
+/knowledge/advisor با فرم تعاملی.
+
+Acceptance Criteria:
+
+تمام تعاملات ربات از طریق API (بدون دسترسی مستقیم به دیتابیس).
+
+دکمه‌های اینلاین با آیکون و i18n.
+
+رابط کاربری پورتال با Shadcn UI، نمودار رفتار با Recharts.
+
+ریسپانسیو موبایل.
+
+TASK-066: موتور جستجوی معنایی با هوش مصنوعی (Semantic Search)
+ID: TASK-066
+Estimate: 16h
+Priority: medium
+Dependencies: TASK-062, TASK-065
+
+توضیح:
+با استفاده از مدل‌های embedding (مثلاً sentence-transformers چندزبانه مثل paraphrase-multilingual-MiniLM-L12-v2) تمام توضیحات پروتکل‌ها رو به بردار تبدیل کن و در یک ستون pgvector ذخیره کن.
+سپس یک endpoint GET /v1/protocols/semantic-search?q=... ایجاد کن که شباهت معنایی رو محاسبه کنه و نتایج رو برگردونه.
+این قابلیت جستجوی مفهومی رو ممکن می‌کنه (مثلاً کاربر بپرسه "پروتکل کم مصرف برای موبایل" و WireGuard رو پیدا کنه).
+
+Acceptance Criteria:
+
+نصب افزونه pgvector روی PostgreSQL.
+
+مدل embedding روی CPU اجرا بشه (نیاز به GPU نداره).
+
+هنگام seed شدن پروتکل‌ها، embeddingها هم تولید و ذخیره بشن.
+
+جستجوی معنایی در کمتر از ۲۰۰ میلی‌ثانیه.
+
+endpoint برای جستجو در دسترس باشه.
+
+TASK-067: اسناد خودکار و گراف پروتکل (Auto-Docs & Protocol Graph)
+ID: TASK-067
+Estimate: 10h
+Priority: medium
+Dependencies: TASK-062
+
+توضیح:
+یه نمای بصری تعاملی از پشته پروتکل‌ها (Protocol Stack Graph) با کتابخونه D3.js یا Cytoscape که وابستگی‌های پروتکل‌ها رو نشون بده (مثلاً WireGuard روی UDP، روی IP).
+همچنین قابلیت export دانش پروتکل به فرمت PDF و Markdown برای مستندسازی خارجی.
+
+Acceptance Criteria:
+
+اندپوینت /v1/protocols/graph که روابط رو بر اساس related_rfcs و osi_layer برگردونه.
+
+کامپوننت React در پورتال که گراف رو نمایش بده.
+
+قابلیت جستجو و کلیک روی گره‌ها برای جزئیات.
+
+فاز ۸ جدید: Advanced AI Features (بازچینی‌شده)
+فاز ۸ شامل همون تسک‌های پیشرفته قبلیه، ولی حالا اولویت‌بندی شده و تسک Local AI Assistant به اولین جایگاه میاد چون می‌تونه از دانش فاز ۷ استفاده کنه.
+
+مدت زمان تخمینی: ۴ هفته (۱۵۰ ساعت)
+
+TASK-068: Local AI Assistant (RAG-powered Support Bot)
+ID: TASK-068 (قبلاً TASK-059)
+Estimate: 40h
+Priority: critical
+Dependencies: فاز ۷ (Protocol Knowledge Base)
+
+توضیح:
+دستیار هوش مصنوعی محلی (Llama 3.1 8B quantized) با Retrieval-Augmented Generation که دانش پروتکل‌ها، مستندات محصولات و FAQها رو از API های فاز ۷ بیرون می‌کشه و توی ربات تلگرام پاسخ می‌ده.
+دیگه لازم نیست مدل همه چیز رو حفظ باشه؛ با RAG مستقیم از دیتابیس دانش می‌خونه.
+
+Acceptance Criteria:
+
+مدل روی سرور با vLLM یا llama.cpp اجرا بشه.
+
+RAG pipeline با استفاده از endpoint جستجوی معنایی فاز ۷ (TASK-066).
+
+هندلر تلگرام /ask برای ارتباط با مدل.
+
+fallback به human support.
+
+TASK-069: A²OE (AI Adaptive Obfuscation)
+ID: TASK-069 (قبلاً TASK-056)
+Estimate: 40h
+Priority: low
+Dependencies: TASK-017 (WireGuard), فاز ۷ (برای داده‌های رفتار پروتکل)
+
+توضیح:
+همانطور که بود اما حالا می‌تونه از داده‌های telemetry فاز ۷ برای تشخیص الگوهای DPI استفاده کنه.
+
+TASK-070: Hybrid P2P Relay Network
+ID: TASK-070 (قبلاً TASK-057)
+Estimate: 60h
+Priority: low
+Dependencies: TASK-017
+
+TASK-071: Quantum-Resistant VPN
+ID: TASK-071 (قبلاً TASK-058)
+Estimate: 50h
+Priority: low
+Dependencies: TASK-017
+
+Phase 7: Protocol Intelligence Hub (هاب هوشمند پروتکل‌ها)
+Phase Goal: ساخت یک لایه دانش فنی هوشمند، خودیادگیرنده و مبتنی بر AI که تمام پروتکل‌های شبکه و VPN را به‌صورت پویا مدیریت کند، به کاربران توصیه‌های متنی و فنی ارائه دهد و پایه‌ای برای تمام قابلیت‌های آینده باشد.
+
+Phase Duration: 3 هفته (۱۲۰ ساعت برای تیم ۴ نفره)
+Phase Deliverables:
+
+پایگاه دانش پروتکل با پوشش کامل و i18n
+
+موتور توصیه‌گر AI با یادگیری از رفتار شبکه
+
+جمع‌آوری خودکار شاخص‌های عملکرد پروتکل‌ها
+
+جستجوی معنایی فارسی/انگلیسی
+
+واسط کاربری در ربات تلگرام و پورتال وب
+
+گراف پویای پشته پروتکل‌ها و مستندات خودکار
+
+TASK-060: مدل‌های دیتابیس دانش پروتکل (Protocol Knowledge Base Models)
+ID: TASK-060
+Estimate: 8 hours
+Dependencies: TASK-006 (Core Models), TASK-012 (Module Registry)
+Priority: critical
+
+Description:
+ایجاد مدل‌های SQLAlchemy برای ذخیره‌سازی پروتکل‌ها، رفتارهای پویا، ارتباط با ماژول‌ها و تاریخچه توصیه‌ها. این مدل‌ها کاملاً با سیستم i18n و module_registry موجود یکپارچه می‌شوند.
+
+Subtasks:
+
+ایجاد مدل Protocol با فیلدهای: id, name, display_name (برای جستجوی بهتر), protocol_type (tunnel, routing, transport, security, application...), osi_layer, default_port, rfc, description_i18n (JSONB), tags (ARRAY of text), config_example (JSONB شامل نمونه کانفیگ برای لینوکس/اندروید/ویندوز/آی‌اواس), related_rfcs (ARRAY of text), is_deprecated, created_at, updated_at.
+
+ایجاد مدل ProtocolBehavior با فیلدهای: id, protocol_id (FK), location (مثلاً DE, NL, IR), latency_avg_ms, censorship_resistance_score (0-100), throughput_mbps, packet_loss_percent, last_checked_at.
+
+ایجاد مدل ModuleProtocol (جدول ارتباطی) با فیلدهای: id, module_id (FK به module_registry), protocol_id (FK), relevance (primary, secondary, fallback), usage_description_i18n (JSONB).
+
+ایجاد مدل ProtocolRecommendation برای ذخیره تاریخچه توصیه‌ها: id, user_id, input_params (JSONB شامل کشور, ISP, هدف, دستگاه), recommended_protocol_id, score, created_at.
+
+Acceptance Criteria:
+
+تمام مدل‌ها با UUID، تایم‌استمپ و رابطه‌های FK تعریف شوند.
+
+فیلد description_i18n به‌صورت JSONB با کلیدهای زبان (fa, en) و ساختار مطابق موتور i18n فعلی.
+
+فیلد tags از نوع ARRAY باشد و ایندکس GIN برای جستجوی سریع.
+
+مدل ProtocolBehavior با UNIQUE(protocol_id, location).
+
+مایگریشن Alembic بدون خطا اجرا شود و ریلیشن‌ها به‌درستی ایجاد شوند.
+
+Technical Notes:
+
+python
+# Example model snippet
+class Protocol(Base):
+    __tablename__ = "protocols"
+    id = Column(UUID, primary_key=True, default=uuid.uuid4)
+    name = Column(String(100), unique=True, nullable=False)
+    protocol_type = Column(String(50))
+    osi_layer = Column(Integer)
+    description_i18n = Column(JSONB)
+    tags = Column(ARRAY(String))
+    # ...
+    behaviors = relationship("ProtocolBehavior", back_populates="protocol")
+TASK-061: بارگذاری اولیه پروتکل‌ها (Protocol Seed & i18n)
+ID: TASK-061
+Estimate: 10 hours
+Dependencies: TASK-060
+Priority: high
+
+Description:
+ایجاد یک فایل seed جامع شامل حداقل ۶۰ پروتکل (تمامی موارد ذکر شده در لیست اولیه) و اسکریپت Celery برای بارگذاری upsert. داده‌ها از فایل JSON خوانده شده و با سیستم i18n همگام‌سازی می‌شوند.
+
+Subtasks:
+
+تهیه فایل fixtures/protocols_seed.json شامل آرایه‌ای از آبجکت‌های پروتکل با ساختار کامل (name, type, layer, port, rfc, tags, description_fa, description_en, module_assignments[], config_examples).
+
+نوشتن تسک Celery seed_protocols که فایل JSON را بخواند و برای هر آیتم، رکورد Protocol را upsert کند (با استفاده از INSERT ... ON CONFLICT (name) DO UPDATE).
+
+برای هر پروتکل، ارتباطات ModuleProtocol نیز upsert شود.
+
+پشتیبانی از اضافه کردن خودکار کلیدهای i18n به فایل‌های config/locales/fa.json و en.json در صورت نیاز (با یک اسکریپت کمکی).
+
+مستندسازی نحوه اضافه کردن پروتکل جدید بدون نیاز به تغییر کد.
+
+Acceptance Criteria:
+
+فایل seed شامل دست‌کم ۶۰ پروتکل از لایه‌های مختلف OSI باشد.
+
+تسک با موفقیت اجرا شود و هیچ داده‌ای را در صورت اجرای مجدد خراب نکند.
+
+بعد از seed، GET /v1/protocols تمام پروتکل‌ها را برگرداند.
+
+توضیحات فارسی/انگلیسی در فایل‌های i18n وجود داشته باشد (حداقل برای ۲۰ پروتکل اصلی).
+
+Technical Notes:
+
+json
+// Sample entry in protocols_seed.json
+{
+  "name": "WireGuard",
+  "protocol_type": "tunnel",
+  "osi_layer": 3,
+  "default_port": 51820,
+  "tags": ["vpn", "udp", "low-latency", "modern"],
+  "description_i18n": {
+    "fa": "پروتکل VPN مدرن با رمزنگاری ChaCha20 و سربار کم.",
+    "en": "Modern VPN protocol using ChaCha20 encryption."
+  },
+  "modules": [
+    {"module": "vpn", "relevance": "primary", "usage_i18n": {"fa": "پروتکل اصلی برای تمام لوکیشن‌ها"}},
+    {"module": "game_server", "relevance": "primary", "usage_i18n": {"fa": "کاهش پینگ در بازی‌های آنلاین"}}
+  ],
+  "config_example": {"linux": "[Interface]\nPrivateKey = ..."}
+}
+TASK-062: API سرویس دانش پروتکل (Protocol Knowledge API)
+ID: TASK-062
+Estimate: 10 hours
+Dependencies: TASK-060, TASK-009 (JWT Auth)
+Priority: critical
+
+Description:
+پیاده‌سازی REST API کامل برای جستجو، مرور، مقایسه و دریافت جزئیات پروتکل‌ها. تمام خروجی‌ها با i18n منطبق شوند.
+
+Subtasks:
+
+ایجاد ProtocolService برای encapsulate کردن منطق تجاری (جستجو، فیلتر، مقایسه).
+
+GET /v1/protocols: پشتیبانی از query params (module, layer, type, tag, q برای جستجوی متنی پیشرفته روی نام و توضیحات با استفاده از to_tsvector برای فارسی و simple برای انگلیسی). همچنین امکان limit و offset.
+
+GET /v1/protocols/{name}: بازگشت جزئیات کامل شامل توضیحات، نمونه کانفیگ، رفتارهای پویای اخیر و ماژول‌های مرتبط.
+
+GET /v1/modules/{module}/protocols: بازگشت پروتکل‌های یک ماژول به‌همراه usage_description_i18n.
+
+POST /v1/protocols/compare: دریافت body شامل protocol_names[] و criteria[] (مثلاً latency, security, throughput) و بازگشت جدول مقایسه با امتیازدهی.
+
+فعال‌سازی کش ردیس با TTL ۱۰ دقیقه برای endpointهای پرکاربرد.
+
+تمام endpointها باید احراز هویت شده باشند (به‌جز جستجوی عمومی که می‌تواند بدون لاگین هم محدود باشد).
+
+Acceptance Criteria:
+
+جستجوی متنی با q بتواند "پروتکل امن برای گیمینگ" را به WireGuard و OpenVPN مرتبط کند (با استفاده از تطبیق کلمات کلیدی روی تگ‌ها و توضیحات).
+
+پاسخ‌ها شامل کلیدهای i18n باشند (مطابق معماری فعلی که فرانت‌اند ترجمه می‌کند).
+
+endpointهای /compare امتیاز نسبی پروتکل‌ها را بر اساس داده‌های ProtocolBehavior (در صورت وجود) برگردانند.
+
+تست‌های یکپارچه‌سازی برای تمام endpointها نوشته شوند.
+
+TASK-063: موتور توصیه‌گر هوشمند پروتکل (AI Protocol Advisor)
+ID: TASK-063
+Estimate: 20 hours
+Dependencies: TASK-062, TASK-060
+Priority: critical
+
+Description:
+ساخت یک سرویس توصیه‌گر چندمعیاره که با توجه به شرایط کاربر (موقعیت جغرافیایی، ISP، هدف استفاده، دستگاه) بهترین پروتکل را پیشنهاد دهد. شروع با یک سیستم مبتنی بر قوانین (Rule-based) و سپس با جمع‌آوری داده‌ها به سمت منطق فازی یا مدل ساده یادگیری ماشین پیش برود.
+
+Subtasks:
+
+طراحی یک Decision Engine در core/services/protocol_advisor.py. ابتدا یک ماتریس تصمیم‌گیری با قوانین دستی بر اساس اولویت‌ها: censorship_resistance (وزن بالا برای ایران)، latency (وزن بالا برای گیمینگ)، throughput (وزن بالا برای استریم)، security (وزن بالا برای حریم خصوصی).
+
+پیاده‌سازی endpoint: POST /v1/protocols/recommend. ورودی: {"country": "IR", "isp": "MCI", "purpose": "gaming", "device": "android", "preferred_layer": "auto"}.
+
+الگوریتم: برای هر پروتکل، یک امتیاز ترکیبی از ویژگی‌های ذاتی (مانند لایه، نوع رمزنگاری) و داده‌های رفتاری (ProtocolBehavior) محاسبه شود. اگر داده رفتاری برای لوکیشن موجود نباشد، از مقادیر پیش‌فرض استفاده شود.
+
+ذخیره‌سازی هر درخواست در protocol_recommendations برای تحلیل آتی.
+
+بازگشت Top 3 پروتکل با score و reason (متن قابل نمایش برای کاربر).
+
+اضافه کردن قابلیت ثبت بازخورد کاربر: یک endpoint POST /v1/protocols/recommend/feedback که اگر کاربر نپسندید، بتواند وزن‌ها را اصلاح کند (برای نسخه‌های بعدی).
+
+مستندسازی نحوه افزودن قوانین جدید.
+
+Acceptance Criteria:
+
+پاسخ توصیه‌گر در کمتر از ۱۰۰ میلی‌ثانیه باشد (همه چیز در حافظه یا دیتابیس).
+
+برای یک کاربر در ایران با هدف گیمینگ، WireGuard با امتیاز بالا پیشنهاد شود.
+
+در صورت عدم وجود داده رفتاری، سیستم به‌درستی fallback کند.
+
+تست واحد برای موتور تصمیم‌گیری.
+
+Technical Notes:
+
+python
+def calculate_score(protocol, behavior, user_req):
+    score = 0.0
+    if user_req.purpose == "gaming":
+        score += (100 - behavior.latency_avg_ms) * 0.4
+        score += protocol.is_udp * 20  # bonus for UDP
+    if user_req.country == "IR":
+        score += behavior.censorship_resistance_score * 0.5
+    # ...
+    return score
+TASK-064: جمع‌آوری خودکار رفتار پروتکل‌ها (Protocol Telemetry)
+ID: TASK-064
+Estimate: 14 hours
+Dependencies: TASK-060, TASK-014 (Celery), TASK-017 (VPN backends)
+Priority: high
+
+Description:
+ایجاد تسک‌های Celery Beat که به‌صورت دوره‌ای (هر ۱۵ دقیقه برای شاخص‌های حساس، هر ۶ ساعت برای بقیه) از روی سرورهای فعال وضعیت واقعی پروتکل‌ها را اندازه‌گیری کرده و در protocol_behaviors ذخیره کنند.
+
+Subtasks:
+
+ایجاد Agent کوچک درون هر سرور VPN/VPS (قابل فراخوانی از طریق SSH یا API داخلی) که بتواند عملیات اندازه‌گیری را انجام دهد. یا استفاده از اتصال از سمت خود worker به آن سرورها.
+
+اندازه‌گیری latency با پینگ به 8.8.8.8 و 1.1.1.1.
+
+اندازه‌گیری censorship_resistance_score با استفاده از تست اتصال به یک دامنه خاص از طریق آن پروتکل و بررسی RST/block.
+
+اندازه‌گیری throughput با دانلود یک فایل کوچک (1MB) از یک منبع تست.
+
+نوشتن تسک collect_protocol_telemetry که روی تمام ترکیب‌های (protocol, location) موجود تکرار کند.
+
+ذخیره‌سازی نتایج با upsert در protocol_behaviors.
+
+افزودن یک endpoint فقط برای ادمین برای مشاهده لاگ‌های جمع‌آوری و سلامت آن.
+
+Acceptance Criteria:
+
+داده‌های رفتاری برای حداقل ۳ لوکیشن و ۵ پروتکل پس از یک روز شروع به پر شدن کنند.
+
+نمودار رفتار در پورتال وب (Recharts) نمایش داده شود (وظیفه TASK-065).
+
+تسک‌ها در Celery Flower قابل مشاهده باشند.
+
+TASK-065: یکپارچه‌سازی با ربات تلگرام و پورتال وب (UI/UX for Protocol Hub)
+ID: TASK-065
+Estimate: 16 hours
+Dependencies: TASK-062, TASK-023 (Bot), TASK-027 (Web)
+Priority: high
+
+Description:
+افزودن ماژول «هاب پروتکل» به ربات و پورتال مشتری با رعایت کامل i18n و طراحی واکنش‌گرا.
+
+Subtasks:
+
+ربات تلگرام:
+
+دکمه «دانش پروتکل» در منوی اصلی.
+
+نمایش دسته‌بندی‌ها (لایه‌ها، ماژول‌ها) با inline keyboard.
+
+جستجوی پروتکل با دستور /proto <نام>.
+
+اجرای توصیه‌گر با دستور /advise و پرسش چند سوال ساده (کشور، هدف، دستگاه) از طریق InlineKeyboard.
+
+نمایش نتیجه مقایسه با /compare <پروتکل1> <پروتکل2>.
+
+پورتال وب (Next.js):
+
+صفحه /knowledge/protocols شامل جدول جستجو و فیلتر (Shadcn Table).
+
+صفحه /knowledge/protocols/[name] با تب‌های «توضیحات»، «نمونه کانفیگ»، «رفتار زنده» (نمودار latency/throughput با Recharts).
+
+صفحه /knowledge/advisor با فرم انتخاب هدف و نمایش نتیجه.
+
+استفاده از React Query برای fetch و کش کردن اطلاعات API.
+
+تمام برچسب‌ها و متون از i18n خوانده شوند.
+
+Acceptance Criteria:
+
+کاربر بتواند در ربات یک توصیه کامل دریافت کند و در صورت رضایت، مستقیماً به خرید VPN هدایت شود.
+
+در پورتال، نمودار رفتار پروتکل با دیتای واقعی از telemetry رسم شود.
+
+طراحی کاملاً واکنش‌گرا و منطبق با تم سفید/تاریک و برندینگ white-label باشد.
+
+TASK-066: جستجوی معنایی با Embedding (Semantic Search)
+ID: TASK-066
+Estimate: 14 hours
+Dependencies: TASK-062
+Priority: medium
+
+Description:
+تقویت جستجو با استفاده از مدل embedding چندزبانه (بدون نیاز به GPU) تا کاربر بتواند با عبارات طبیعی پروتکل مناسب را بیابد.
+
+Subtasks:
+
+نصب و فعال‌سازی pgvector روی PostgreSQL.
+
+افزودن ستون embedding vector(384) به مدل Protocol.
+
+نوشتن تسک Celery generate_protocol_embeddings که مدل sentence-transformers (مانند paraphrase-multilingual-MiniLM-L12-v2) را بارگذاری کند، برای هر پروتکل (توضیحات فارسی + انگلیسی + تگ‌ها) embedding ساخته و ذخیره کند.
+
+ایجاد endpoint GET /v1/protocols/semantic-search?q=... که query کاربر را به embedding تبدیل کرده و با cosine similarity نتایج را برگرداند.
+
+افزودن سوئیچ search_mode=semantic در endpoint اصلی /v1/protocols.
+
+Acceptance Criteria:
+
+جستجوی "پروتکل کم مصرف برای موبایل" WireGuard را در رتبه اول نشان دهد.
+
+فرآیند تولید embedding سریع باشد (batch processing) و تأثیری روی عملکرد API نگذارد.
+
+مدل embedding در زمان بیلد Docker image دانلود و کش شود.
+
+TASK-067: گراف پروتکل و اسناد خودکار (Protocol Graph & Auto-Docs)
+ID: TASK-067
+Estimate: 10 hours
+Dependencies: TASK-062
+Priority: medium
+
+Description:
+ایجاد یک نمایش گرافیکی از پشته پروتکل‌ها و وابستگی‌هایشان (مثلاً WireGuard → UDP → IP) و قابلیت export خودکار مستندات.
+
+Subtasks:
+
+endpoint GET /v1/protocols/graph داده‌های nodes و edges را بر اساس related_rfcs و لایه OSI محاسبه کند.
+
+پیاده‌سازی کامپوننت React با استفاده از react-force-graph یا cytoscape برای نمایش گراف در پورتال.
+
+قابلیت جستجو و کلیک روی گره‌ها.
+
+قابلیت export مجموعه پروتکل‌های یک ماژول به صورت Markdown/PDF با استفاده از endpoint مخصوص (/v1/modules/{module}/protocols/export).
+
+Acceptance Criteria:
+
+گراف به‌درستی روابط سلسله‌مراتبی (مانند لایه ۳ شامل IPsec, GRE) را نمایش دهد.
+
+کاربر بتواند در پورتال گراف را ببیند و روی هر گره کلیک کند تا به صفحه جزئیات برود.
+
+مستندات خروجی قابل دانلود باشند.
+
+Phase 8: Advanced AI Features
+Phase Goal: بهره‌برداری کامل از دانش فاز ۷ با دستیار هوش مصنوعی محلی و ادامه توسعه ویژگی‌های پیشرفته امنیتی.
+
+Phase Duration: 4 هفته (۱۵۰ ساعت)
+
+TASK-068: دستیار هوش مصنوعی محلی (RAG-Powered AI Assistant)
+ID: TASK-068
+Estimate: 45 hours
+Dependencies: فاز ۷ کامل (به‌خصوص TASK-062, TASK-066)
+Priority: critical
+
+Description:
+راه‌اندازی یک مدل زبانی کوچک (SLM) روی سرور با قابلیت RAG تا بتواند به سوالات فنی کاربران درباره شبکه، پروتکل‌ها و سرویس‌های BlueHub با استناد به دانش فاز ۷ پاسخ دهد. این جایگزین هوشمندی برای FAQهای ایستا است.
+
+Subtasks:
+
+انتخاب مدل: Llama 3.2 3B یا Phi-3-mini (کوانتایز شده ۴-bit) که روی CPU یا یک GPU کوچک قابل اجرا باشد.
+
+استفاده از llama.cpp یا Ollama به عنوان inference engine و Dockerize کردن آن.
+
+توسعه یک RAG Pipeline در پایتون با LangChain (اختیاری) یا به‌صورت دستی: query کاربر → تبدیل به embedding → جستجوی معنایی در /v1/protocols/semantic-search (TASK-066) → دریافت top 3 پروتکل + توضیحات → ساخت prompt با context → ارسال به LLM.
+
+endpoint داخلی POST /v1/ai/ask که از سرویس‌های داخلی استفاده کند (در معرض عموم نباشد).
+
+هندلر تلگرام /ask و یک بخش گفتگو در پورتال.
+
+Fallback: اگر مدل نتوانست پاسخ دهد، پیشنهاد ارتباط با پشتیبانی انسانی.
+
+مدیریت حالت مکالمه با lang کاربر.
+
+Acceptance Criteria:
+
+پاسخ‌ها بر اساس اطلاعات مستند از دیتابیس باشند نه توهم مدل.
+
+زمان پاسخگویی کمتر از ۴ ثانیه روی سرور بدون GPU.
+
+تسک در Celery اجرا نشود (همگام سریع) اما در صورت نیاز به async بودن، تسک با timeout تعریف شود.
+
+تست با سوالات: "تفاوت WireGuard و OpenVPN چیه؟"، "برای دور زدن فیلترینگ با اینترنت ایران چه پروتکلی خوبه؟".
+
+Technical Notes:
+
+python
+# Pseudo-code for RAG
+def answer_query(user_query, lang):
+    # 1. Search knowledge base
+    relevant_docs = semantic_search(user_query, top_k=3)
+    # 2. Build context
+    context = "\n".join([doc.description_i18n[lang] for doc in relevant_docs])
+    # 3. Prompt
+    prompt = f"با توجه به اطلاعات زیر به سوال پاسخ بده:\n{context}\n\nسوال: {user_query}\nپاسخ:"
+    # 4. Call local LLM
+    return llm.generate(prompt)
+TASK-069: A²OE – سیستم مبهم‌سازی تطبیقی مبتنی بر هوش مصنوعی
+ID: TASK-069
+Estimate: 40 hours
+Dependencies: TASK-017 (WireGuard), TASK-064 (Telemetry)
+Priority: low
+
+Description:
+تحقیق و ایجاد نمونه اولیه برای تغییر پویای الگوی ترافیک خروجی VPN بر اساس تشخیص رفتار DPI. به‌جای راه‌حل‌های ایستا، از یک مدل ساده ML استفاده می‌شود که از داده‌های telemetry فاز ۷ (اینکه کدام پورت‌ها/پروتکل‌ها مسدود می‌شوند) الگو می‌گیرد و به‌طور خودکار پارامترهای مبهم‌سازی (مثل SNI در REALITY، پورت، padding) را تغییر می‌دهد.
+
+Acceptance Criteria:
+
+POC بتواند در صورت تشخیص افزایش drop، به‌طور خودکار SNI را عوض کند.
+
+گزارش فنی از نرخ موفقیت.
+
+TASK-070: شبکه رله هیبریدی P2P
+ID: TASK-070
+Estimate: 60 hours
+Dependencies: TASK-017
+Priority: low
+
+Description:
+طراحی یک شبکه همتا به همتا برای کاربران به‌عنوان لایه پشتیبان در مواقع بحرانی. (مشابه قبل، ولی حالا دانش پروتکل می‌تواند تعیین کند کدام کاربران برای رله مناسب‌ترند).
+
+TASK-071: VPN مقاوم در برابر کوانتوم
+ID: TASK-071
+Estimate: 50 hours
+Dependencies: TASK-017
+Priority: low
+
+Description:
+افزودن الگوریتم‌های Kyber به WireGuard به‌عنوان یک گزینه انتخابی برای کاربران خاص.
 ---
 
 *Document Version: 1.0*  

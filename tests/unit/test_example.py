@@ -1,8 +1,9 @@
+from typing import Any
+
 import pytest
-from typing import Dict, Any
 
 # Simple Mock DB representing multi-tenant configurations
-mock_tenant_db: Dict[str, Dict[str, Any]] = {
+mock_tenant_db: dict[str, dict[str, Any]] = {
     "tenant-alpha": {
         "name": "Reseller Alpha",
         "active": True,
@@ -21,17 +22,20 @@ class TenantContextResolver:
     Enforces logical isolation boundaries for multi-tenant requests.
     """
     @staticmethod
-    def resolve(tenant_id: str) -> Dict[str, Any]:
+    def resolve(tenant_id: str) -> dict[str, Any]:
         if not tenant_id:
-            raise ValueError("X-Tenant-Id header cannot be null or empty")
-            
+            msg = "X-Tenant-Id header cannot be null or empty"
+            raise ValueError(msg)
+
         tenant = mock_tenant_db.get(tenant_id)
         if not tenant:
-            raise LookupError(f"Tenant with ID {tenant_id} is not registered")
-            
+            msg = f"Tenant with ID {tenant_id} is not registered"
+            raise LookupError(msg)
+
         if not tenant["active"]:
-            raise PermissionError(f"Tenant with ID {tenant_id} is suspended")
-            
+            msg = f"Tenant with ID {tenant_id} is suspended"
+            raise PermissionError(msg)
+
         return tenant
 
 # ----------------------------------------------------------------------

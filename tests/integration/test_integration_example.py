@@ -1,7 +1,7 @@
-import pytest
-from fastapi import FastAPI, Header, HTTPException, Depends
+from typing import Any
+
+from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.testclient import TestClient
-from typing import Dict, Any
 
 # ----------------------------------------------------------------------
 # MOCK APPLICATION FOR MULTI-TENANT HANDSHAKE VERIFICATION
@@ -20,7 +20,7 @@ async def verify_tenant_routing_header(x_tenant_id: str = Header(None)) -> str:
     return x_tenant_id
 
 @app.get("/v1/modules")
-async def list_modules(tenant_id: str = Depends(verify_tenant_routing_header)) -> Dict[str, Any]:
+async def list_modules(tenant_id: str = Depends(verify_tenant_routing_header)) -> dict[str, Any]:
     """
     Simulated product/module lookup.
     Returns tenant-specific module status configurations.
@@ -53,7 +53,7 @@ def test_api_resolves_valid_tenant_header():
 
 def test_api_rejects_missing_tenant_header():
     """
-    Verifies that requests missing the mandatory X-Tenant-Id header 
+    Verifies that requests missing the mandatory X-Tenant-Id header
     are rejected with a 400 Bad Request error.
     """
     response = client.get("/v1/modules")

@@ -87,3 +87,18 @@ refactor(module): description for code cleanups.
 ## 6. Final Authority (ADDED)
 **User has final authority over all agent actions.**
 If any rule conflicts with user command, user command wins – but agent must warn about the conflict before executing.
+
+## 7. AUTOMATIC TASK EXECUTION
+
+After completing each task successfully:
+
+1. Read `tasks.md` and identify the next task whose dependencies are satisfied
+2. Automatically start working on the next task without asking the user
+3. Continue until all tasks are completed or an error occurs
+4. Never ask "shall I continue?" — just continue
+
+## 8. Docker Configuration
+
+Docker path: `C:\Program Files\Docker\Docker\resources\bin\docker`
+
+If daemon is not running, notify user but continue code generation. Do not block tasks on Docker availability.
