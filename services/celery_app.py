@@ -122,6 +122,24 @@ celery_app.conf.beat_schedule = {
         "schedule": 300.0,  # 5 minutes
         "args": (),
     },
+    # Check VPN expiration every hour
+    "vpn-check-expiration-hourly": {
+        "task": "services.tasks.vpn.check_vpn_expiration",
+        "schedule": crontab(minute=0),  # every hour at :00
+        "args": (),
+    },
+    # Auto-renew VPN services every hour at :30
+    "vpn-auto-renew-hourly": {
+        "task": "services.tasks.vpn.auto_renew_vpn",
+        "schedule": crontab(minute=30),  # every hour at :30
+        "args": (),
+    },
+    # Suspend expired VPN services every hour at :45
+    "vpn-suspend-expired-hourly": {
+        "task": "services.tasks.vpn.suspend_expired_vpn",
+        "schedule": crontab(minute=45),  # every hour at :45
+        "args": (),
+    },
 }
 
 # ── Task Autodiscovery ──────────────────────────────────────────────────────

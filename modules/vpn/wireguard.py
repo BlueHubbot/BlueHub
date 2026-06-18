@@ -21,7 +21,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import qrcode  # type: ignore[import-untyped]
+try:
+    import qrcode  # type: ignore[import-untyped]
+except ImportError:
+    qrcode = None
 
 if TYPE_CHECKING:
     from modules.vpn.models import VpnAccount, VpnServer
@@ -591,6 +594,69 @@ class WireGuardService:
             handshake_timeout_seconds=handshake_timeout_seconds,
         )
         return connections.get(public_key, False)
+
+    @staticmethod
+    def sync_peer(
+        server: "VpnServer",
+        account: "VpnAccount",
+        *,
+        interface: str = DEFAULT_WG_INTERFACE,
+    ) -> bool:
+        """
+        Synchronize a peer's configuration on the server.
+
+        Removes the peer if it exists and re-adds it with the current configuration.
+        This is used during peer renewal to ensure server-side config matches
+        the account's current state.
+
+        Args:
+            server: VpnServer instance with connection details.
+            account: VpnAccount instance with peer keys and IP.
+            interface: WireGuard interface name.
+
+        Returns:
+            True if the peer was successfully synced.
+        """
+        from modules.vpn.models import VpnServer, VpnAccount
+
+        try:
+            # Remove existing peer (ignore if not found)
+            try:
+                WireGuardService.remove_peer_from_server(
+                    server=server,
+                    account=account,
+                    interface=interface,
+                )
+            except WireGuardError:
+                logger.debug(
+                    "Peer %s not found on server %s, will add fresh",
+                    account.public_key,
+                    server.public_ip,
+                )
+
+            # Re-add with current config
+            WireGuardService.add_peer_to_server(
+                server=server,
+                account=account,
+                interface=interface,
+            )
+
+            logger.info(
+                "Synced peer %s on server %s (%s)",
+                account.public_key,
+                server.public_ip,
+                interface,
+            )
+            return True
+
+        except WireGuardError as exc:
+            logger.error(
+                "Failed to sync peer %s on server %s: %s",
+                account.public_key,
+                server.public_ip,
+                exc,
+            )
+            raise
 
 
 # ---------------------------------------------------------------------------

@@ -178,8 +178,29 @@ class DatabaseManager:
 # Global database manager instance
 db_manager = DatabaseManager()
 
+
+class _LazySessionFactoryProxy:
+    """
+    Lazy proxy that defers engine creation to first use.
+
+    Module-level imports of ``async_session_factory`` will not trigger
+    SQLAlchemy engine creation.  Only the first ``async with
+    async_session_factory() as db:`` call materialises the engine.
+    """
+
+    _factory: async_sessionmaker[AsyncSession] | None = None
+
+    def __call__(self) -> AsyncSession:
+        if self._factory is None:
+            self._factory = db_manager.async_session_factory
+        return self._factory()
+
+
+async_session_factory = _LazySessionFactoryProxy()
+
 __all__ = [
     "DatabaseManager",
+    "async_session_factory",
     "build_db_url",
     "db_manager",
 ]

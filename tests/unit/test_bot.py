@@ -8,8 +8,16 @@ from __future__ import annotations
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from aiogram.types import Message, CallbackQuery, User as TgUser, Chat
-from aiogram.dispatcher.dispatcher import Dispatcher
+# aiogram is an optional test dependency; provide fallback mocks if unavailable
+try:
+    from aiogram.types import Message, CallbackQuery, User as TgUser, Chat  # type: ignore[import-untyped]  # noqa: F401
+    from aiogram.dispatcher.dispatcher import Dispatcher  # type: ignore[import-untyped]
+except ImportError:  # pragma: no cover - only when deps not installed
+    Message = MagicMock  # type: ignore[misc,assignment]
+    CallbackQuery = MagicMock  # type: ignore[misc,assignment]
+    TgUser = MagicMock  # type: ignore[misc,assignment]
+    Chat = MagicMock  # type: ignore[misc,assignment]
+    Dispatcher = MagicMock  # type: ignore[misc,assignment]
 
 from bot.middleware.i18n import I18nMiddleware
 from bot.middleware.auth import AuthMiddleware
@@ -55,7 +63,7 @@ def mock_admin_user():
 @pytest.fixture
 def mock_tg_user():
     """Create a mock Telegram user."""
-    return User(id=12345, is_bot=False, first_name="Test", username="tguser")
+    return TgUser(id=12345, is_bot=False, first_name="Test", username="tguser")
 
 
 @pytest.fixture

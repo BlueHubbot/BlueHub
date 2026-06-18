@@ -2,6 +2,14 @@
 
 from __future__ import annotations
 
+import sys
+from unittest.mock import MagicMock
+
+# Pre-register optional VPS dependencies to avoid ImportError when modules.vps is loaded
+sys.modules["pybreaker"] = MagicMock()
+sys.modules["proxmoxer"] = MagicMock()
+sys.modules["proxmoxer.backends"] = MagicMock()
+
 import asyncio
 from datetime import datetime, timedelta, timezone
 from unittest.mock import AsyncMock, MagicMock, patch, PropertyMock
@@ -22,6 +30,7 @@ from modules.vpn.models import (
 )
 from modules.vpn.services import AccountTrafficSummary, VpnAccountService
 from modules.vpn.wireguard import WireGuardService
+from modules.vps.models import VpsInstance  # noqa: F401 - ensure VpsInstance is registered for Service mapper
 from services.tasks.vpn import (
     check_exceeded_traffic,
     check_vpn_server_health,
@@ -60,15 +69,15 @@ def sample_wg_accounts():
     for i in range(3):
         acc = VpnAccount(
             id=str(uuid4()),
-            user_id=str(uuid4()),
+            service_id=str(uuid4()),
             server_id=server.id,
             protocol=VpnProtocol.WIREGUARD,
             status=VpnAccountStatus.ACTIVE,
             public_key=f"test_pubkey_{i}",
             private_key=f"test_privkey_{i}",
             assigned_ip=f"10.0.0.{i+2}/32",
-            data_limit_bytes=1_000_000_000,
-            total_bytes=500_000_000,
+            bandwidth_limit_bytes=1_000_000_000,
+            bandwidth_used_bytes=500_000_000,
             created_at=now,
             updated_at=now,
             server_rel=server,
@@ -89,7 +98,7 @@ def sample_traffic_summaries(sample_wg_accounts):
             public_key=acc.public_key,
             bytes_sent=100_000,
             bytes_received=200_000,
-            total_bytes=acc.total_bytes or 0,
+            total_bytes=acc.bandwidth_used_bytes or 0,
             last_handshake=now - timedelta(seconds=30),
             is_connected=True,
             active_sessions=1,
@@ -108,7 +117,7 @@ class TestSyncWgConnections:
         "services.tasks.vpn.VpnAccountService.detect_and_sync_connections",
         new_callable=AsyncMock,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_sync_connections_success(
         self, mock_factory, mock_detect, mock_db
     ):
@@ -133,7 +142,7 @@ class TestSyncWgConnections:
         "services.tasks.vpn.VpnAccountService.detect_and_sync_connections",
         new_callable=AsyncMock,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_sync_empty_universe(
         self, mock_factory, mock_detect, mock_db
     ):
@@ -151,7 +160,7 @@ class TestSyncWgConnections:
         "services.tasks.vpn.VpnAccountService.detect_and_sync_connections",
         new_callable=AsyncMock,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_sync_failure_retries(
         self, mock_factory, mock_detect, mock_db
     ):
@@ -173,7 +182,7 @@ class TestSyncWgTraffic:
         "services.tasks.vpn.VpnAccountService.poll_all_accounts_traffic",
         new_callable=AsyncMock,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     @patch("services.tasks.vpn.TrafficUsage")
     def test_poll_traffic_success(
         self,
@@ -199,7 +208,7 @@ class TestSyncWgTraffic:
         "services.tasks.vpn.VpnAccountService.poll_all_accounts_traffic",
         new_callable=AsyncMock,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_poll_no_accounts(self, mock_factory, mock_poll, mock_db):
         """Should handle zero accounts gracefully."""
         mock_factory.return_value.__aenter__.return_value = mock_db
@@ -222,7 +231,7 @@ class TestSyncXrayTraffic:
         "services.tasks.vpn.VpnAccountService.poll_all_accounts_traffic",
         new_callable=AsyncMock,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     @patch("services.tasks.vpn.TrafficUsage")
     def test_poll_xray_traffic_success(
         self,
@@ -247,7 +256,7 @@ class TestSyncXrayTraffic:
         "services.tasks.vpn.VpnAccountService.poll_all_accounts_traffic",
         new_callable=AsyncMock,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_poll_xray_no_accounts(self, mock_factory, mock_poll, mock_db):
         """Should handle zero Xray accounts gracefully."""
         mock_factory.return_value.__aenter__.return_value = mock_db
@@ -267,13 +276,9 @@ class TestCheckExceededTraffic:
     """Tests for check_exceeded_traffic task."""
 
     @patch.object(VpnAccountService, "suspend_account", new_callable=AsyncMock)
-    @patch("services.tasks.vpn.core.database.async_session_factory")
-    @patch("services.tasks.vpn.select")
-    @patch("services.tasks.vpn.VpnAccount")
+    @patch("core.database.async_session_factory")
     def test_exceeded_accounts_suspended(
         self,
-        mock_vpn_account_cls,
-        mock_select,
         mock_factory,
         mock_suspend,
         mock_db,
@@ -284,7 +289,7 @@ class TestCheckExceededTraffic:
 
         # Make accounts exceed their limits
         for acc in sample_wg_accounts:
-            acc.total_bytes = 2_000_000_000  # exceeds 1_000_000_000 limit
+            acc.bandwidth_used_bytes = 2_000_000_000  # exceeds 1_000_000_000 limit
 
         # Mock the query chain
         mock_result = MagicMock()
@@ -298,7 +303,7 @@ class TestCheckExceededTraffic:
         assert result["suspended_ids"] == [a.id for a in sample_wg_accounts]
         assert mock_suspend.call_count == 3
 
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_no_exceeded_accounts(self, mock_factory, mock_db):
         """Should not suspend accounts that are within limits."""
         mock_factory.return_value.__aenter__.return_value = mock_db
@@ -325,7 +330,7 @@ class TestCheckVpnServerHealth:
         "services.tasks.vpn.VpnServerService.check_server_health",
         return_value=True,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_all_servers_healthy(self, mock_factory, mock_check_health, mock_db):
         """Should mark all servers as healthy."""
         mock_factory.return_value.__aenter__.return_value = mock_db
@@ -359,7 +364,7 @@ class TestCheckVpnServerHealth:
         "services.tasks.vpn.VpnServerService.check_server_health",
         return_value=False,
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_servers_unhealthy(self, mock_factory, mock_check_health, mock_db):
         """Should mark unhealthy servers as DEGRADED."""
         mock_factory.return_value.__aenter__.return_value = mock_db
@@ -387,7 +392,7 @@ class TestCheckVpnServerHealth:
         "services.tasks.vpn.VpnServerService.check_server_health",
         side_effect=Exception("SSH timeout"),
     )
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_health_check_exception(
         self, mock_factory, mock_check_health, mock_db
     ):
@@ -419,7 +424,7 @@ class TestCheckVpnServerHealth:
 class TestCleanupStaleSessions:
     """Tests for cleanup_stale_sessions task."""
 
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_cleanup_stale_sessions(self, mock_factory, mock_db):
         """Should end stale connected sessions."""
         mock_factory.return_value.__aenter__.return_value = mock_db
@@ -443,7 +448,7 @@ class TestCleanupStaleSessions:
         assert stale_session.status == VpnSessionStatus.DISCONNECTED
         assert stale_session.disconnect_reason == "stale_session"
 
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_no_stale_sessions(self, mock_factory, mock_db):
         """Should handle no stale sessions gracefully."""
         mock_factory.return_value.__aenter__.return_value = mock_db
@@ -464,7 +469,7 @@ class TestRenewPeerConfigs:
     """Tests for renew_peer_configs task."""
 
     @patch.object(WireGuardService, "sync_peer")
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_renew_peers_success(
         self,
         mock_factory,
@@ -496,13 +501,14 @@ class TestRenewPeerConfigs:
         accounts_mock = MagicMock()
         accounts_mock.scalars.return_value.all.return_value = sample_wg_accounts
 
-        mock_db.execute.side_effect = [accounts_mock, accounts_mock]
+        mock_db.execute.side_effect = [servers_mock, accounts_mock]
         result = renew_peer_configs.apply(args=["wg0"]).get()
 
         assert result["status"] == "completed"
-        assert result["peers_renewed"] == 0  # no servers in mock
+        assert result["servers_processed"] == 1
+        assert result["peers_renewed"] == 3
 
-    @patch("services.tasks.vpn.core.database.async_session_factory")
+    @patch("core.database.async_session_factory")
     def test_no_active_servers(self, mock_factory, mock_db):
         """Should handle no active WG servers gracefully."""
         mock_factory.return_value.__aenter__.return_value = mock_db

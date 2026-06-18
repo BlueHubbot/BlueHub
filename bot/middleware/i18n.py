@@ -8,8 +8,13 @@ from __future__ import annotations
 import logging
 from typing import Any, Awaitable, Callable, Dict
 
-from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject, User as TgUser
+try:
+    from aiogram import BaseMiddleware
+    from aiogram.types import TelegramObject, User as TgUser
+except ImportError:
+    BaseMiddleware = object  # type: ignore[assignment,misc]
+    TelegramObject = object  # type: ignore[assignment,misc]
+    TgUser = object  # type: ignore[assignment,misc]
 
 from core.i18n.engine import I18nEngine
 

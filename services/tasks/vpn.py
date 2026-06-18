@@ -20,7 +20,7 @@ from sqlalchemy import select, update, func, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from core.database import get_async_session
+from core.database import async_session_factory
 from core.audit.logger import AuditLogger
 from modules.vpn.models import (
     VpnAccount,
@@ -32,12 +32,13 @@ from modules.vpn.models import (
     VpnSessionStatus,
     TrafficUsage,
 )
-from modules.vpn.services import VpnAccountService, AccountTrafficSummary
+from modules.vpn.services import VpnAccountService, AccountTrafficSummary, VpnProvisioningError
 from modules.vpn.wireguard import WireGuardService
 from modules.vpn.xray import XrayService
 from modules.vpn.vpn_servers import VpnServerService
 from services.celery_app import celery_app
-from shared.models.enums import ModuleType, AuditAction
+from shared.models.enums import ServiceModule, AuditAction, ServiceStatus
+from shared.models.service import Service
 
 logger = logging.getLogger("bluehub.tasks.vpn")
 
@@ -107,13 +108,11 @@ def sync_wg_connections(
                     len(result_map),
                 )
 
-                await AuditLogger.log(
-                    db=db,
-                    tenant_id=tenant_id or "system",
-                    module=ModuleType.VPN,
-                    action=AuditAction.UPDATE,
+                audit_logger = AuditLogger(db)
+                await audit_logger.log_update(
                     resource_type="vpn_connections",
                     resource_id=f"wg_sync_{datetime.now(timezone.utc).isoformat()}",
+                    tenant_id=tenant_id or "system",
                     details={
                         "connected": connected_count,
                         "disconnected": disconnected_count,
@@ -201,7 +200,7 @@ def sync_all_connections(
             async with async_session_factory() as db:
                 xray_result = await VpnAccountService.detect_and_sync_connections(
                     db,
-                    protocol=VpnProtocol.XRAY,
+                    protocol=VpnProtocol.VLESS,
                     interface=interface,
                 )
                 results["xray"] = {
@@ -351,7 +350,7 @@ def sync_xray_traffic(self) -> dict:
             async with async_session_factory() as db:
                 summaries = await VpnAccountService.poll_all_accounts_traffic(
                     db,
-                    protocol=VpnProtocol.XRAY,
+                    protocol=VpnProtocol.VLESS,
                 )
 
                 total_bytes_sent = sum(s.bytes_sent for s in summaries)
@@ -460,7 +459,7 @@ def sync_all_traffic(
             async with async_session_factory() as db:
                 xray_summaries = await VpnAccountService.poll_all_accounts_traffic(
                     db,
-                    protocol=VpnProtocol.XRAY,
+                    protocol=VpnProtocol.VLESS,
                 )
                 xray_sent = sum(s.bytes_sent for s in xray_summaries)
                 xray_received = sum(s.bytes_received for s in xray_summaries)
@@ -526,16 +525,14 @@ def check_exceeded_traffic(self) -> dict:
                 now = datetime.now(timezone.utc)
 
                 # Find accounts exceeding data limits
+                # Note: VpnAccount.server_rel uses lazy="selectin", so no explicit
+                # selectinload() needed (avoids wildcard token SA error)
                 stmt = (
                     select(VpnAccount)
-                    .options(
-                        selectinload(VpnAccount.server_rel),
-                        selectinload(VpnAccount.subscriptions),
-                    )
                     .where(
                         VpnAccount.status == VpnAccountStatus.ACTIVE,
-                        VpnAccount.data_limit_bytes.isnot(None),
-                        VpnAccount.total_bytes >= VpnAccount.data_limit_bytes,
+                        VpnAccount.bandwidth_limit_bytes.isnot(None),
+                        VpnAccount.bandwidth_used_bytes >= VpnAccount.bandwidth_limit_bytes,
                     )
                 )
                 result = await db.execute(stmt)
@@ -547,16 +544,15 @@ def check_exceeded_traffic(self) -> dict:
                         # Suspend the account
                         await VpnAccountService.suspend_account(
                             db,
-                            account_id=account.id,
+                            account=account,
                             reason="data_limit_exceeded",
-                            audit_actor="system:celery:check_exceeded",
                         )
                         suspended_ids.append(account.id)
                         logger.warning(
                             "Account %s suspended: data limit exceeded (used: %d, limit: %d)",
                             account.id,
-                            account.total_bytes,
-                            account.data_limit_bytes,
+                            account.bandwidth_used_bytes,
+                            account.bandwidth_limit_bytes,
                         )
                     except Exception as exc:
                         logger.error(
@@ -917,14 +913,570 @@ def cleanup_stale_sessions(
 
 
 # ------------------------------------------------------------------
+# Provisioning Task (called after payment webhook)
+# ------------------------------------------------------------------
+
+
+@celery_app.task(
+    name="services.tasks.vpn.provision_vpn_service",
+    bind=True,
+    max_retries=3,
+    default_retry_delay=60,
+    acks_late=True,
+    soft_time_limit=300,
+)
+def provision_vpn_service(
+    self,
+    service_id: str,
+    protocol: str,
+    server_id: str | None = None,
+    config_overrides: dict | None = None,
+) -> dict:
+    """
+    Provision a VPN service after successful payment.
+
+    Called by the Paymenter webhook handler after payment.succeeded.
+    Creates a VpnAccount, generates keys/config, and activates the service.
+
+    Args:
+        service_id: UUID of the Service to provision.
+        protocol: VPN protocol string (wireguard, vless, trojan, shadowsocks).
+        server_id: Optional specific server UUID (auto-assigned if not provided).
+        config_overrides: Optional protocol-specific configuration overrides.
+
+    Returns:
+        Provisioning result summary with account ID and config.
+    """
+    import asyncio
+
+    async def _run():
+        try:
+            from core.database import async_session_factory
+            from sqlalchemy.orm import selectinload
+
+            async with async_session_factory() as db:
+                from modules.vpn.models import VpnProtocol as VpnP
+
+                # Resolve protocol enum
+                proto_map = {
+                    "wireguard": VpnP.WIREGUARD,
+                    "vless": VpnP.VLESS,
+                    "trojan": VpnP.TROJAN,
+                    "shadowsocks": VpnP.SHADOWSOCKS,
+                }
+                proto = proto_map.get(protocol.lower())
+                if proto is None:
+                    raise ValueError(f"Unknown VPN protocol: {protocol}")
+
+                # Create the VPN account (generates keys, config, provisions on server)
+                # create_account handles server auto-assignment internally
+                account = await VpnAccountService.create_account(
+                    db=db,
+                    service_id=service_id,
+                    protocol=proto,
+                    server_id=server_id,
+                    protocol_configs=config_overrides,
+                )
+                target_server_id = str(account.server_id) if account.server_id else server_id
+
+                # Update Service status to active
+                svc = await db.get(Service, service_id)
+                if svc:
+                    svc.status = ServiceStatus.ACTIVE
+                    svc.provisioned_at = datetime.now(timezone.utc)
+                    await db.flush()
+
+                audit_logger = AuditLogger(db)
+                await audit_logger.log_create(
+                    resource_type="vpn_account",
+                    resource_id=account.id,
+                    tenant_id=svc.tenant_id if svc else "system",
+                    details={
+                        "service_id": service_id,
+                        "protocol": protocol,
+                        "server_id": target_server_id,
+                    },
+                )
+
+                logger.info(
+                    "VPN service provisioned: account_id=%s service_id=%s protocol=%s",
+                    account.id,
+                    service_id,
+                    protocol,
+                )
+
+                return {
+                    "status": "provisioned",
+                    "task_id": self.request.id,
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "account_id": account.id,
+                    "service_id": service_id,
+                    "protocol": protocol,
+                    "server_id": target_server_id,
+                    "client_config_ready": bool(account.client_config),
+                }
+
+        except Exception as exc:
+            logger.error(
+                "VPN provisioning failed for service %s: %s",
+                service_id,
+                exc,
+                exc_info=True,
+            )
+            raise
+
+    loop = asyncio.new_event_loop()
+    try:
+        result = loop.run_until_complete(_run())
+        return result
+    except Exception as exc:
+        logger.error(
+            "VPN provisioning failed for service %s: %s",
+            service_id,
+            exc,
+            exc_info=True,
+        )
+        raise self.retry(exc=exc)
+    finally:
+        loop.close()
+
+
+# ------------------------------------------------------------------
+# Expiration Tasks
+# ------------------------------------------------------------------
+
+
+@celery_app.task(
+    name="services.tasks.vpn.check_vpn_expiration",
+    bind=True,
+    max_retries=2,
+    default_retry_delay=120,
+    acks_late=True,
+    soft_time_limit=180,
+)
+def check_vpn_expiration(self) -> dict:
+    """
+    Check for VPN services expiring within the next 24 hours.
+
+    Identifies active services whose expires_at is within 24 hours
+    and sends renewal reminder notifications to users.
+
+    Returns:
+        Expiration check result summary.
+    """
+    import asyncio
+
+    async def _run():
+        try:
+            from core.database import async_session_factory
+            from sqlalchemy.orm import selectinload
+
+            async with async_session_factory() as db:
+                now = datetime.now(timezone.utc)
+                cutoff = now + timedelta(hours=24)
+
+                # Find VPN services expiring soon
+                stmt = (
+                    select(VpnAccount)
+                    .options(
+                        selectinload(VpnAccount.service).selectinload(
+                            Service.user
+                        ),
+                    )
+                    .join(Service, VpnAccount.service_id == Service.id)
+                    .where(
+                        VpnAccount.status == VpnAccountStatus.ACTIVE,
+                        Service.status == ServiceStatus.ACTIVE,
+                        Service.expires_at.isnot(None),
+                        Service.expires_at <= cutoff,
+                        Service.expires_at > now,
+                    )
+                )
+                result = await db.execute(stmt)
+                expiring_accounts = result.scalars().all()
+
+                expiring_details = []
+                for account in expiring_accounts:
+                    svc = account.service
+                    expiring_details.append(
+                        {
+                            "account_id": account.id,
+                            "service_id": svc.id,
+                            "user_id": svc.user_id,
+                            "expires_at": (
+                                svc.expires_at.isoformat()
+                                if svc.expires_at
+                                else None
+                            ),
+                            "hours_remaining": (
+                                round(
+                                    (svc.expires_at - now).total_seconds() / 3600, 1
+                                )
+                                if svc.expires_at
+                                else None
+                            ),
+                        }
+                    )
+                    logger.info(
+                        "VPN service %s (account %s) expires at %s",
+                        svc.id,
+                        account.id,
+                        svc.expires_at,
+                    )
+
+                logger.info(
+                    "VPN expiration check: %d services expiring within 24h",
+                    len(expiring_details),
+                )
+
+                return {
+                    "status": "completed",
+                    "task_id": self.request.id,
+                    "timestamp": now.isoformat(),
+                    "expiring_count": len(expiring_details),
+                    "expiring_services": expiring_details,
+                }
+
+        except Exception as exc:
+            logger.error(
+                "VPN expiration check failed: %s", exc, exc_info=True
+            )
+            raise
+
+    loop = asyncio.new_event_loop()
+    try:
+        result = loop.run_until_complete(_run())
+        return result
+    except Exception as exc:
+        logger.error(
+            "VPN expiration check failed: %s", exc, exc_info=True
+        )
+        raise self.retry(exc=exc)
+    finally:
+        loop.close()
+
+
+@celery_app.task(
+    name="services.tasks.vpn.suspend_expired_vpn",
+    bind=True,
+    max_retries=2,
+    default_retry_delay=120,
+    acks_late=True,
+    soft_time_limit=300,
+)
+def suspend_expired_vpn(self) -> dict:
+    """
+    Suspend VPN services whose expiration date has passed.
+
+    Finds active VPN services with expires_at in the past,
+    suspends them by removing peers from servers and updating status.
+
+    Returns:
+        Suspension result summary.
+    """
+    import asyncio
+
+    async def _run():
+        try:
+            from core.database import async_session_factory
+            from sqlalchemy.orm import selectinload
+
+            async with async_session_factory() as db:
+                now = datetime.now(timezone.utc)
+
+                # Find expired but still active VPN accounts
+                stmt = (
+                    select(VpnAccount)
+                    .options(
+                        selectinload(VpnAccount.service),
+                        selectinload(VpnAccount.server_rel),
+                    )
+                    .join(Service, VpnAccount.service_id == Service.id)
+                    .where(
+                        VpnAccount.status == VpnAccountStatus.ACTIVE,
+                        Service.status == ServiceStatus.ACTIVE,
+                        Service.expires_at.isnot(None),
+                        Service.expires_at <= now,
+                    )
+                )
+                result = await db.execute(stmt)
+                expired_accounts = result.scalars().all()
+
+                suspended_ids = []
+                failed_ids = []
+                for account in expired_accounts:
+                    try:
+                        await VpnAccountService.suspend_account(
+                            db,
+                            account=account,
+                            reason="expired",
+                        )
+                        suspended_ids.append(account.id)
+                        svc = account.service
+                        if svc:
+                            svc.status = ServiceStatus.SUSPENDED
+                            svc.suspended_at = now
+
+                        logger.warning(
+                            "Suspended expired VPN account %s (service %s)",
+                            account.id,
+                            account.service_id,
+                        )
+                    except Exception as exc:
+                        failed_ids.append(
+                            {
+                                "account_id": account.id,
+                                "error": str(exc),
+                            }
+                        )
+                        logger.error(
+                            "Failed to suspend expired account %s: %s",
+                            account.id,
+                            exc,
+                        )
+
+                await db.commit()
+
+                return {
+                    "status": "completed",
+                    "task_id": self.request.id,
+                    "timestamp": now.isoformat(),
+                    "expired_checked": len(expired_accounts),
+                    "suspended_ids": suspended_ids,
+                    "suspended_count": len(suspended_ids),
+                    "failed_count": len(failed_ids),
+                    "failures": failed_ids,
+                }
+
+        except Exception as exc:
+            logger.error(
+                "Suspend expired VPN failed: %s", exc, exc_info=True
+            )
+            raise
+
+    loop = asyncio.new_event_loop()
+    try:
+        result = loop.run_until_complete(_run())
+        return result
+    except Exception as exc:
+        logger.error(
+            "Suspend expired VPN failed: %s", exc, exc_info=True
+        )
+        raise self.retry(exc=exc)
+    finally:
+        loop.close()
+
+
+@celery_app.task(
+    name="services.tasks.vpn.auto_renew_vpn",
+    bind=True,
+    max_retries=2,
+    default_retry_delay=120,
+    acks_late=True,
+    soft_time_limit=300,
+)
+def auto_renew_vpn(self) -> dict:
+    """
+    Auto-renew VPN services expiring within 12 hours if wallet has balance.
+
+    Checks services expiring within 12 hours, and if the user's wallet
+    has sufficient balance, deducts the amount and extends the expiration.
+    This task runs before suspend_expired_vpn to give users a chance.
+
+    Returns:
+        Auto-renewal result summary.
+    """
+    import asyncio
+
+    async def _run():
+        try:
+            from core.database import async_session_factory
+            from sqlalchemy.orm import selectinload
+
+            async with async_session_factory() as db:
+                from shared.models.user import User
+
+                now = datetime.now(timezone.utc)
+                cutoff = now + timedelta(hours=12)
+
+                # Find VPN services expiring within 12 hours, still active
+                stmt = (
+                    select(VpnAccount)
+                    .options(
+                        selectinload(VpnAccount.service)
+                        .selectinload(Service.user),
+                        selectinload(VpnAccount.service)
+                        .selectinload(Service.product),
+                    )
+                    .join(Service, VpnAccount.service_id == Service.id)
+                    .where(
+                        VpnAccount.status == VpnAccountStatus.ACTIVE,
+                        Service.status == ServiceStatus.ACTIVE,
+                        Service.expires_at.isnot(None),
+                        Service.expires_at <= cutoff,
+                        Service.expires_at > now,
+                    )
+                )
+                result = await db.execute(stmt)
+                renewable_accounts = result.scalars().all()
+
+                renewed_ids = []
+                skipped_ids = []
+                failed_ids = []
+
+                for account in renewable_accounts:
+                    try:
+                        svc = account.service
+                        if svc is None or svc.user is None:
+                            skipped_ids.append(
+                                {
+                                    "account_id": account.id,
+                                    "reason": "missing_service_or_user",
+                                }
+                            )
+                            continue
+
+                        user = svc.user
+                        product = svc.product
+
+                        # Determine renewal price (use price_paid or product base_price)
+                        renewal_price = svc.price_paid
+                        if renewal_price is None and product is not None:
+                            renewal_price = getattr(
+                                product, "base_price", None
+                            )
+
+                        if renewal_price is None:
+                            skipped_ids.append(
+                                {
+                                    "account_id": account.id,
+                                    "reason": "unknown_renewal_price",
+                                }
+                            )
+                            continue
+
+                        # Check wallet balance
+                        wallet = user.wallet_balance or 0.0
+                        if float(wallet) < float(renewal_price):
+                            skipped_ids.append(
+                                {
+                                    "account_id": account.id,
+                                    "user_id": user.id,
+                                    "reason": "insufficient_balance",
+                                    "balance": float(wallet),
+                                    "required": float(renewal_price),
+                                }
+                            )
+                            continue
+
+                        # Deduct from wallet
+                        user.wallet_balance = float(wallet) - float(
+                            renewal_price
+                        )
+
+                        # Extend expiration by product period
+                        period_days = 30  # default
+                        if product is not None:
+                            period_days = getattr(
+                                product, "period_days", 30
+                            )
+
+                        old_expiry = svc.expires_at or now
+                        svc.expires_at = old_expiry + timedelta(
+                            days=period_days
+                        )
+
+                        renewed_ids.append(
+                            {
+                                "account_id": account.id,
+                                "service_id": svc.id,
+                                "user_id": user.id,
+                                "renewed_until": svc.expires_at.isoformat(),
+                                "price_charged": float(renewal_price),
+                                "days_added": period_days,
+                            }
+                        )
+
+                        audit = AuditLogger(db)
+                        await audit.log_update(
+                            resource_type="vpn_service",
+                            resource_id=svc.id,
+                            tenant_id=svc.tenant_id,
+                            details={
+                                "account_id": account.id,
+                                "renewed_until": svc.expires_at.isoformat(),
+                                "price_charged": float(renewal_price),
+                                "period_days": period_days,
+                                "previous_expiry": old_expiry.isoformat(),
+                            },
+                        )
+
+                        logger.info(
+                            "Auto-renewed VPN service %s (account %s) for user %s, "
+                            "charged %.2f, new expiry %s",
+                            svc.id,
+                            account.id,
+                            user.id,
+                            float(renewal_price),
+                            svc.expires_at.isoformat(),
+                        )
+
+                    except Exception as exc:
+                        failed_ids.append(
+                            {
+                                "account_id": account.id,
+                                "error": str(exc),
+                            }
+                        )
+                        logger.error(
+                            "Failed to auto-renew account %s: %s",
+                            account.id,
+                            exc,
+                        )
+
+                await db.commit()
+
+                return {
+                    "status": "completed",
+                    "task_id": self.request.id,
+                    "timestamp": now.isoformat(),
+                    "checked_count": len(renewable_accounts),
+                    "renewed_count": len(renewed_ids),
+                    "renewed": renewed_ids,
+                    "skipped_count": len(skipped_ids),
+                    "skipped": skipped_ids,
+                    "failed_count": len(failed_ids),
+                    "failures": failed_ids,
+                }
+
+        except Exception as exc:
+            logger.error("Auto-renew VPN failed: %s", exc, exc_info=True)
+            raise
+
+    loop = asyncio.new_event_loop()
+    try:
+        result = loop.run_until_complete(_run())
+        return result
+    except Exception as exc:
+        logger.error("Auto-renew VPN failed: %s", exc, exc_info=True)
+        raise self.retry(exc=exc)
+    finally:
+        loop.close()
+
+
+# ------------------------------------------------------------------
 # Exports
 # ------------------------------------------------------------------
 
 __all__ = [
+    "auto_renew_vpn",
     "check_exceeded_traffic",
+    "check_vpn_expiration",
     "check_vpn_server_health",
     "cleanup_stale_sessions",
+    "provision_vpn_service",
     "renew_peer_configs",
+    "suspend_expired_vpn",
     "sync_all_connections",
     "sync_all_traffic",
     "sync_wg_connections",

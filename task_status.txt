@@ -2,32 +2,31 @@
 
 ## Metadata
 
-**Project:** BlueHub Platform
-**Type:** Enterprise Internet Services Sales Platform
-**Total Tasks:** 71
-**Total Phases:** 8
-**Estimated Duration:** 24 weeks (1 developer) or 12-14 weeks (4-person team)
-**Total Effort:** ~920 hours
-**Last Updated:** 2026-06-18
+**Project:** BlueHub Platform  
+**Type:** Enterprise Internet Services Sales Platform  
+**Total Tasks:** 59  
+**Total Phases:** 7  
+**Estimated Duration:** 16 weeks (1 developer) or 8-10 weeks (4-person team)  
+**Total Effort:** ~650 hours  
+**Last Updated:** 2026-06-10
 
 ## Task Statistics
 
 **By Phase:**
 - Phase 0 (Setup): 5 tasks, 17 hours
-- Phase 1 (Core): 10 tasks, 66 hours
+- Phase 1 (Core): 10 tasks, 66 hours  
 - Phase 2 (VPN): 13 tasks, 124 hours
 - Phase 3 (Admin): 7 tasks, 74 hours
 - Phase 4 (VPS): 6 tasks, 66 hours
 - Phase 5 (Other Modules): 3 tasks, 74 hours
 - Phase 6 (Production): 11 tasks, 104 hours
-- Phase 7 (Protocol Hub): 8 tasks, 102 hours
-- Phase 8 (Advanced AI): 4 tasks, 195 hours
+- Phase 7 (Advanced): 4 tasks, 130 hours
 
 **By Priority:**
-- Critical: 19 tasks
-- High: 28 tasks
-- Medium: 18 tasks
-- Low: 6 tasks
+- Critical: 15 tasks
+- High: 24 tasks
+- Medium: 16 tasks
+- Low: 4 tasks
 
 ## Task Format
 
@@ -56,6 +55,7 @@ Brief description of what needs to be accomplished.
 
 **Technical Notes:**
 Technical details, code snippets, commands, or implementation guidance.
+```
 
 ---
 
@@ -370,7 +370,7 @@ dev = [
 ## Phase 1: Core System (Week 2-3)
 
 ### TASK-006: Database Models - Core Schema
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-005  
@@ -407,7 +407,7 @@ class Base(DeclarativeBase):
 ---
 
 ### TASK-007: Database Migrations Setup (Alembic)
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 3 hours  
 **Dependencies:** TASK-006  
@@ -434,7 +434,7 @@ alembic upgrade head
 ---
 
 ### TASK-008: Configuration Management (Pydantic Settings)
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 4 hours  
 **Dependencies:** TASK-005  
@@ -479,7 +479,7 @@ class Settings(BaseSettings):
 ---
 
 ### TASK-009: JWT Authentication System
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-006, TASK-008  
@@ -506,7 +506,7 @@ RSA keys for JWT signing (generate on first run, store in config/)
 ---
 
 ### TASK-010: RBAC System Implementation
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-009  
@@ -542,7 +542,7 @@ def require_role(*allowed_roles):
 ---
 
 ### TASK-011: i18n System Implementation
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-008  
@@ -571,7 +571,7 @@ Load translations on startup, cache in Redis, detect language from:
 ---
 
 ### TASK-012: Module Registry System
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-006, TASK-008  
@@ -597,7 +597,7 @@ Scan `modules/*/metadata.py` on startup, register in database, cache enabled sta
 ---
 
 ### TASK-013: Paymenter Webhook Receiver
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-009, TASK-012  
@@ -622,7 +622,7 @@ Use HMAC-SHA256 for signature verification, store `paymenter_user_id` and `payme
 ---
 
 ### TASK-014: Celery Setup and Basic Tasks
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-008  
@@ -657,7 +657,7 @@ celery_app.autodiscover_tasks(['services.tasks', 'modules'])
 ---
 
 ### TASK-015: Audit Logging System
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 5 hours  
 **Dependencies:** TASK-006  
@@ -689,7 +689,7 @@ async def create_service(...):
 ## Phase 2: VPN Module (Week 3-5)
 
 ### TASK-016: VPN Module - Database Models
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-006  
@@ -713,7 +713,7 @@ Link to `services` table with `service_id` FK, one-to-one relationship
 ---
 
 ### TASK-017: VPN Module - WireGuard Integration
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-016  
@@ -741,7 +741,7 @@ Generate keys with: `wg genkey | tee privatekey | wg pubkey > publickey`
 ---
 
 ### TASK-018: VPN Module - VLESS+REALITY Integration
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 14 hours  
 **Dependencies:** TASK-016  
@@ -767,7 +767,7 @@ REALITY requires: private key, short ID, SNI (e.g., www.google.com)
 ---
 
 ### TASK-019: VPN Module - Services Layer
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-017, TASK-018  
@@ -794,7 +794,7 @@ All functions should be async and use SQLAlchemy async session
 ---
 
 ### TASK-020: VPN Module - API Endpoints
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-019  
@@ -823,7 +823,7 @@ Use FastAPI router and include in main app
 ---
 
 ### TASK-021: VPN Module - Celery Tasks
-**Status:** 🟡 IN PROGRESS  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-019  
@@ -857,7 +857,7 @@ def provision_vpn_service(self, service_id: str):
 ---
 
 ### TASK-022: VPN Module - Metadata Configuration
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 4 hours  
 **Dependencies:** TASK-012  
@@ -890,7 +890,7 @@ METADATA = ModuleMetadata(
 ---
 
 ### TASK-023: Telegram Bot - Core Structure
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-011  
@@ -918,7 +918,7 @@ Middleware to inject `t()` function for translations
 ---
 
 ### TASK-024: Telegram Bot - VPN Module Handlers
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-023, TASK-020  
@@ -946,7 +946,7 @@ Use inline keyboards for navigation
 ---
 
 ### TASK-025: Web Client - Next.js Setup
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-001  
@@ -976,7 +976,7 @@ npx shadcn-ui@latest init
 ---
 
 ### TASK-026: Web Client - Authentication Pages
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-025  
@@ -1002,7 +1002,7 @@ Use Tanstack Query for API calls, store JWT in httpOnly cookie for security
 ---
 
 ### TASK-027: Web Client - VPN Module Pages
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-026, TASK-020  
@@ -1030,7 +1030,7 @@ Poll usage API every 30 seconds or use WebSocket for real-time
 ---
 
 ### TASK-028: Web Client - White-Label Support
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-025  
@@ -1058,7 +1058,7 @@ Apply CSS variables: `--primary-color`, `--secondary-color`, etc.
 ## Phase 3: Admin Panel (Week 6-7)
 
 ### TASK-029: Admin Panel - Next.js Setup
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-025  
@@ -1082,7 +1082,7 @@ Can share some components with client portal via `web/shared/`
 ---
 
 ### TASK-030: Admin Panel - Module Management Page
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-029, TASK-012  
@@ -1108,7 +1108,7 @@ API: PATCH `/v1/admin/modules/{module_name}`
 ---
 
 ### TASK-031: Admin Panel - Product Management
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-029  
@@ -1142,7 +1142,7 @@ Pricing formula examples:
 ---
 
 ### TASK-032: Admin Panel - Tenant Management
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-029  
@@ -1170,7 +1170,7 @@ File upload to MinIO via API endpoint
 ---
 
 ### TASK-033: Admin Panel - User Management
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-029  
@@ -1197,7 +1197,7 @@ Use Shadcn Table component with sorting
 ---
 
 ### TASK-034: Admin Panel - Abuse Management
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-029  
@@ -1223,7 +1223,7 @@ Evidence: connection logs, bandwidth graphs, external reports
 ---
 
 ### TASK-035: Admin API Endpoints
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-012  
@@ -1257,7 +1257,7 @@ Tenant-scoped queries for admin role
 ## Phase 4: VPS Module (Week 8-10)
 
 ### TASK-036: VPS Module - Database Models
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-006  
@@ -1279,7 +1279,7 @@ Store Proxmox VMID for reference
 ---
 
 ### TASK-037: VPS Module - Proxmox Integration
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 16 hours  
 **Dependencies:** TASK-036  
@@ -1316,7 +1316,7 @@ proxmox = ProxmoxAPI(
 ---
 
 ### TASK-038: VPS Module - Services Layer
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-037  
@@ -1342,7 +1342,7 @@ File: `modules/vps/services.py`
 ---
 
 ### TASK-039: VPS Module - API Endpoints
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-038  
@@ -1371,7 +1371,7 @@ File: `modules/vps/api.py`
 ---
 
 ### TASK-040: VPS Module - Celery Tasks
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-038  
@@ -1395,7 +1395,7 @@ Provisioning may take 30-60 seconds, use task status updates
 ---
 
 ### TASK-041: VPS Module - Bot & Web UI
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-039  
@@ -1422,7 +1422,7 @@ Reuse similar UI patterns from VPN module
 ## Phase 5: Additional Modules (Week 11+)
 
 ### TASK-042: SmartDNS Module - Complete Implementation
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 20 hours  
 **Dependencies:** TASK-012  
@@ -1448,7 +1448,7 @@ Anycast support requires BGP configuration (advanced)
 ---
 
 ### TASK-043: Streaming Unblock Module - Complete Implementation
-**Status:** ✅ COMPLETE  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 24 hours  
 **Dependencies:** TASK-012  
@@ -1473,7 +1473,7 @@ Complex due to streaming service detection logic
 ---
 
 ### TASK-044: Game Server Module - Complete Implementation
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** low  
 **Estimated Time:** 30 hours  
 **Dependencies:** TASK-012  
@@ -1502,7 +1502,7 @@ Complex due to diverse game server requirements
 ## Phase 6: Production Ready (Week 13-14)
 
 ### TASK-045: Prometheus Metrics Integration
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-014  
@@ -1527,7 +1527,7 @@ Use `prometheus-fastapi-instrumentator` library
 ---
 
 ### TASK-046: Grafana Dashboards
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-045  
@@ -1551,7 +1551,7 @@ Use Grafana provisioning for automatic dashboard deployment
 ---
 
 ### TASK-047: ELK Stack Setup
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-002  
@@ -1576,7 +1576,7 @@ Use Filebeat to forward logs from Docker containers
 ---
 
 ### TASK-048: CI/CD Pipeline (GitHub Actions)
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-005  
@@ -1619,7 +1619,7 @@ jobs:
 ---
 
 ### TASK-049: Integration Tests Suite
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 16 hours  
 **Dependencies:** TASK-020, TASK-039  
@@ -1648,7 +1648,7 @@ Test database: PostgreSQL in Docker with testcontainers
 ---
 
 ### TASK-050: Security Audit & Penetration Testing
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** critical  
 **Estimated Time:** 24 hours  
 **Dependencies:** TASK-048  
@@ -1677,7 +1677,7 @@ Focus on: authentication, authorization, data exposure
 ---
 
 ### TASK-051: Performance Testing & Optimization
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-048  
@@ -1710,7 +1710,7 @@ class BlueHubUser(HttpUser):
 ---
 
 ### TASK-052: Documentation - API Documentation
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-020, TASK-039  
@@ -1736,7 +1736,7 @@ FastAPI auto-generates OpenAPI docs at `/docs` and `/redoc`
 ---
 
 ### TASK-053: Documentation - Deployment Guide
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-048  
@@ -1762,7 +1762,7 @@ Format: Markdown in `docs/deployment/`
 ---
 
 ### TASK-054: Documentation - User Guides
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** medium  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-027, TASK-024  
@@ -1788,7 +1788,7 @@ Use tools like Loom for video tutorials
 ---
 
 ### TASK-055: Legacy Bot Migration
-**Status:** ⏳ NOT STARTED  
+**Status:** blocked  
 **Priority:** high  
 **Estimated Time:** 16 hours  
 **Dependencies:** TASK-024  
@@ -1916,55 +1916,70 @@ Requires GPU for acceptable performance
 
 ---
 
-## Phase 7: Protocol Intelligence Hub
+## Summary Statistics
 
-**Phase Goal:** Build an intelligent, self-learning technical knowledge layer powered by AI that dynamically manages all network and VPN protocols, provides contextual and technical recommendations to users, and serves as the foundation for all future capabilities.
+### Total Tasks: 59
 
-**Phase Duration:** 3 weeks (120 hours for 4-person team)
-**Phase Deliverables:**
-- Protocol Knowledge Base with full coverage and i18n
-- AI Recommendation Engine learning from network behavior
-- Automated Protocol Performance Telemetry Collection
-- Semantic Search in Persian/English
-- UI/UX integrated into Telegram Bot and Web Portal
-- Dynamic Protocol Stack Graph & Auto-Documentation
+**By Phase:**
+- Phase 0 (Setup): 5 tasks
+- Phase 1 (Core): 10 tasks
+- Phase 2 (VPN): 13 tasks
+- Phase 3 (Admin): 7 tasks
+- Phase 4 (VPS): 6 tasks
+- Phase 5 (Other Modules): 3 tasks
+- Phase 6 (Production): 11 tasks
+- Phase 7 (Advanced): 4 tasks
 
-### TASK-060: Protocol Knowledge Base Models
+**By Priority:**
+- Critical: 15 tasks
+- High: 24 tasks
+- Medium: 16 tasks
+- Low: 4 tasks
 
-**ID:** TASK-060
-**Estimate:** 8 hours
-**Dependencies:** TASK-006 (Core Models), TASK-012 (Module Registry)
-**Priority:** critical
+**By Status:**
+- Ready: 1 task
+- Blocked: 54 tasks
+- Deferred: 4 tasks
 
-**Description:**
-Create SQLAlchemy models for protocols, dynamic behaviors, module relationships, and recommendation history. These models will be fully integrated with the existing i18n and module_registry systems.
+**Estimated Total Time:** ~650 hours (16 weeks with 1 full-time developer)
 
-**Subtasks:**
-1. Create Protocol model with fields: id, name, display_name, protocol_type (tunnel, routing, transport, security, application...), osi_layer, default_port, rfc, description_i18n (JSONB), tags (ARRAY of text), config_example (JSONB for Linux/Android/Windows/iOS), related_rfcs (ARRAY of text), is_deprecated, created_at, updated_at.
-2. Create ProtocolBehavior model with fields: id, protocol_id (FK), location (e.g. DE, NL, IR), latency_avg_ms, censorship_resistance_score (0-100), throughput_mbps, packet_loss_percent, last_checked_at.
-3. Create ModuleProtocol association table with fields: id, module_id (FK to module_registry), protocol_id (FK), relevance (primary, secondary, fallback), usage_description_i18n (JSONB).
-4. Create ProtocolRecommendation model for storing recommendation history: id, user_id, input_params (JSONB: country, ISP, purpose, device), recommended_protocol_id, score, created_at.
+---
 
-**Acceptance Criteria:**
-- [ ] All models defined with UUID, timestamps, and proper FK relationships.
-- [ ] description_i18n field is JSONB with language keys (fa, en) matching the current i18n engine structure.
-- [ ] tags field is ARRAY type with GIN index for fast searching.
-- [ ] ProtocolBehavior has UNIQUE(protocol_id, location) constraint.
-- [ ] Alembic migration runs without errors and relationships are correctly established.
+## Dependency Graph (Key Tasks Only)
 
-**Technical Notes:**
-```python
-# Example model snippet
-class Protocol(Base):
-    __tablename__ = "protocols"
-    id = Column(UUID, primary_key=True, default=uuid.uuid4)
-    name = Column(String(100), unique=True, nullable=False)
-    protocol_type = Column(String(50))
-    osi_layer = Column(Integer)
-    description_i18n = Column(JSONB)
-    tags = Column(ARRAY(String))
-    # ...
-    behaviors = relationship("ProtocolBehavior", back_populates="protocol")
+```mermaid
+graph TD
+    TASK001[TASK-001: Init Repo] --> TASK002[TASK-002: Docker Setup]
+    TASK001 --> TASK004[TASK-004: Directory Structure]
+    TASK002 --> TASK003[TASK-003: Paymenter Setup]
+    TASK004 --> TASK005[TASK-005: Python Init]
+    TASK005 --> TASK006[TASK-006: Core Models]
+    TASK006 --> TASK009[TASK-009: JWT Auth]
+    TASK009 --> TASK010[TASK-010: RBAC]
+    TASK009 --> TASK013[TASK-013: Paymenter Webhooks]
+    TASK006 --> TASK012[TASK-012: Module Registry]
+    TASK012 --> TASK016[TASK-016: VPN Models]
+    TASK016 --> TASK017[TASK-017: WireGuard]
+    TASK017 --> TASK019[TASK-019: VPN Services]
+    TASK019 --> TASK020[TASK-020: VPN API]
+    TASK020 --> TASK024[TASK-024: Bot VPN Handlers]
+    TASK020 --> TASK027[TASK-027: Web VPN Pages]
+    TASK012 --> TASK030[TASK-030: Admin Module Mgmt]
+    TASK012 --> TASK036[TASK-036: VPS Models]
+    TASK036 --> TASK037[TASK-037: Proxmox Integration]
+    TASK037 --> TASK039[TASK-039: VPS API]
+    TASK020 --> TASK049[TASK-049: Integration Tests]
+    TASK049 --> TASK048[TASK-048: CI/CD]
+    TASK048 --> TASK050[TASK-050: Security Audit]
+    TASK048 --> TASK051[TASK-051: Performance Testing]
+```
+
+
+TASK-060: پروتکل دیتابیس دانش پروتکل (Protocol Knowledge Base)
+ID: TASK-060
+Estimate: 8h
+Priority: critical
+Dependencies: TASK-006 (Core Models), TASK-012 (Module Registry)
 
 توضیح:
 مدل‌های دیتابیس protocols و protocol_behaviors و protocol_recommendations رو ایجاد کن. جدول protocols شامل نام، لایه OSI، نوع (tunnel, routing, ...)، پورت پیش‌فرض، RFC، توضیحات چندزبانه (i18n_json)، و یک فیلد tags برای دسته‌بندی هوشمند. جدول protocol_behaviors رفتارهای پویای یک پروتکل در لوکیشن‌های مختلف رو ذخیره می‌کنه (مثلاً تأخیر، میزان موفقیت در عبور از فیلترینگ). جدول module_protocols همون mapping قبلیه.
@@ -1981,36 +1996,328 @@ Acceptance Criteria:
 
 مایگریشن Alembic بدون خطا اجرا بشه.
 
-TASK-061: Protocol Seed & i18n Initial Load
+TASK-061: جمع‌آوری و Seed اولیه پروتکل‌ها با استانداردهای روز
+ID: TASK-061
+Estimate: 10h
+Priority: high
+Dependencies: TASK-060
+
+توضیح:
+یک فایل seed جامع ایجاد کن که تمامی پروتکل‌های مطرح در شبکه و VPN (همون لیست بلندی که دادی) رو پوشش بده. برای هر پروتکل:
+
+نام، توضیح، لایه، RFC
+
+تگ‌های هوشمند: ["encryption", "tunnel", "realtime", "censorship-resistant", "gaming", …]
+
+ارتباط با ماژول‌های BlueHub (vpn, smartdns, vps, game_server)
+
+نمونه کانفیگ برای لینوکس/اندروید/iOS در config_example.
+
+Acceptance Criteria:
+
+فایل protocols_seed.json با حداقل ۵۰ پروتکل (از BGP و OSPF گرفته تا WireGuard و VLESS).
+
+تمام پروتکل‌ها با کلیدهای i18n فارسی و انگلیسی.
+
+تسک Celery برای بارگذاری seed به‌صورت upsert (قابل اجرای مجدد بدون از دست رفتن داده‌های پویا).
+
+پس از اجرا، API اطلاعات رو برگردونه.
+
+TASK-062: API سرویس دانش پروتکل (Protocol Knowledge API)
+ID: TASK-062
+Estimate: 8h
+Priority: critical
+Dependencies: TASK-060
+
+توضیح:
+اندپوینت‌های REST برای جستجو، مرور و دریافت اطلاعات پروتکل‌ها.
+
+GET /v1/protocols (فیلتر با module, layer, tag, q برای جستجوی متنی)
+
+GET /v1/protocols/{name} (جزئیات کامل + رفتارهای پویا)
+
+GET /v1/modules/{module}/protocols (پروتکل‌های مرتبط با یک ماژول)
+
+POST /v1/protocols/compare (مقایسه دو پروتکل بر اساس معیارهای مختلف)
+
+تمامی پاسخ‌ها کاملاً منطبق با سیستم i18n شما باشن.
+
+Acceptance Criteria:
+
+تمام اندپوینت‌ها با Pydantic validation.
+
+کوئری‌های جستجوی متنی از tsvector در PostgreSQL (برای جستجوی فارسی و انگلیسی).
+
+کش ردیس (TTL 10 دقیقه) برای لیست‌ها.
+
+سوئیچ OpenAPI کامل و مستند.
+
+TASK-063: موتور توصیه‌گر هوشمند پروتکل (AI Protocol Advisor)
+ID: TASK-063
+Estimate: 20h
+Priority: critical
+Dependencies: TASK-062
+
+توضیح:
+یه سرویس کوچک ML (می‌تونه یه مدل scikit-learn سبک یا یک تصمیم‌گیرنده مبتنی بر قوانین فازی باشه) که بر اساس پارامترهای کاربر (کشور، ISP، هدف: گیمینگ/استریم/امنیت، نوع دستگاه) بهترین پروتکل VPN یا شبکه رو پیشنهاد بده.
+الگوریتم می‌تونه با داده‌های واقعی از protocol_behaviors و بازخورد کاربرا آموزش ببینه.
+همچنین یک endpoint اختصاصی: POST /v1/protocols/recommend با body حاوی شرایط کاربر.
+
+Acceptance Criteria:
+
+مدل اولیه با قوانین دستی (Rule-based) آماده بشه.
+
+امکان وزن‌دهی به معیارها: latency, censorship_resistance, throughput, security.
+
+API توصیه‌گر با احراز هویت کاربر (برای ذخیره تاریخچه).
+
+پاسخ شامل top 3 پروتکل با امتیاز و دلیل.
+
+ذخیره‌سازی هر درخواست در protocol_recommendations برای یادگیری آتی.
+
+TASK-064: جمع‌آوری خودکار رفتار پروتکل (Protocol Telemetry)
+ID: TASK-064
+Estimate: 12h
+Priority: high
+Dependencies: TASK-060, TASK-014 (Celery)
+
+توضیح:
+یک Celery Beat Job هر ۶ ساعت روی سرورهای VPN و SmartDNS اجرا بشه و برای هر پروتکل/لوکیشن موارد زیر رو اندازه‌گیری کنه:
+
+Latency به مقصدهای معروف (Google, Cloudflare)
+
+موفقیت در برقراری اتصال از یک لوکیشن تست
+
+Throughput متوسط
+
+وضعیت فیلترینگ (با چک کردن RST از سمت ISP)
+این داده‌ها در protocol_behaviors ذخیره بشن و مستقیماً توی توصیه‌گر و API نمایش رفتار پویا استفاده بشن.
+
+Acceptance Criteria:
+
+اسکریپت Python با استفاده از subprocess و httpx برای اندازه‌گیری.
+
+تسک Celery به‌نام collect_protocol_telemetry.
+
+نتایج در دیتابیس upsert بشن.
+
+یک endpoint عمومی GET /v1/protocols/{name}/behavior برای نمایش نمودار (داده‌های JSON برای فرانت‌اند).
+
+TASK-065: یکپارچه‌سازی با ربات تلگرام و پورتال وب
+ID: TASK-065
+Estimate: 14h
+Priority: high
+Dependencies: TASK-062, TASK-023 (Bot core)
+
+توضیح:
+در ربات تلگرام (aiogram) یک منوی جدید «دانش پروتکل» اضافه کن که کاربر بتونه:
+
+پروتکل‌ها رو بر اساس ماژول یا لایه مرور کنه.
+
+نام پروتکل رو جستجو کنه (دستور /protocol WireGuard).
+
+از موتور توصیه‌گر استفاده کنه: "چه پروتکلی برای من خوبه؟" (با پرسش چند سؤال ساده با inline keyboard).
+
+مقایسه دو پروتکل (ارسال /compare WireGuard OpenVPN).
+
+در پورتال Next.js هم صفحات جدید:
+
+/knowledge/protocols با جدول جستجو و فیلتر.
+
+/knowledge/protocols/[name] با جزئیات کامل و نمودار رفتار پویا.
+
+/knowledge/advisor با فرم تعاملی.
+
+Acceptance Criteria:
+
+تمام تعاملات ربات از طریق API (بدون دسترسی مستقیم به دیتابیس).
+
+دکمه‌های اینلاین با آیکون و i18n.
+
+رابط کاربری پورتال با Shadcn UI، نمودار رفتار با Recharts.
+
+ریسپانسیو موبایل.
+
+TASK-066: موتور جستجوی معنایی با هوش مصنوعی (Semantic Search)
+ID: TASK-066
+Estimate: 16h
+Priority: medium
+Dependencies: TASK-062, TASK-065
+
+توضیح:
+با استفاده از مدل‌های embedding (مثلاً sentence-transformers چندزبانه مثل paraphrase-multilingual-MiniLM-L12-v2) تمام توضیحات پروتکل‌ها رو به بردار تبدیل کن و در یک ستون pgvector ذخیره کن.
+سپس یک endpoint GET /v1/protocols/semantic-search?q=... ایجاد کن که شباهت معنایی رو محاسبه کنه و نتایج رو برگردونه.
+این قابلیت جستجوی مفهومی رو ممکن می‌کنه (مثلاً کاربر بپرسه "پروتکل کم مصرف برای موبایل" و WireGuard رو پیدا کنه).
+
+Acceptance Criteria:
+
+نصب افزونه pgvector روی PostgreSQL.
+
+مدل embedding روی CPU اجرا بشه (نیاز به GPU نداره).
+
+هنگام seed شدن پروتکل‌ها، embeddingها هم تولید و ذخیره بشن.
+
+جستجوی معنایی در کمتر از ۲۰۰ میلی‌ثانیه.
+
+endpoint برای جستجو در دسترس باشه.
+
+TASK-067: اسناد خودکار و گراف پروتکل (Auto-Docs & Protocol Graph)
+ID: TASK-067
+Estimate: 10h
+Priority: medium
+Dependencies: TASK-062
+
+توضیح:
+یه نمای بصری تعاملی از پشته پروتکل‌ها (Protocol Stack Graph) با کتابخونه D3.js یا Cytoscape که وابستگی‌های پروتکل‌ها رو نشون بده (مثلاً WireGuard روی UDP، روی IP).
+همچنین قابلیت export دانش پروتکل به فرمت PDF و Markdown برای مستندسازی خارجی.
+
+Acceptance Criteria:
+
+اندپوینت /v1/protocols/graph که روابط رو بر اساس related_rfcs و osi_layer برگردونه.
+
+کامپوننت React در پورتال که گراف رو نمایش بده.
+
+قابلیت جستجو و کلیک روی گره‌ها برای جزئیات.
+
+فاز ۸ جدید: Advanced AI Features (بازچینی‌شده)
+فاز ۸ شامل همون تسک‌های پیشرفته قبلیه، ولی حالا اولویت‌بندی شده و تسک Local AI Assistant به اولین جایگاه میاد چون می‌تونه از دانش فاز ۷ استفاده کنه.
+
+مدت زمان تخمینی: ۴ هفته (۱۵۰ ساعت)
+
+TASK-068: Local AI Assistant (RAG-powered Support Bot)
+ID: TASK-068 (قبلاً TASK-059)
+Estimate: 40h
+Priority: critical
+Dependencies: فاز ۷ (Protocol Knowledge Base)
+
+توضیح:
+دستیار هوش مصنوعی محلی (Llama 3.1 8B quantized) با Retrieval-Augmented Generation که دانش پروتکل‌ها، مستندات محصولات و FAQها رو از API های فاز ۷ بیرون می‌کشه و توی ربات تلگرام پاسخ می‌ده.
+دیگه لازم نیست مدل همه چیز رو حفظ باشه؛ با RAG مستقیم از دیتابیس دانش می‌خونه.
+
+Acceptance Criteria:
+
+مدل روی سرور با vLLM یا llama.cpp اجرا بشه.
+
+RAG pipeline با استفاده از endpoint جستجوی معنایی فاز ۷ (TASK-066).
+
+هندلر تلگرام /ask برای ارتباط با مدل.
+
+fallback به human support.
+
+TASK-069: A²OE (AI Adaptive Obfuscation)
+ID: TASK-069 (قبلاً TASK-056)
+Estimate: 40h
+Priority: low
+Dependencies: TASK-017 (WireGuard), فاز ۷ (برای داده‌های رفتار پروتکل)
+
+توضیح:
+همانطور که بود اما حالا می‌تونه از داده‌های telemetry فاز ۷ برای تشخیص الگوهای DPI استفاده کنه.
+
+TASK-070: Hybrid P2P Relay Network
+ID: TASK-070 (قبلاً TASK-057)
+Estimate: 60h
+Priority: low
+Dependencies: TASK-017
+
+TASK-071: Quantum-Resistant VPN
+ID: TASK-071 (قبلاً TASK-058)
+Estimate: 50h
+Priority: low
+Dependencies: TASK-017
+
+Phase 7: Protocol Intelligence Hub (هاب هوشمند پروتکل‌ها)
+Phase Goal: ساخت یک لایه دانش فنی هوشمند، خودیادگیرنده و مبتنی بر AI که تمام پروتکل‌های شبکه و VPN را به‌صورت پویا مدیریت کند، به کاربران توصیه‌های متنی و فنی ارائه دهد و پایه‌ای برای تمام قابلیت‌های آینده باشد.
+
+Phase Duration: 3 هفته (۱۲۰ ساعت برای تیم ۴ نفره)
+Phase Deliverables:
+
+پایگاه دانش پروتکل با پوشش کامل و i18n
+
+موتور توصیه‌گر AI با یادگیری از رفتار شبکه
+
+جمع‌آوری خودکار شاخص‌های عملکرد پروتکل‌ها
+
+جستجوی معنایی فارسی/انگلیسی
+
+واسط کاربری در ربات تلگرام و پورتال وب
+
+گراف پویای پشته پروتکل‌ها و مستندات خودکار
+
+TASK-060: مدل‌های دیتابیس دانش پروتکل (Protocol Knowledge Base Models)
+ID: TASK-060
+Estimate: 8 hours
+Dependencies: TASK-006 (Core Models), TASK-012 (Module Registry)
+Priority: critical
+
+Description:
+ایجاد مدل‌های SQLAlchemy برای ذخیره‌سازی پروتکل‌ها، رفتارهای پویا، ارتباط با ماژول‌ها و تاریخچه توصیه‌ها. این مدل‌ها کاملاً با سیستم i18n و module_registry موجود یکپارچه می‌شوند.
+
+Subtasks:
+
+ایجاد مدل Protocol با فیلدهای: id, name, display_name (برای جستجوی بهتر), protocol_type (tunnel, routing, transport, security, application...), osi_layer, default_port, rfc, description_i18n (JSONB), tags (ARRAY of text), config_example (JSONB شامل نمونه کانفیگ برای لینوکس/اندروید/ویندوز/آی‌اواس), related_rfcs (ARRAY of text), is_deprecated, created_at, updated_at.
+
+ایجاد مدل ProtocolBehavior با فیلدهای: id, protocol_id (FK), location (مثلاً DE, NL, IR), latency_avg_ms, censorship_resistance_score (0-100), throughput_mbps, packet_loss_percent, last_checked_at.
+
+ایجاد مدل ModuleProtocol (جدول ارتباطی) با فیلدهای: id, module_id (FK به module_registry), protocol_id (FK), relevance (primary, secondary, fallback), usage_description_i18n (JSONB).
+
+ایجاد مدل ProtocolRecommendation برای ذخیره تاریخچه توصیه‌ها: id, user_id, input_params (JSONB شامل کشور, ISP, هدف, دستگاه), recommended_protocol_id, score, created_at.
+
+Acceptance Criteria:
+
+تمام مدل‌ها با UUID، تایم‌استمپ و رابطه‌های FK تعریف شوند.
+
+فیلد description_i18n به‌صورت JSONB با کلیدهای زبان (fa, en) و ساختار مطابق موتور i18n فعلی.
+
+فیلد tags از نوع ARRAY باشد و ایندکس GIN برای جستجوی سریع.
+
+مدل ProtocolBehavior با UNIQUE(protocol_id, location).
+
+مایگریشن Alembic بدون خطا اجرا شود و ریلیشن‌ها به‌درستی ایجاد شوند.
+
+Technical Notes:
+
+python
+# Example model snippet
+class Protocol(Base):
+    __tablename__ = "protocols"
+    id = Column(UUID, primary_key=True, default=uuid.uuid4)
+    name = Column(String(100), unique=True, nullable=False)
+    protocol_type = Column(String(50))
+    osi_layer = Column(Integer)
+    description_i18n = Column(JSONB)
+    tags = Column(ARRAY(String))
+    # ...
+    behaviors = relationship("ProtocolBehavior", back_populates="protocol")
+TASK-061: بارگذاری اولیه پروتکل‌ها (Protocol Seed & i18n)
 ID: TASK-061
 Estimate: 10 hours
 Dependencies: TASK-060
 Priority: high
 
 Description:
-Create a comprehensive seed file containing at least 60 protocols and a Celery script for upsert loading. Data is read from a JSON file and synchronized with the i18n system.
+ایجاد یک فایل seed جامع شامل حداقل ۶۰ پروتکل (تمامی موارد ذکر شده در لیست اولیه) و اسکریپت Celery برای بارگذاری upsert. داده‌ها از فایل JSON خوانده شده و با سیستم i18n همگام‌سازی می‌شوند.
 
 Subtasks:
 
-Prepare fixtures/protocols_seed.json with an array of protocol objects with full structure (name, type, layer, port, rfc, tags, description_fa, description_en, module_assignments[], config_examples).
+تهیه فایل fixtures/protocols_seed.json شامل آرایه‌ای از آبجکت‌های پروتکل با ساختار کامل (name, type, layer, port, rfc, tags, description_fa, description_en, module_assignments[], config_examples).
 
-Write seed_protocols Celery task to read the JSON file and upsert records using INSERT ... ON CONFLICT (name) DO UPDATE.
+نوشتن تسک Celery seed_protocols که فایل JSON را بخواند و برای هر آیتم، رکورد Protocol را upsert کند (با استفاده از INSERT ... ON CONFLICT (name) DO UPDATE).
 
-Upsert ModuleProtocol associations for each protocol.
+برای هر پروتکل، ارتباطات ModuleProtocol نیز upsert شود.
 
-Support auto-adding i18n keys to config/locales/fa.json and en.json if needed via a helper script.
+پشتیبانی از اضافه کردن خودکار کلیدهای i18n به فایل‌های config/locales/fa.json و en.json در صورت نیاز (با یک اسکریپت کمکی).
 
-Document how to add a new protocol without changing code.
+مستندسازی نحوه اضافه کردن پروتکل جدید بدون نیاز به تغییر کد.
 
 Acceptance Criteria:
 
-Seed file includes at least 60 protocols from different OSI layers.
+فایل seed شامل دست‌کم ۶۰ پروتکل از لایه‌های مختلف OSI باشد.
 
-Task runs successfully and does not corrupt data on re-runs.
+تسک با موفقیت اجرا شود و هیچ داده‌ای را در صورت اجرای مجدد خراب نکند.
 
-After seeding, GET /v1/protocols returns all protocols.
+بعد از seed، GET /v1/protocols تمام پروتکل‌ها را برگرداند.
 
-Persian/English descriptions exist in i18n files for at least 20 main protocols.
+توضیحات فارسی/انگلیسی در فایل‌های i18n وجود داشته باشد (حداقل برای ۲۰ پروتکل اصلی).
 
 Technical Notes:
 
@@ -2032,75 +2339,75 @@ json
   ],
   "config_example": {"linux": "[Interface]\nPrivateKey = ..."}
 }
-TASK-062: Protocol Knowledge API
+TASK-062: API سرویس دانش پروتکل (Protocol Knowledge API)
 ID: TASK-062
 Estimate: 10 hours
 Dependencies: TASK-060, TASK-009 (JWT Auth)
 Priority: critical
 
 Description:
-Implement a full REST API for searching, browsing, comparing, and retrieving detailed protocol information. All outputs must align with the i18n system.
+پیاده‌سازی REST API کامل برای جستجو، مرور، مقایسه و دریافت جزئیات پروتکل‌ها. تمام خروجی‌ها با i18n منطبق شوند.
 
 Subtasks:
 
-Create ProtocolService to encapsulate business logic (search, filter, compare).
+ایجاد ProtocolService برای encapsulate کردن منطق تجاری (جستجو، فیلتر، مقایسه).
 
-GET /v1/protocols: Support query params (module, layer, type, tag, q for advanced full-text search using to_tsvector for Persian and simple for English). Also support limit and offset.
+GET /v1/protocols: پشتیبانی از query params (module, layer, type, tag, q برای جستجوی متنی پیشرفته روی نام و توضیحات با استفاده از to_tsvector برای فارسی و simple برای انگلیسی). همچنین امکان limit و offset.
 
-GET /v1/protocols/{name}: Return full details including descriptions, config examples, recent dynamic behaviors, and associated modules.
+GET /v1/protocols/{name}: بازگشت جزئیات کامل شامل توضیحات، نمونه کانفیگ، رفتارهای پویای اخیر و ماژول‌های مرتبط.
 
-GET /v1/modules/{module}/protocols: Return protocols for a module with usage_description_i18n.
+GET /v1/modules/{module}/protocols: بازگشت پروتکل‌های یک ماژول به‌همراه usage_description_i18n.
 
-POST /v1/protocols/compare: Accept body with protocol_names[] and criteria[] (e.g. latency, security, throughput) and return a scored comparison table.
+POST /v1/protocols/compare: دریافت body شامل protocol_names[] و criteria[] (مثلاً latency, security, throughput) و بازگشت جدول مقایسه با امتیازدهی.
 
-Enable Redis caching with 10-minute TTL for frequently accessed endpoints.
+فعال‌سازی کش ردیس با TTL ۱۰ دقیقه برای endpointهای پرکاربرد.
 
-All endpoints must be authenticated (except limited public search).
+تمام endpointها باید احراز هویت شده باشند (به‌جز جستجوی عمومی که می‌تواند بدون لاگین هم محدود باشد).
 
 Acceptance Criteria:
 
-Text search with q can link "secure protocol for gaming" to WireGuard and OpenVPN.
+جستجوی متنی با q بتواند "پروتکل امن برای گیمینگ" را به WireGuard و OpenVPN مرتبط کند (با استفاده از تطبیق کلمات کلیدی روی تگ‌ها و توضیحات).
 
-Responses include i18n keys (matching the architecture where the frontend handles translation).
+پاسخ‌ها شامل کلیدهای i18n باشند (مطابق معماری فعلی که فرانت‌اند ترجمه می‌کند).
 
-/compare endpoints return relative protocol scores based on ProtocolBehavior data.
+endpointهای /compare امتیاز نسبی پروتکل‌ها را بر اساس داده‌های ProtocolBehavior (در صورت وجود) برگردانند.
 
-Integration tests written for all endpoints.
+تست‌های یکپارچه‌سازی برای تمام endpointها نوشته شوند.
 
-TASK-063: AI Protocol Advisor
+TASK-063: موتور توصیه‌گر هوشمند پروتکل (AI Protocol Advisor)
 ID: TASK-063
 Estimate: 20 hours
 Dependencies: TASK-062, TASK-060
 Priority: critical
 
 Description:
-Build a multi-criteria recommendation service that suggests the best protocol based on user conditions (location, ISP, purpose, device). Start with a rule-based system and evolve towards fuzzy logic or a simple ML model as data accumulates.
+ساخت یک سرویس توصیه‌گر چندمعیاره که با توجه به شرایط کاربر (موقعیت جغرافیایی، ISP، هدف استفاده، دستگاه) بهترین پروتکل را پیشنهاد دهد. شروع با یک سیستم مبتنی بر قوانین (Rule-based) و سپس با جمع‌آوری داده‌ها به سمت منطق فازی یا مدل ساده یادگیری ماشین پیش برود.
 
 Subtasks:
 
-Design a Decision Engine in core/services/protocol_advisor.py. Start with a decision matrix based on priorities: censorship_resistance (high weight for Iran), latency (high weight for gaming), throughput (high weight for streaming), security (high weight for privacy).
+طراحی یک Decision Engine در core/services/protocol_advisor.py. ابتدا یک ماتریس تصمیم‌گیری با قوانین دستی بر اساس اولویت‌ها: censorship_resistance (وزن بالا برای ایران)، latency (وزن بالا برای گیمینگ)، throughput (وزن بالا برای استریم)، security (وزن بالا برای حریم خصوصی).
 
-Implement POST /v1/protocols/recommend endpoint. Input: {"country": "IR", "isp": "MCI", "purpose": "gaming", "device": "android", "preferred_layer": "auto"}.
+پیاده‌سازی endpoint: POST /v1/protocols/recommend. ورودی: {"country": "IR", "isp": "MCI", "purpose": "gaming", "device": "android", "preferred_layer": "auto"}.
 
-Algorithm: Calculate a composite score from intrinsic features and behavioral data (ProtocolBehavior). Use default values if no behavioral data for the location.
+الگوریتم: برای هر پروتکل، یک امتیاز ترکیبی از ویژگی‌های ذاتی (مانند لایه، نوع رمزنگاری) و داده‌های رفتاری (ProtocolBehavior) محاسبه شود. اگر داده رفتاری برای لوکیشن موجود نباشد، از مقادیر پیش‌فرض استفاده شود.
 
-Store each request in protocol_recommendations for future analysis.
+ذخیره‌سازی هر درخواست در protocol_recommendations برای تحلیل آتی.
 
-Return Top 3 protocols with score and reason (displayable text for the user).
+بازگشت Top 3 پروتکل با score و reason (متن قابل نمایش برای کاربر).
 
-Add a feedback mechanism: POST /v1/protocols/recommend/feedback to adjust weights if the user dislikes the result.
+اضافه کردن قابلیت ثبت بازخورد کاربر: یک endpoint POST /v1/protocols/recommend/feedback که اگر کاربر نپسندید، بتواند وزن‌ها را اصلاح کند (برای نسخه‌های بعدی).
 
-Document how to add new rules.
+مستندسازی نحوه افزودن قوانین جدید.
 
 Acceptance Criteria:
 
-Recommendation response time is < 100ms.
+پاسخ توصیه‌گر در کمتر از ۱۰۰ میلی‌ثانیه باشد (همه چیز در حافظه یا دیتابیس).
 
-For a user in Iran with a gaming purpose, WireGuard is suggested with a high score.
+برای یک کاربر در ایران با هدف گیمینگ، WireGuard با امتیاز بالا پیشنهاد شود.
 
-System correctly falls back if behavioral data is missing.
+در صورت عدم وجود داده رفتاری، سیستم به‌درستی fallback کند.
 
-Unit tests for the decision engine.
+تست واحد برای موتور تصمیم‌گیری.
 
 Technical Notes:
 
@@ -2114,175 +2421,177 @@ def calculate_score(protocol, behavior, user_req):
         score += behavior.censorship_resistance_score * 0.5
     # ...
     return score
-TASK-064: Protocol Telemetry Collection
+TASK-064: جمع‌آوری خودکار رفتار پروتکل‌ها (Protocol Telemetry)
 ID: TASK-064
 Estimate: 14 hours
 Dependencies: TASK-060, TASK-014 (Celery), TASK-017 (VPN backends)
 Priority: high
 
 Description:
-Create Celery Beat tasks to periodically (every 15 mins for sensitive metrics, every 6 hours for others) measure real protocol statuses from active servers and store results in protocol_behaviors.
+ایجاد تسک‌های Celery Beat که به‌صورت دوره‌ای (هر ۱۵ دقیقه برای شاخص‌های حساس، هر ۶ ساعت برای بقیه) از روی سرورهای فعال وضعیت واقعی پروتکل‌ها را اندازه‌گیری کرده و در protocol_behaviors ذخیره کنند.
 
 Subtasks:
 
-Create a small Agent inside each VPN/VPS server (callable via SSH or internal API) or use direct connections from workers.
+ایجاد Agent کوچک درون هر سرور VPN/VPS (قابل فراخوانی از طریق SSH یا API داخلی) که بتواند عملیات اندازه‌گیری را انجام دهد. یا استفاده از اتصال از سمت خود worker به آن سرورها.
 
-Measure latency by pinging 8.8.8.8 and 1.1.1.1.
+اندازه‌گیری latency با پینگ به 8.8.8.8 و 1.1.1.1.
 
-Measure censorship_resistance_score by testing a connection to a specific domain via the protocol and checking for RST/block.
+اندازه‌گیری censorship_resistance_score با استفاده از تست اتصال به یک دامنه خاص از طریق آن پروتکل و بررسی RST/block.
 
-Measure throughput by downloading a small file (1MB) from a test source.
+اندازه‌گیری throughput با دانلود یک فایل کوچک (1MB) از یک منبع تست.
 
-Write collect_protocol_telemetry task to iterate over all (protocol, location) pairs.
+نوشتن تسک collect_protocol_telemetry که روی تمام ترکیب‌های (protocol, location) موجود تکرار کند.
 
-Store results with upsert in protocol_behaviors.
+ذخیره‌سازی نتایج با upsert در protocol_behaviors.
 
-Add an admin-only endpoint to view collection logs and health.
+افزودن یک endpoint فقط برای ادمین برای مشاهده لاگ‌های جمع‌آوری و سلامت آن.
 
 Acceptance Criteria:
 
-Behavioral data for at least 3 locations and 5 protocols starts populating after one day.
+داده‌های رفتاری برای حداقل ۳ لوکیشن و ۵ پروتکل پس از یک روز شروع به پر شدن کنند.
 
-Behavioral charts display in the web portal (TASK-065).
+نمودار رفتار در پورتال وب (Recharts) نمایش داده شود (وظیفه TASK-065).
 
-Tasks are visible in Celery Flower.
+تسک‌ها در Celery Flower قابل مشاهده باشند.
 
-TASK-065: UI/UX Integration for Protocol Hub
+TASK-065: یکپارچه‌سازی با ربات تلگرام و پورتال وب (UI/UX for Protocol Hub)
 ID: TASK-065
 Estimate: 16 hours
 Dependencies: TASK-062, TASK-023 (Bot), TASK-027 (Web)
 Priority: high
 
 Description:
-Add the "Protocol Hub" module to the bot and client portal, fully respecting i18n and responsive design.
+افزودن ماژول «هاب پروتکل» به ربات و پورتال مشتری با رعایت کامل i18n و طراحی واکنش‌گرا.
 
 Subtasks:
 
-Telegram Bot:
+ربات تلگرام:
 
-"Protocol Knowledge" button in the main menu.
+دکمه «دانش پروتکل» در منوی اصلی.
 
-Show categories (layers, modules) with inline keyboard.
+نمایش دسته‌بندی‌ها (لایه‌ها، ماژول‌ها) با inline keyboard.
 
-Protocol search via /proto <name>.
+جستجوی پروتکل با دستور /proto <نام>.
 
-Run the advisor via /advise by asking simple questions (country, purpose, device) using InlineKeyboard.
+اجرای توصیه‌گر با دستور /advise و پرسش چند سوال ساده (کشور، هدف، دستگاه) از طریق InlineKeyboard.
 
-Show comparison results with /compare <p1> <p2>.
+نمایش نتیجه مقایسه با /compare <پروتکل1> <پروتکل2>.
 
-Web Portal (Next.js):
+پورتال وب (Next.js):
 
-/knowledge/protocols page with a search and filter table (Shadcn Table).
+صفحه /knowledge/protocols شامل جدول جستجو و فیلتر (Shadcn Table).
 
-/knowledge/protocols/[name] page with tabs: "Description", "Config Example", "Live Behavior" (charts using Recharts).
+صفحه /knowledge/protocols/[name] با تب‌های «توضیحات»، «نمونه کانفیگ»، «رفتار زنده» (نمودار latency/throughput با Recharts).
 
-/knowledge/advisor page with a form for selecting the purpose and displaying results.
+صفحه /knowledge/advisor با فرم انتخاب هدف و نمایش نتیجه.
 
-Use React Query for fetching and caching API data.
+استفاده از React Query برای fetch و کش کردن اطلاعات API.
 
-All labels and texts read from i18n.
+تمام برچسب‌ها و متون از i18n خوانده شوند.
 
 Acceptance Criteria:
 
-User can get a full recommendation in the bot and be directed to purchase a VPN if satisfied.
+کاربر بتواند در ربات یک توصیه کامل دریافت کند و در صورت رضایت، مستقیماً به خرید VPN هدایت شود.
 
-The portal displays a protocol behavior chart with real telemetry data.
+در پورتال، نمودار رفتار پروتکل با دیتای واقعی از telemetry رسم شود.
 
-Design is fully responsive and compatible with the white-label theming and dark/light mode.
+طراحی کاملاً واکنش‌گرا و منطبق با تم سفید/تاریک و برندینگ white-label باشد.
 
-TASK-066: Semantic Search with Embedding
+TASK-066: جستجوی معنایی با Embedding (Semantic Search)
 ID: TASK-066
 Estimate: 14 hours
 Dependencies: TASK-062
 Priority: medium
 
 Description:
-Enhance search using a multilingual embedding model (no GPU required) so users can find the right protocol using natural language queries.
+تقویت جستجو با استفاده از مدل embedding چندزبانه (بدون نیاز به GPU) تا کاربر بتواند با عبارات طبیعی پروتکل مناسب را بیابد.
 
 Subtasks:
 
-Install and activate pgvector on PostgreSQL.
+نصب و فعال‌سازی pgvector روی PostgreSQL.
 
-Add an embedding vector(384) column to the Protocol model.
+افزودن ستون embedding vector(384) به مدل Protocol.
 
-Write generate_protocol_embeddings Celery task to load a sentence-transformers model (e.g. paraphrase-multilingual-MiniLM-L12-v2), create embeddings for each protocol (Persian + English + tags), and store them.
+نوشتن تسک Celery generate_protocol_embeddings که مدل sentence-transformers (مانند paraphrase-multilingual-MiniLM-L12-v2) را بارگذاری کند، برای هر پروتکل (توضیحات فارسی + انگلیسی + تگ‌ها) embedding ساخته و ذخیره کند.
 
-Create GET /v1/protocols/semantic-search?q=... endpoint that converts the user query to an embedding and returns results via cosine similarity.
+ایجاد endpoint GET /v1/protocols/semantic-search?q=... که query کاربر را به embedding تبدیل کرده و با cosine similarity نتایج را برگرداند.
 
-Add search_mode=semantic switch to the main /v1/protocols endpoint.
+افزودن سوئیچ search_mode=semantic در endpoint اصلی /v1/protocols.
 
 Acceptance Criteria:
 
-Searching "low-consumption protocol for mobile" shows WireGuard as the top result.
+جستجوی "پروتکل کم مصرف برای موبایل" WireGuard را در رتبه اول نشان دهد.
 
-Embedding generation is fast (batch processing) and does not affect API performance.
+فرآیند تولید embedding سریع باشد (batch processing) و تأثیری روی عملکرد API نگذارد.
 
-The embedding model is downloaded and cached during the Docker image build.
+مدل embedding در زمان بیلد Docker image دانلود و کش شود.
 
-TASK-067: Protocol Graph & Auto-Documentation
+TASK-067: گراف پروتکل و اسناد خودکار (Protocol Graph & Auto-Docs)
 ID: TASK-067
 Estimate: 10 hours
 Dependencies: TASK-062
 Priority: medium
 
 Description:
-Create a visual, interactive representation of the protocol stack and their dependencies (e.g. WireGuard -> UDP -> IP) and automatic documentation export.
+ایجاد یک نمایش گرافیکی از پشته پروتکل‌ها و وابستگی‌هایشان (مثلاً WireGuard → UDP → IP) و قابلیت export خودکار مستندات.
 
 Subtasks:
 
-GET /v1/protocols/graph endpoint to compute nodes and edges based on related_rfcs and OSI layer.
+endpoint GET /v1/protocols/graph داده‌های nodes و edges را بر اساس related_rfcs و لایه OSI محاسبه کند.
 
-Implement a React component using react-force-graph or cytoscape to display the graph in the portal.
+پیاده‌سازی کامپوننت React با استفاده از react-force-graph یا cytoscape برای نمایش گراف در پورتال.
 
-Enable graph node search and click functionality.
+قابلیت جستجو و کلیک روی گره‌ها.
 
-Add export capability for a module's protocol set to Markdown/PDF via a dedicated endpoint (/v1/modules/{module}/protocols/export).
+قابلیت export مجموعه پروتکل‌های یک ماژول به صورت Markdown/PDF با استفاده از endpoint مخصوص (/v1/modules/{module}/protocols/export).
 
 Acceptance Criteria:
 
-Graph correctly displays hierarchical relationships (e.g. Layer 3 includes IPsec, GRE).
+گراف به‌درستی روابط سلسله‌مراتبی (مانند لایه ۳ شامل IPsec, GRE) را نمایش دهد.
 
-User can view the graph in the portal and click on a node to go to the detail page.
+کاربر بتواند در پورتال گراف را ببیند و روی هر گره کلیک کند تا به صفحه جزئیات برود.
 
-Exported documentation is downloadable.
+مستندات خروجی قابل دانلود باشند.
 
 Phase 8: Advanced AI Features
-Phase Goal: Leverage the knowledge from Phase 7 by deploying a local AI assistant and continuing the development of advanced security features.
+Phase Goal: بهره‌برداری کامل از دانش فاز ۷ با دستیار هوش مصنوعی محلی و ادامه توسعه ویژگی‌های پیشرفته امنیتی.
 
-Phase Duration: 4 weeks (150 hours)
+Phase Duration: 4 هفته (۱۵۰ ساعت)
 
-TASK-068: Local AI Assistant (RAG-Powered Support Bot)
-ID: TASK-068 (formerly TASK-059)
+TASK-068: دستیار هوش مصنوعی محلی (RAG-Powered AI Assistant)
+ID: TASK-068
 Estimate: 45 hours
-Dependencies: Full Phase 7 (especially TASK-062, TASK-066)
+Dependencies: فاز ۷ کامل (به‌خصوص TASK-062, TASK-066)
 Priority: critical
 
 Description:
-Deploy a Small Language Model (SLM) on the server with RAG capability to answer users' technical questions about networks, protocols, and BlueHub services by citing the knowledge from Phase 7. This is an intelligent replacement for static FAQs.
+راه‌اندازی یک مدل زبانی کوچک (SLM) روی سرور با قابلیت RAG تا بتواند به سوالات فنی کاربران درباره شبکه، پروتکل‌ها و سرویس‌های BlueHub با استناد به دانش فاز ۷ پاسخ دهد. این جایگزین هوشمندی برای FAQهای ایستا است.
 
 Subtasks:
 
-Model Selection: Llama 3.2 3B or Phi-3-mini (4-bit quantized) runnable on CPU or a small GPU.
+انتخاب مدل: Llama 3.2 3B یا Phi-3-mini (کوانتایز شده ۴-bit) که روی CPU یا یک GPU کوچک قابل اجرا باشد.
 
-Use llama.cpp or Ollama as the inference engine and Dockerize it.
+استفاده از llama.cpp یا Ollama به عنوان inference engine و Dockerize کردن آن.
 
-Develop a RAG Pipeline in Python (with LangChain or custom): user query -> embed -> semantic search via /v1/protocols/semantic-search (TASK-066) -> retrieve top 3 protocols + descriptions -> build prompt with context -> send to LLM.
+توسعه یک RAG Pipeline در پایتون با LangChain (اختیاری) یا به‌صورت دستی: query کاربر → تبدیل به embedding → جستجوی معنایی در /v1/protocols/semantic-search (TASK-066) → دریافت top 3 پروتکل + توضیحات → ساخت prompt با context → ارسال به LLM.
 
-Internal POST /v1/ai/ask endpoint using internal services.
+endpoint داخلی POST /v1/ai/ask که از سرویس‌های داخلی استفاده کند (در معرض عموم نباشد).
 
-Telegram /ask handler and a chat section in the web portal.
+هندلر تلگرام /ask و یک بخش گفتگو در پورتال.
 
-Fallback: If the model cannot answer, suggest contacting human support.
+Fallback: اگر مدل نتوانست پاسخ دهد، پیشنهاد ارتباط با پشتیبانی انسانی.
 
-Manage conversation state with the lang of the user.
+مدیریت حالت مکالمه با lang کاربر.
 
 Acceptance Criteria:
 
-Answers are based on documented database information, not model hallucination.
+پاسخ‌ها بر اساس اطلاعات مستند از دیتابیس باشند نه توهم مدل.
 
-Response time < 4 seconds on a server without a GPU.
+زمان پاسخگویی کمتر از ۴ ثانیه روی سرور بدون GPU.
 
-Tested with questions like: "What's the difference between WireGuard and OpenVPN?", "What protocol is good for bypassing filtering in Iran?".
+تسک در Celery اجرا نشود (همگام سریع) اما در صورت نیاز به async بودن، تسک با timeout تعریف شود.
+
+تست با سوالات: "تفاوت WireGuard و OpenVPN چیه؟"، "برای دور زدن فیلترینگ با اینترنت ایران چه پروتکلی خوبه؟".
 
 Technical Notes:
 
@@ -2297,134 +2606,42 @@ def answer_query(user_query, lang):
     prompt = f"با توجه به اطلاعات زیر به سوال پاسخ بده:\n{context}\n\nسوال: {user_query}\nپاسخ:"
     # 4. Call local LLM
     return llm.generate(prompt)
-TASK-069: A²OE - AI Adaptive Obfuscation Engine
-ID: TASK-069 (formerly TASK-056)
+TASK-069: A²OE – سیستم مبهم‌سازی تطبیقی مبتنی بر هوش مصنوعی
+ID: TASK-069
 Estimate: 40 hours
 Dependencies: TASK-017 (WireGuard), TASK-064 (Telemetry)
 Priority: low
 
 Description:
-Research and create a proof-of-concept for dynamically changing VPN traffic patterns based on DPI behavior detection. Uses telemetry data from Phase 7 to learn which ports/protocols are blocked and automatically adjusts obfuscation parameters.
-
-Subtasks:
-
-Research paper review (DPI detection techniques).
-
-Dataset collection (VPN traffic, DPI signatures).
-
-ML model training (traffic classification).
-
-Obfuscation strategy generation.
-
-Performance impact analysis (<15% overhead).
-
-POC implementation.
-
-Evaluation report.
+تحقیق و ایجاد نمونه اولیه برای تغییر پویای الگوی ترافیک خروجی VPN بر اساس تشخیص رفتار DPI. به‌جای راه‌حل‌های ایستا، از یک مدل ساده ML استفاده می‌شود که از داده‌های telemetry فاز ۷ (اینکه کدام پورت‌ها/پروتکل‌ها مسدود می‌شوند) الگو می‌گیرد و به‌طور خودکار پارامترهای مبهم‌سازی (مثل SNI در REALITY، پورت، padding) را تغییر می‌دهد.
 
 Acceptance Criteria:
 
-POC can automatically change the REALITY SNI if an increase in packet drops is detected.
+POC بتواند در صورت تشخیص افزایش drop، به‌طور خودکار SNI را عوض کند.
 
-Technical report on success rate written.
+گزارش فنی از نرخ موفقیت.
 
-Performance impact analysis documented (<15% overhead).
-
-POC implementation completed.
-
-Evaluation report documented.
-
-Technical Notes:
-Complex feature, requires ML expertise. Consider using existing libraries like cloak or scramblesuit.
-
-TASK-070: Hybrid P2P Relay Network
-ID: TASK-070 (formerly TASK-057)
+TASK-070: شبکه رله هیبریدی P2P
+ID: TASK-070
 Estimate: 60 hours
 Dependencies: TASK-017
 Priority: low
 
 Description:
-Design a peer-to-peer network for users as a backup layer during emergencies. Protocol knowledge from Phase 7 can now determine which users are best suited to act as relays.
+طراحی یک شبکه همتا به همتا برای کاربران به‌عنوان لایه پشتیبان در مواقع بحرانی. (مشابه قبل، ولی حالا دانش پروتکل می‌تواند تعیین کند کدام کاربران برای رله مناسب‌ترند).
 
-Subtasks:
-
-P2P protocol design.
-
-Node discovery mechanism.
-
-Bandwidth credit system.
-
-Encryption for relay traffic.
-
-Fallback to direct connection.
-
-Incentive system (reward users for sharing bandwidth).
-
-POC with 10 nodes.
-
-Security analysis.
-
-Acceptance Criteria:
-
-P2P protocol design completed.
-
-Node discovery mechanism implemented.
-
-Bandwidth credit system working.
-
-Encryption for relay traffic verified.
-
-Fallback to direct connection tested.
-
-Incentive system designed.
-
-POC with 10 nodes functional.
-
-Security analysis documented.
-
-Technical Notes:
-Extremely complex, consider using existing P2P frameworks like libp2p.
-
-TASK-071: Quantum-Resistant VPN
-ID: TASK-071 (formerly TASK-058)
+TASK-071: VPN مقاوم در برابر کوانتوم
+ID: TASK-071
 Estimate: 50 hours
 Dependencies: TASK-017
 Priority: low
 
 Description:
-Add post-quantum cryptography (Kyber) to WireGuard as an optional feature for specific users.
+افزودن الگوریتم‌های Kyber به WireGuard به‌عنوان یک گزینه انتخابی برای کاربران خاص.
+---
 
-Subtasks:
+*Document Version: 1.0*  
+*Last Updated: 2026-06-10*  
+*Total Tasks: 59*  
+*Estimated Duration: 16 weeks*
 
-Research NIST PQC standards (Kyber, Dilithium).
-
-Integrate Kyber for key exchange.
-
-Integrate Dilithium for signatures.
-
-Hybrid mode (classical + PQC).
-
-Performance benchmarking.
-
-Security audit.
-
-Documentation.
-
-Acceptance Criteria:
-
-Research NIST PQC standards completed.
-
-Kyber integrated for key exchange.
-
-Dilithium integrated for signatures.
-
-Hybrid mode (classical + PQC) working.
-
-Performance benchmarking completed.
-
-Security audit passed.
-
-Documentation written.
-
-Technical Notes:
-Use liboqs (Open Quantum Safe) library. Performance impact expected: 20-30% slower handshake.

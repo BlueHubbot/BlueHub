@@ -102,6 +102,15 @@ class VpsPowerStatus(str, Enum):
     SUSPENDED = "suspended"
 
 
+class VpnServerStatus(str, Enum):
+    """VPN server statuses."""
+
+    ACTIVE = "active"
+    DEGRADED = "degraded"
+    MAINTENANCE = "maintenance"
+    OFFLINE = "offline"
+
+
 class BillingCycle(str, Enum):
     """Product billing cycle types."""
 
@@ -123,6 +132,7 @@ __all__ = [
     "UserRole",
     "VpnAccountStatus",
     "VpnProtocol",
+    "VpnServerStatus",
     "VpnSessionStatus",
     "VpsPowerStatus",
 ]

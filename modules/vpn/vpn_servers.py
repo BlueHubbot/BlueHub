@@ -315,5 +315,61 @@ class VpnServerCRUD:
         )
         return result.scalar() or 0
 
+    @staticmethod
+    def check_server_health(
+        *,
+        server: object = None,
+        server_ip: str | None = None,
+        ssh_port: int = 22,
+        ssh_user: str = "root",
+        ssh_key_path: str | None = None,
+    ) -> bool:
+        """
+        Check the health of a VPN server via SSH.
 
-__all__ = ["VpnServerCRUD"]
+        Args:
+            server: VpnServer instance (backward-compat; extracts attributes).
+            server_ip: Server IP/hostname for SSH.
+            ssh_port: SSH port.
+            ssh_user: SSH user.
+            ssh_key_path: Path to SSH private key.
+
+        Returns:
+            True if healthy, False otherwise.
+        """
+        import subprocess
+
+        if server is not None:
+            server_ip = server_ip or getattr(server, "host", None) or getattr(server, "public_ip", None)
+            ssh_port = getattr(server, "ssh_port", ssh_port)
+            ssh_user = getattr(server, "ssh_user", ssh_user)
+            ssh_key_path = ssh_key_path or getattr(server, "ssh_key_path", None)
+
+        if not server_ip:
+            logger.warning("Cannot check health: no server_ip provided")
+            return False
+
+        cmd = [
+            "ssh",
+            "-o", "StrictHostKeyChecking=no",
+            "-o", "ConnectTimeout=10",
+            "-p", str(ssh_port),
+        ]
+        if ssh_key_path:
+            cmd.extend(["-i", ssh_key_path])
+        cmd.extend([f"{ssh_user}@{server_ip}", "echo ok"])
+
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+            healthy = result.returncode == 0 and "ok" in result.stdout
+            logger.debug("Health check for %s: %s", server_ip, "healthy" if healthy else "unhealthy")
+            return healthy
+        except (subprocess.TimeoutExpired, FileNotFoundError, OSError) as exc:
+            logger.warning("Health check failed for %s: %s", server_ip, exc)
+            return False
+
+
+# Backward-compatible alias used by services.py
+VpnServerService = VpnServerCRUD
+
+__all__ = ["VpnServerCRUD", "VpnServerService"]

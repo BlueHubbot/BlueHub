@@ -13,10 +13,25 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 from urllib.parse import urlparse
 
-import backoff
-import pybreaker
-from proxmoxer import ProxmoxAPI, AuthenticationError, ResourceException
-from proxmoxer.backends import https
+try:
+    import backoff  # type: ignore[import-untyped]
+except ImportError:  # pragma: no cover - only when deps not installed
+    backoff = None  # type: ignore[assignment]
+try:
+    import pybreaker  # type: ignore[import-untyped]
+except ImportError as e:  # pragma: no cover - only when deps not installed
+    raise ImportError(
+        "pybreaker is required for VPS Proxmox client. "
+        "Install with: pip install pybreaker"
+    ) from e
+try:
+    from proxmoxer import ProxmoxAPI, AuthenticationError, ResourceException  # type: ignore[import-untyped]
+    from proxmoxer.backends import https  # type: ignore[import-untyped]
+except ImportError as e:  # pragma: no cover - only when deps not installed
+    raise ImportError(
+        "proxmoxer is required for VPS Proxmox client. "
+        "Install with: pip install proxmoxer"
+    ) from e
 
 from core.config import settings
 

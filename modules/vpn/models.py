@@ -17,7 +17,7 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from shared.models.base import CoreBase, TimestampMixin, UUIDMixin
-from shared.models.enums import VpnAccountStatus, VpnProtocol, VpnSessionStatus
+from shared.models.enums import VpnAccountStatus, VpnProtocol, VpnServerStatus, VpnSessionStatus
 
 if TYPE_CHECKING:
     from shared.models.service import Service
@@ -41,10 +41,40 @@ class VpnServer(UUIDMixin, TimestampMixin, CoreBase):
         nullable=False,
         doc="Server hostname or IP address for management SSH/API",
     )
+    protocol: Mapped[str] = mapped_column(
+        String(20),
+        default="wireguard",
+        nullable=False,
+        index=True,
+        doc="VPN protocol (wireguard, vless, trojan, shadowsocks)",
+    )
+    status: Mapped[str] = mapped_column(
+        String(20),
+        default="active",
+        nullable=False,
+        index=True,
+        doc="Server status (active, degraded, maintenance, offline)",
+    )
     port: Mapped[int] = mapped_column(
         default=51820,
         nullable=False,
         doc="WireGuard listen port",
+    )
+    ssh_port: Mapped[int] = mapped_column(
+        default=22,
+        nullable=False,
+        doc="SSH port for remote management",
+    )
+    ssh_user: Mapped[str] = mapped_column(
+        String(100),
+        default="root",
+        nullable=False,
+        doc="SSH username for remote management",
+    )
+    ssh_key_path: Mapped[str | None] = mapped_column(
+        String(512),
+        nullable=True,
+        doc="Path to SSH private key file",
     )
     public_ip: Mapped[str] = mapped_column(
         String(45),
@@ -100,6 +130,11 @@ class VpnServer(UUIDMixin, TimestampMixin, CoreBase):
         default=True,
         nullable=False,
         doc="Whether this server is accepting new clients",
+    )
+    last_health_check: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        doc="Timestamp of last successful health check",
     )
     notes: Mapped[str | None] = mapped_column(
         Text,
@@ -249,6 +284,12 @@ class VpnAccount(UUIDMixin, TimestampMixin, CoreBase):
         lazy="selectin",
         cascade="all, delete-orphan",
     )
+    traffic_usages: Mapped[list[TrafficUsage]] = relationship(
+        "TrafficUsage",
+        back_populates="vpn_account",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+    )
     protocol_configs: Mapped[list[VpnProtocolConfig]] = relationship(
         "VpnProtocolConfig",
         back_populates="vpn_account",
@@ -307,6 +348,54 @@ class VpnProtocolConfig(UUIDMixin, TimestampMixin, CoreBase):
         return (
             f"<VpnProtocolConfig(id={self.id}, account_id={self.vpn_account_id}, "
             f"key={self.config_key!r})>"
+        )
+
+
+class TrafficUsage(UUIDMixin, CoreBase):
+    """
+    Periodic traffic snapshot for a VPN account.
+    Used for bandwidth accounting, billing, and data-limit enforcement.
+    """
+
+    __tablename__ = "traffic_usage"
+
+    account_id: Mapped[str] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("vpn_accounts.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+        doc="Foreign key to vpn_accounts table",
+    )
+    bytes_sent: Mapped[int] = mapped_column(
+        BigInteger,
+        default=0,
+        nullable=False,
+        doc="Bytes sent (download) since last poll",
+    )
+    bytes_received: Mapped[int] = mapped_column(
+        BigInteger,
+        default=0,
+        nullable=False,
+        doc="Bytes received (upload) since last poll",
+    )
+    recorded_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        doc="Timestamp when traffic was recorded",
+    )
+
+    # Relationships
+    vpn_account: Mapped[VpnAccount] = relationship(
+        "VpnAccount",
+        back_populates="traffic_usages",
+        lazy="selectin",
+    )
+
+    def __repr__(self) -> str:
+        return (
+            f"<TrafficUsage(id={self.id}, account_id={self.account_id}, "
+            f"recorded_at={self.recorded_at.isoformat() if self.recorded_at else None})>"
         )
 
 
@@ -393,8 +482,12 @@ class VpnSession(UUIDMixin, TimestampMixin, CoreBase):
 
 
 __all__ = [
+    "TrafficUsage",
     "VpnAccount",
+    "VpnProtocol",
     "VpnProtocolConfig",
-    "VpnSession",
     "VpnServer",
+    "VpnServerStatus",
+    "VpnSession",
+    "VpnSessionStatus",
 ]

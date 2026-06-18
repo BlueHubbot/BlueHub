@@ -31,8 +31,8 @@ from modules.vpn.wireguard import (
     WireGuardService,
 )
 from modules.vpn.xray import (
+    RealityKeyPair,
     XrayConfigError,
-    XrayKeyPair,
     XrayService,
 )
 from shared.models.enums import VpnAccountStatus, VpnProtocol, VpnSessionStatus

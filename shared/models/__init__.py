@@ -28,18 +28,13 @@ from shared.models.tenant import Tenant
 from shared.models.transaction import Transaction
 from shared.models.user import User
 
-# Import VPN module models
-from modules.vpn.models import VpnAccount, VpnProtocolConfig, VpnSession
-
-# Import VPS module models
-from modules.vps.models import VpsInstance, VpsSnapshot
-
+# NOTE: VPN/VPS module models must be imported directly from modules.vpn.models / modules.vps.models
+# shared.models (core) MUST NOT import from modules/ per AGENTS.md architectural invariant.
 __all__ = [
     "AuditAction",
     "AuditLog",
     "BillingCycle",
     "CommissionStatus",
-    # Base
     "CoreBase",
     "IDMixin",
     "Invoice",
@@ -52,22 +47,15 @@ __all__ = [
     "ServiceModule",
     "ServiceStatus",
     "SoftDeleteMixin",
-    # Core Models
     "Tenant",
     "TenantProductPricing",
     "TimestampMixin",
     "Transaction",
     "UUIDMixin",
     "User",
-    # Enums
     "UserRole",
-    "VpnAccount",
     "VpnAccountStatus",
     "VpnProtocol",
-    "VpnProtocolConfig",
-    "VpnSession",
     "VpnSessionStatus",
-    "VpsInstance",
     "VpsPowerStatus",
-    "VpsSnapshot",
 ]
