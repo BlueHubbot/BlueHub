@@ -9,15 +9,15 @@ from __future__ import annotations
 
 import logging
 import os
-import sys
 from collections.abc import Sequence
 from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.database import db_manager
 from core.registry.schemas import (
+    AdminMenuConfig,
+    BotKeyboardConfig,
     ModuleFlag,
     ModuleMetadata,
     ModuleRegistryResponse,
@@ -206,6 +206,14 @@ class ModuleRegistryService:
                 else {}
             )
 
+            # Serialize optional nested configs
+            bot_keyboard_dict = (
+                meta.bot_keyboard.model_dump() if meta.bot_keyboard else None
+            )
+            admin_menu_dict = (
+                meta.admin_menu.model_dump() if meta.admin_menu else None
+            )
+
             if existing:
                 # Update existing record
                 existing.display_name = meta.display_name
@@ -214,6 +222,9 @@ class ModuleRegistryService:
                 existing.order = meta.order
                 existing.config_schema = meta.config_schema
                 existing.flags = flag_dict
+                existing.bot_keyboard = bot_keyboard_dict
+                existing.admin_menu = admin_menu_dict
+                existing.default_config = meta.default_config
                 logger.info("Updated module registration: %s", module_name)
             else:
                 # Create new record
@@ -226,6 +237,9 @@ class ModuleRegistryService:
                     order=meta.order,
                     config_schema=meta.config_schema,
                     flags=flag_dict,
+                    bot_keyboard=bot_keyboard_dict,
+                    admin_menu=admin_menu_dict,
+                    default_config=meta.default_config,
                 )
                 session.add(entry)
                 logger.info("Registered new module: %s", module_name)

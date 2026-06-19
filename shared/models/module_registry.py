@@ -68,6 +68,24 @@ class ModuleRegistry(UUIDMixin, TimestampMixin, CoreBase):
         default=dict,
         doc="Feature flags: stop_new_sales, terminate_services, maintenance_mode",
     )
+    bot_keyboard: Mapped[dict | None] = mapped_column(
+        JSONB,
+        nullable=True,
+        default=None,
+        doc="Telegram bot keyboard configuration (BotKeyboardConfig)",
+    )
+    admin_menu: Mapped[dict | None] = mapped_column(
+        JSONB,
+        nullable=True,
+        default=None,
+        doc="Admin panel menu configuration (AdminMenuConfig)",
+    )
+    default_config: Mapped[dict | None] = mapped_column(
+        JSONB,
+        nullable=True,
+        default=None,
+        doc="Default module configuration values",
+    )
 
     def __repr__(self) -> str:
         return (

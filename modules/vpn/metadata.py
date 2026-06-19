@@ -8,36 +8,24 @@ admin menu configuration, and default module flags.
 
 from __future__ import annotations
 
-from typing import Dict
-
-from core.registry.schemas import ModuleFlag, ModuleMetadata
+from core.registry.schemas import (
+    AdminMenuConfig,
+    BotKeyboardConfig,
+    ModuleFlag,
+    ModuleMetadata,
+)
 
 # ------------------------------------------------------------------
 # Translations (Persian / English)
 # ------------------------------------------------------------------
-DISPLAY_NAME: Dict[str, str] = {
+DISPLAY_NAME: dict[str, str] = {
     "en": "VPN Service",
     "fa": "سرویس VPN",
 }
 
-DESCRIPTION: Dict[str, str] = {
+DESCRIPTION: dict[str, str] = {
     "en": "Secure VPN services with WireGuard & VLESS+REALITY protocols",
     "fa": "سرویس‌های امن VPN با پروتکل‌های WireGuard و VLESS+REALITY",
-}
-
-BOT_KEYBOARD_TEXT: Dict[str, str] = {
-    "en": "🛡 VPN",
-    "fa": "🛡 وی‌پی‌ان",
-}
-
-BOT_KEYBOARD_DESCRIPTION: Dict[str, str] = {
-    "en": "Manage your VPN services, view usage, and download configs",
-    "fa": "مدیریت سرویس‌های VPN، مشاهده مصرف و دانلود کانفیگ",
-}
-
-ADMIN_MENU_LABEL: Dict[str, str] = {
-    "en": "VPN Management",
-    "fa": "مدیریت VPN",
 }
 
 # ------------------------------------------------------------------
@@ -58,17 +46,20 @@ metadata = ModuleMetadata(
     ),
     icon="shield_lock",
     tags=["network", "security", "tunnel", "vpn"],
-    bot_keyboard={
-        "text": BOT_KEYBOARD_TEXT,
-        "description": BOT_KEYBOARD_DESCRIPTION,
-        "row": 1,
-        "column": 1,
-    },
-    admin_menu={
-        "label": ADMIN_MENU_LABEL,
-        "endpoint": "/admin/vpn",
-        "order": 10,
-    },
+    bot_keyboard=BotKeyboardConfig(
+        text={"en": "🛡 VPN", "fa": "🛡 وی‌پی‌ان"},
+        description={
+            "en": "Manage your VPN services, view usage, and download configs",
+            "fa": "مدیریت سرویس‌های VPN، مشاهده مصرف و دانلود کانفیگ",
+        },
+        row=1,
+        column=1,
+    ),
+    admin_menu=AdminMenuConfig(
+        label={"en": "VPN Management", "fa": "مدیریت VPN"},
+        endpoint="/admin/vpn",
+        order=10,
+    ),
     default_config={
         "max_accounts_per_user": 5,
         "traffic_poll_interval_seconds": 300,
@@ -77,4 +68,4 @@ metadata = ModuleMetadata(
     },
 )
 
-__all__ = ["metadata", "DISPLAY_NAME", "DESCRIPTION"]
+__all__ = ["metadata"]

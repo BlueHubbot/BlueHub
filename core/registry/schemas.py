@@ -39,6 +39,24 @@ class ModuleFlag(BaseModel):
     )
 
 
+class BotKeyboardConfig(BaseModel):
+    """Telegram bot keyboard configuration for a module."""
+
+    text: str | dict[str, str] = Field(..., description="Button label (string or i18n dict)")
+    description: str | dict[str, str] = Field(default="", description="Button description (string or i18n dict)")
+    row: int = Field(default=0, description="Keyboard row position")
+    column: int = Field(default=0, description="Keyboard column position")
+
+
+class AdminMenuConfig(BaseModel):
+    """Admin panel menu configuration for a module."""
+
+    label: str | dict[str, str] = Field(..., description="Menu label (string or i18n dict)")
+    endpoint: str = Field(default="", description="Admin panel route endpoint")
+    icon: str | None = Field(default=None, description="Menu icon identifier")
+    order: int = Field(default=10, description="Menu display order")
+
+
 class ModuleMetadata(BaseModel):
     """
     Metadata defining a pluggable service module.
@@ -46,8 +64,8 @@ class ModuleMetadata(BaseModel):
     """
 
     name: str = Field(..., description="Unique module identifier")
-    display_name: str = Field(..., description="Human-readable module name")
-    description: str = Field(default="", description="Module description")
+    display_name: str | dict[str, str] = Field(..., description="Human-readable module name (string or i18n dict)")
+    description: str | dict[str, str] = Field(default="", description="Module description (string or i18n dict)")
     version: str = Field(default="1.0.0", description="Module version (semver)")
     order: int = Field(default=0, description="Display/processing order")
     config_schema: dict[str, Any] | None = Field(
@@ -69,6 +87,18 @@ class ModuleMetadata(BaseModel):
     tags: list[str] = Field(
         default_factory=list,
         description="Tags for categorisation",
+    )
+    bot_keyboard: BotKeyboardConfig | None = Field(
+        default=None,
+        description="Telegram bot keyboard configuration",
+    )
+    admin_menu: AdminMenuConfig | None = Field(
+        default=None,
+        description="Admin panel menu configuration",
+    )
+    default_config: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Default module configuration values",
     )
 
 
@@ -107,6 +137,8 @@ class ModuleToggleRequest(BaseModel):
 
 
 __all__ = [
+    "AdminMenuConfig",
+    "BotKeyboardConfig",
     "ModuleFlag",
     "ModuleMetadata",
     "ModuleRegistryResponse",
