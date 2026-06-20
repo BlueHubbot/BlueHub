@@ -16,7 +16,6 @@ Covers:
 from __future__ import annotations
 
 import json
-import os
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -25,16 +24,12 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from modules.vpn.xray import (
-    DEFAULT_ALPN,
     DEFAULT_FALLBACK_SNI,
-    DEFAULT_FINGERPRINT,
     DEFAULT_FLOW,
     DEFAULT_NETWORK,
     DEFAULT_SECURITY,
     DEFAULT_SHORT_ID_LENGTH,
-    DEFAULT_SNI_DOMAIN,
     DEFAULT_VLESS_PORT,
-    DEFAULT_XRAY_CONFIG_DIR,
     RealityKeyPair,
     XrayError,
     XrayKeyGenerationError,
@@ -62,7 +57,7 @@ TEST_SNI = "www.microsoft.com"
 # Fixtures
 # ---------------------------------------------------------------------------
 
-@pytest.fixture
+@pytest.fixture()
 def mock_keypair() -> RealityKeyPair:
     """Return a predictable RealityKeyPair for test use."""
     return RealityKeyPair(
@@ -71,7 +66,7 @@ def mock_keypair() -> RealityKeyPair:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_vpn_server() -> MagicMock:
     """Create a mock VPN server with typical attributes."""
     server = MagicMock()
@@ -84,7 +79,7 @@ def mock_vpn_server() -> MagicMock:
     return server
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_vpn_account() -> MagicMock:
     """Create a mock VPN account with typical attributes."""
     account = MagicMock()
@@ -697,7 +692,6 @@ class TestSuspendAccount:
         self, mock_vpn_server: MagicMock, mock_vpn_account: MagicMock, tmp_path: Path
     ) -> None:
         """Verify suspend when config file doesn't exist."""
-        from modules.vpn.xray import DEFAULT_XRAY_CONFIG_DIR as orig_dir
 
         mock_vpn_account.password = TEST_UUID
         with patch("modules.vpn.xray.DEFAULT_XRAY_CONFIG_DIR", tmp_path):
@@ -891,7 +885,7 @@ class TestRestoreAccount:
 class TestTrafficParsing:
     """Tests for parse_traffic_from_log and get_user_traffic."""
 
-    @pytest.fixture
+    @pytest.fixture()
     def sample_log_content(self) -> str:
         """Sample Xray access log content in the format the parser expects."""
         return (

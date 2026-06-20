@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.billing import BillingService
@@ -30,6 +30,7 @@ from core.billing.schemas import (
     TenantPricingResponse,
     TransactionListResponse,
     TransactionResponse,
+    UpdateProductRequest,
     WalletBalanceResponse,
     WalletDeductRequest,
     WalletTopUpRequest,
@@ -321,9 +322,10 @@ async def update_product(
 async def delete_product(
     product_id: str,
     service: BillingService = Depends(_get_billing_service),
-) -> None:
+):
     """Soft-delete a product."""
     await service.delete_product(product_id)
+    return Response(status_code=204)
 
 
 # ── Tenant Pricing Endpoints ────────────────────────────────────────────────
@@ -385,9 +387,10 @@ async def delete_tenant_pricing(
     tenant_id: str,
     product_id: str,
     service: BillingService = Depends(_get_billing_service),
-) -> None:
+):
     """Remove tenant-specific pricing."""
     await service.delete_tenant_pricing(tenant_id, product_id)
+    return Response(status_code=204)
 
 
 # ── Commission Endpoints ───────────────────────────────────────────────────

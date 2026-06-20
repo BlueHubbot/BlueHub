@@ -1,5 +1,5 @@
 """Search for patterns in test_xray.py that may mismatch xray.py"""
-with open("d:/BlueHub/tests/unit/test_xray.py", "r") as f:
+with open("d:/BlueHub/tests/unit/test_xray.py") as f:
     content = f.read()
 
 patterns = [

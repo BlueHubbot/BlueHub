@@ -1,5 +1,5 @@
-import re
 import os
+import re
 
 # Try to find tasks.md
 possible_paths = [
@@ -19,7 +19,7 @@ if not tasks_path:
     exit(1)
 
 print(f"Reading: {tasks_path}")
-content = open(tasks_path, 'r', encoding='utf-8').read()
+content = open(tasks_path, encoding='utf-8').read()
 
 # Split into task blocks - handle both formats:
 # Format A: ### TASK-XXX: Title ...
@@ -104,7 +104,7 @@ def parse_title(block):
         # Use description line
         m = re.search(r'\*\*Description:\*\*\s*\n\s*(.+)', block)
         title = m.group(1).strip() if m else 'N/A'
-    
+
     # Strip emojis and non-ASCII
     title = title.encode('ascii', errors='ignore').decode('ascii')
     return title[:100]
@@ -134,13 +134,13 @@ for task_id, block, _ in all_tasks:
     priority = parse_priority(block)
     title = parse_title(block)
     deps = parse_deps(block)
-    
+
     deps_completed = all(d in completed for d in deps)
-    
+
     print(f'{task_id}: [{status}] [{priority}] {title}')
     print(f'   Dependencies: {deps if deps else "None"}')
     if deps_completed:
-        print(f'   >>> ALL DEPS SATISFIED - READY TO EXECUTE! <<<')
+        print('   >>> ALL DEPS SATISFIED - READY TO EXECUTE! <<<')
         found = task_id
         break
     else:

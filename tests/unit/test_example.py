@@ -42,26 +42,26 @@ class TenantContextResolver:
 # UNIT TESTS (FastAPI Async Compatible)
 # ----------------------------------------------------------------------
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_resolve_tenant_success():
     """Verifies the context resolver properly handles a valid, active tenant."""
     tenant_data = TenantContextResolver.resolve("tenant-alpha")
     assert tenant_data["name"] == "Reseller Alpha"
     assert tenant_data["active"] is True
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_resolve_tenant_empty():
     """Ensures that passing an empty string as a tenant ID raises a ValueError."""
     with pytest.raises(ValueError, match="X-Tenant-Id header cannot be null"):
         TenantContextResolver.resolve("")
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_resolve_tenant_missing():
     """Ensures that querying an unregistered tenant raises a LookupError."""
     with pytest.raises(LookupError, match="not registered"):
         TenantContextResolver.resolve("tenant-unknown")
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_resolve_tenant_suspended():
     """Ensures that querying a suspended tenant raises a PermissionError."""
     with pytest.raises(PermissionError, match="is suspended"):

@@ -8,7 +8,7 @@ for all database models.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy import DateTime, String, func
@@ -95,7 +95,7 @@ class SoftDeleteMixin:
 
     def soft_delete(self) -> None:
         """Mark the record as deleted."""
-        self.deleted_at = datetime.now(timezone.utc)
+        self.deleted_at = datetime.now(UTC)
         self.is_deleted = True
 
     def restore(self) -> None:

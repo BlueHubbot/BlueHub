@@ -15,9 +15,8 @@ import io
 import logging
 import re
 import subprocess  # nosec: B404 - wg commands are intentionally invoked
-import tempfile
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -482,7 +481,7 @@ class WireGuardService:
             try:
                 last_handshake_ts = int(parts[4])
                 last_handshake = (
-                    datetime.fromtimestamp(last_handshake_ts, tz=timezone.utc)
+                    datetime.fromtimestamp(last_handshake_ts, tz=UTC)
                     if last_handshake_ts > 0
                     else None
                 )
@@ -559,7 +558,7 @@ class WireGuardService:
             Dict mapping public_key -> bool (True if connected).
         """
         peers = WireGuardService.poll_traffic(interface=interface)
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
 
         result: dict[str, bool] = {}
         for peer in peers:
@@ -597,8 +596,8 @@ class WireGuardService:
 
     @staticmethod
     def sync_peer(
-        server: "VpnServer",
-        account: "VpnAccount",
+        server: VpnServer,
+        account: VpnAccount,
         *,
         interface: str = DEFAULT_WG_INTERFACE,
     ) -> bool:
@@ -617,7 +616,6 @@ class WireGuardService:
         Returns:
             True if the peer was successfully synced.
         """
-        from modules.vpn.models import VpnServer, VpnAccount
 
         try:
             # Remove existing peer (ignore if not found)

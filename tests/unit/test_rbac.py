@@ -10,8 +10,7 @@ Run: pytest tests/unit/test_rbac.py -v --asyncio-mode=auto
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from typing import Any
+from datetime import UTC, datetime
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -263,17 +262,17 @@ class TestCheckPermission:
 class TestRBACService:
     """Tests for RBACService class methods."""
 
-    @pytest.fixture
+    @pytest.fixture()
     def mock_session(self):
         """Create a mock async session."""
         return AsyncMock()
 
-    @pytest.fixture
+    @pytest.fixture()
     def service(self, mock_session):
         """Create an RBACService instance with a mock session."""
         return RBACService(session=mock_session)
 
-    @pytest.fixture
+    @pytest.fixture()
     def sample_user(self):
         """Create a sample User instance for testing."""
         user = MagicMock(spec=User)
@@ -284,7 +283,7 @@ class TestRBACService:
         user.is_reseller = False
         return user
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_user_role_success(self, service, mock_session):
         """Test get_user_role returns the role string."""
         mock_result = MagicMock()
@@ -294,7 +293,7 @@ class TestRBACService:
         role = await service.get_user_role("test-user-id")
         assert role == "admin"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_user_role_not_found(self, service, mock_session):
         """Test get_user_role raises UserNotFoundError."""
         mock_result = MagicMock()
@@ -305,7 +304,7 @@ class TestRBACService:
             await service.get_user_role("nonexistent-id")
         assert "not found" in exc_info.value.message.lower()
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_check_user_permission_granted(self, service, mock_session):
         """Test check_user_permission returns True when allowed."""
         mock_result = MagicMock()
@@ -317,7 +316,7 @@ class TestRBACService:
         )
         assert result is True
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_check_user_permission_denied(self, service, mock_session):
         """Test check_user_permission returns False when denied."""
         mock_result = MagicMock()
@@ -329,7 +328,7 @@ class TestRBACService:
         )
         assert result is False
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_check_user_permission_not_found(self, service, mock_session):
         """Test check_user_permission returns False for unknown user."""
         mock_result = MagicMock()
@@ -341,7 +340,7 @@ class TestRBACService:
         )
         assert result is False
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_assign_role_success(self, service, mock_session, sample_user):
         """Test assign_role successfully updates user role."""
         # Mock session.execute to return the sample_user
@@ -361,7 +360,7 @@ class TestRBACService:
             mock_session.commit.assert_awaited_once()
             mock_session.refresh.assert_awaited_once_with(sample_user)
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_assign_role_invalid_role(self, service, mock_session):
         """Test assign_role raises InvalidRoleAssignmentError for invalid role."""
         with pytest.raises(InvalidRoleAssignmentError) as exc_info:
@@ -372,7 +371,7 @@ class TestRBACService:
             )
         assert "Invalid role" in exc_info.value.message
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_assign_role_insufficient_privileges(
         self, service, mock_session
     ):
@@ -386,7 +385,7 @@ class TestRBACService:
                 )
             assert "Cannot assign" in exc_info.value.message
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_assign_role_user_not_found(self, service, mock_session):
         """Test assign_role raises UserNotFoundError."""
         mock_result = MagicMock()
@@ -402,7 +401,7 @@ class TestRBACService:
                 )
             assert "not found" in exc_info.value.message.lower()
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_role_granted(self, service, mock_session):
         """Test require_role does not raise for authorized user."""
         mock_result = MagicMock()
@@ -414,7 +413,7 @@ class TestRBACService:
             "test-user-id", required_roles=["admin", "superadmin"]
         )
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_role_denied(self, service, mock_session):
         """Test require_role raises HTTPException 403 for unauthorized user."""
         mock_result = MagicMock()
@@ -427,7 +426,7 @@ class TestRBACService:
             )
         assert exc_info.value.status_code == status.HTTP_403_FORBIDDEN
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_role_not_found(self, service, mock_session):
         """Test require_role raises HTTPException 404 for unknown user."""
         mock_result = MagicMock()
@@ -440,7 +439,7 @@ class TestRBACService:
             )
         assert exc_info.value.status_code == status.HTTP_404_NOT_FOUND
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_users_by_role(self, service, mock_session):
         """Test get_users_by_role returns users and total count."""
         mock_users = [MagicMock(spec=User) for _ in range(3)]
@@ -458,7 +457,7 @@ class TestRBACService:
         assert len(users) == 3
         assert total == 3
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_users_by_role_invalid_role(self, service, mock_session):
         """Test get_users_by_role returns empty for invalid role."""
         users, total = await service.get_users_by_role(
@@ -476,7 +475,7 @@ class TestRBACService:
 class TestRequireRoleDecorator:
     """Tests for the @require_role() decorator."""
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_role_allowed(self):
         """Test decorator passes for allowed role."""
         mock_user = MagicMock(spec=User)
@@ -489,7 +488,7 @@ class TestRequireRoleDecorator:
         result = await test_endpoint(current_user=mock_user)
         assert result == {"success": True}
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_role_denied(self):
         """Test decorator raises 403 for disallowed role."""
         mock_user = MagicMock(spec=User)
@@ -504,7 +503,7 @@ class TestRequireRoleDecorator:
         assert exc_info.value.status_code == status.HTTP_403_FORBIDDEN
         assert "Insufficient permissions" in exc_info.value.detail
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_role_no_user(self):
         """Test decorator raises 401 when no user is provided."""
 
@@ -516,7 +515,7 @@ class TestRequireRoleDecorator:
             await test_endpoint(current_user=None)
         assert exc_info.value.status_code == status.HTTP_401_UNAUTHORIZED
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_role_with_user_role_enum(self):
         """Test decorator works with UserRole enum values."""
         mock_user = MagicMock(spec=User)
@@ -533,7 +532,7 @@ class TestRequireRoleDecorator:
 class TestRequirePermissionDecorator:
     """Tests for the @require_permission() decorator (alias for require_role)."""
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_permission_allowed(self):
         """Test decorator passes for allowed role."""
         mock_user = MagicMock(spec=User)
@@ -546,7 +545,7 @@ class TestRequirePermissionDecorator:
         result = await test_endpoint(current_user=mock_user)
         assert result == {"success": True}
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_permission_denied(self):
         """Test decorator raises 403 for disallowed role."""
         mock_user = MagicMock(spec=User)
@@ -564,7 +563,7 @@ class TestRequirePermissionDecorator:
 class TestHasRoleDependency:
     """Tests for the has_role FastAPI dependency."""
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_has_role_true(self):
         """Test has_role returns True when user has required role."""
         mock_user = MagicMock(spec=User)
@@ -575,7 +574,7 @@ class TestHasRoleDependency:
         )
         assert result is True
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_has_role_false(self):
         """Test has_role returns False when user lacks required role."""
         mock_user = MagicMock(spec=User)
@@ -590,7 +589,7 @@ class TestHasRoleDependency:
 class TestRequireAdminDependency:
     """Tests for the require_admin FastAPI dependency."""
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_admin_allowed(self):
         """Test require_admin returns the user for admin roles."""
         mock_user = MagicMock(spec=User)
@@ -599,7 +598,7 @@ class TestRequireAdminDependency:
         result = await require_admin(current_user=mock_user)
         assert result is mock_user
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_require_admin_denied(self):
         """Test require_admin raises 403 for non-admin."""
         mock_user = MagicMock(spec=User)
@@ -686,7 +685,7 @@ class TestRBACSchemas:
 
     def test_role_update_response(self):
         """Test RoleUpdateResponse schema."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         rur = RoleUpdateResponse(
             user_id="user-1",
             old_role="user",
@@ -719,7 +718,7 @@ class TestRBACExceptions:
     def test_invalid_role_assignment_error(self):
         exc = InvalidRoleAssignmentError("Cannot assign this role")
         assert exc.message == "Cannot assign this role"
-        assert exc.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
+        assert exc.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     def test_insufficient_privileges_error(self):
         exc = InsufficientPrivilegesError(["admin", "superadmin"])

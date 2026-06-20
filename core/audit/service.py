@@ -7,9 +7,10 @@ and managing the immutable audit trail.
 
 from __future__ import annotations
 
+from datetime import UTC
 from typing import Any
 
-from sqlalchemy import func, select, delete
+from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from shared.models.audit_log import AuditLog
@@ -283,9 +284,9 @@ class AuditService:
         Returns:
             Number of deleted log entries.
         """
-        from datetime import datetime, timedelta, timezone
+        from datetime import datetime, timedelta
 
-        cutoff_date = datetime.now(timezone.utc) - timedelta(days=retention_days)
+        cutoff_date = datetime.now(UTC) - timedelta(days=retention_days)
 
         stmt = delete(AuditLog).where(AuditLog.created_at < cutoff_date)
         result = await self.session.execute(stmt)
@@ -311,7 +312,6 @@ class AuditService:
         Returns:
             Dict with statistics: total_logs, actions_by_type, etc.
         """
-        from sqlalchemy import cast, Date
 
         # Count total
         count_query = select(func.count(AuditLog.id))

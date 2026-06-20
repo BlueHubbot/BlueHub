@@ -8,7 +8,7 @@ Runs every 5 minutes via Celery Beat.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from services.celery_app import celery_app
 
@@ -34,7 +34,7 @@ def heartbeat_check(self) -> dict:
     Returns heartbeat status information.
     """
     try:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         logger.info("Heartbeat check at %s", now.isoformat())
 
         result = {
@@ -68,7 +68,7 @@ def check_broker_connection(self) -> dict:
         # when this task is received and executed
         result = {
             "status": "connected",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
         }
         logger.debug("Broker connection check: %s", result["status"])
         return result

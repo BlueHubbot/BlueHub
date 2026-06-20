@@ -64,7 +64,7 @@ def _load_translation_file(locale: str) -> dict[str, Any]:
         return {}
 
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             return json.load(f)
     except json.JSONDecodeError as e:
         logger.error(f"Invalid JSON in translation file {file_path}: {e}")

@@ -10,10 +10,11 @@ Covers both admin and client-facing endpoints for the VPS module.
 
 from __future__ import annotations
 
+from datetime import UTC
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -293,21 +294,21 @@ async def update_vps_instance(
         if hasattr(instance, field):
             setattr(instance, field, value)
 
-    from datetime import datetime, timezone
+    from datetime import datetime
 
-    instance.updated_at = datetime.now(tz=timezone.utc)
+    instance.updated_at = datetime.now(tz=UTC)
     await session.commit()
     await session.refresh(instance)
 
     return _build_instance_response(instance)
 
 
-@router.delete("/instances/{instance_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/instances/{instance_id}")
 async def delete_vps_instance(
     instance_id: UUID,
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
     current_user: User = Depends(get_current_user),  # noqa: B008
-) -> None:
+):
     """
     Decommission a VPS instance.
 
@@ -676,14 +677,13 @@ async def list_snapshots(
 
 @router.delete(
     "/instances/{instance_id}/snapshots/{snapshot_name}",
-    status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_snapshot(
     instance_id: UUID,
     snapshot_name: str,
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
     current_user: User = Depends(get_current_user),  # noqa: B008
-) -> None:
+):
     """
     Delete a snapshot of a VPS instance by name.
     Requires admin privileges.

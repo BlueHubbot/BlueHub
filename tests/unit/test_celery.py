@@ -7,9 +7,9 @@ and basic task execution using eager mode.
 
 from __future__ import annotations
 
-import pytest
+from datetime import datetime
+
 from celery import Celery
-from datetime import datetime, timezone
 
 from services.celery_app import celery_app, get_celery_app
 

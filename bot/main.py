@@ -7,19 +7,18 @@ Integrates i18n and authentication middleware.
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.fsm.storage.redis import RedisStorage, DefaultKeyBuilder
+from aiogram.fsm.storage.redis import DefaultKeyBuilder, RedisStorage
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web as aiohttp_web
 
 from bot.handlers import register_all_handlers
-from bot.middleware.i18n import I18nMiddleware
 from bot.middleware.auth import AuthMiddleware
+from bot.middleware.i18n import I18nMiddleware
 from core.config import settings
 
 logger = logging.getLogger(__name__)
@@ -50,7 +49,7 @@ def _build_storage():
     return _storage
 
 
-async def _resolve_redis_storage() -> Optional[RedisStorage]:
+async def _resolve_redis_storage() -> RedisStorage | None:
     """Attempt to create Redis storage from configured URL."""
     try:
         import redis.asyncio as aioredis

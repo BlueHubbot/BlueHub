@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
-    from bot.main import create_bot, create_dispatcher  # noqa: F811
+    from bot.main import create_bot, create_dispatcher
 except ImportError as e:
     logger.warning("aiogram not installed; bot functions unavailable: %s", e)
 

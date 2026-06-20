@@ -10,8 +10,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import Any, Optional
-from urllib.parse import urlparse
+from typing import Any
 
 try:
     import backoff  # type: ignore[import-untyped]
@@ -25,7 +24,11 @@ except ImportError as e:  # pragma: no cover - only when deps not installed
         "Install with: pip install pybreaker"
     ) from e
 try:
-    from proxmoxer import ProxmoxAPI, AuthenticationError, ResourceException  # type: ignore[import-untyped]
+    from proxmoxer import (  # type: ignore[import-untyped]
+        AuthenticationError,
+        ProxmoxAPI,
+        ResourceException,
+    )
     from proxmoxer.backends import https  # type: ignore[import-untyped]
 except ImportError as e:  # pragma: no cover - only when deps not installed
     raise ImportError(
@@ -228,7 +231,7 @@ class ProxmoxClient:
         await self.connect()
         return self
 
-    async def __aexit__(self, *args: Any) -> None:
+    async def __aexit__(self, *args: object) -> None:
         await self.disconnect()
 
     async def connect(self) -> None:

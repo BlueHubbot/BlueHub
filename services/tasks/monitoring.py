@@ -8,7 +8,7 @@ Runs every minute via Celery Beat.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from services.celery_app import celery_app
 
@@ -34,7 +34,7 @@ def check_service_health(self) -> dict:
     Returns health check status information.
     """
     try:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         logger.info("Health check at %s", now.isoformat())
 
         result = {

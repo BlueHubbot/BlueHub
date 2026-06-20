@@ -12,17 +12,14 @@ Periodic tasks for VPN operations:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta, timezone
-from typing import Optional
+from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
-from sqlalchemy import select, update, func, delete
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
+from sqlalchemy import select
 
-from core.database import async_session_factory
 from core.audit.logger import AuditLogger
 from modules.vpn.models import (
+    TrafficUsage,
     VpnAccount,
     VpnAccountStatus,
     VpnProtocol,
@@ -30,14 +27,12 @@ from modules.vpn.models import (
     VpnServerStatus,
     VpnSession,
     VpnSessionStatus,
-    TrafficUsage,
 )
-from modules.vpn.services import VpnAccountService, AccountTrafficSummary, VpnProvisioningError
-from modules.vpn.wireguard import WireGuardService
-from modules.vpn.xray import XrayService
+from modules.vpn.services import VpnAccountService
 from modules.vpn.vpn_servers import VpnServerService
+from modules.vpn.wireguard import WireGuardService
 from services.celery_app import celery_app
-from shared.models.enums import ServiceModule, AuditAction, ServiceStatus
+from shared.models.enums import ServiceStatus
 from shared.models.service import Service
 
 logger = logging.getLogger("bluehub.tasks.vpn")
@@ -69,7 +64,7 @@ DEFAULT_PEER_RENEW_INTERVAL = 86400  # 24 hours
 def sync_wg_connections(
     self,
     interface: str = DEFAULT_WG_INTERFACE,
-    tenant_id: Optional[str] = None,
+    tenant_id: str | None = None,
 ) -> dict:
     """
     Detect active WireGuard connections and sync session records.
@@ -111,7 +106,7 @@ def sync_wg_connections(
                 audit_logger = AuditLogger(db)
                 await audit_logger.log_update(
                     resource_type="vpn_connections",
-                    resource_id=f"wg_sync_{datetime.now(timezone.utc).isoformat()}",
+                    resource_id=f"wg_sync_{datetime.now(UTC).isoformat()}",
                     tenant_id=tenant_id or "system",
                     details={
                         "connected": connected_count,
@@ -124,7 +119,7 @@ def sync_wg_connections(
                 return {
                     "status": "completed",
                     "task_id": self.request.id,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                     "connected": connected_count,
                     "disconnected": disconnected_count,
                     "total_accounts": len(result_map),
@@ -220,7 +215,7 @@ def sync_all_connections(
         return {
             "status": "completed",
             "task_id": self.request.id,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "results": results,
             "errors": [k for k, v in results.items() if "error" in v],
         }
@@ -277,7 +272,7 @@ def sync_wg_traffic(
                 total_bytes_received = sum(s.bytes_received for s in summaries)
 
                 # Record traffic snapshots
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
                 for summary in summaries:
                     snapshot = TrafficUsage(
                         id=str(uuid4()),
@@ -357,7 +352,7 @@ def sync_xray_traffic(self) -> dict:
                 total_bytes_received = sum(s.bytes_received for s in summaries)
 
                 # Record traffic snapshots
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
                 for summary in summaries:
                     snapshot = TrafficUsage(
                         id=str(uuid4()),
@@ -429,7 +424,7 @@ def sync_all_traffic(
 
     async def _run():
         results = {}
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         # WG traffic
         try:
@@ -522,7 +517,7 @@ def check_exceeded_traffic(self) -> dict:
             from core.database import async_session_factory
 
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
 
                 # Find accounts exceeding data limits
                 # Note: VpnAccount.server_rel uses lazy="selectin", so no explicit
@@ -621,7 +616,7 @@ def renew_peer_configs(
             from core.database import async_session_factory
 
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
 
                 # Get active WG servers
                 stmt = select(VpnServer).where(
@@ -744,7 +739,7 @@ def check_vpn_server_health(self) -> dict:
             from core.database import async_session_factory
 
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
 
                 stmt = select(VpnServer).where(
                     VpnServer.status.in_(
@@ -856,7 +851,7 @@ def cleanup_stale_sessions(
             from core.database import async_session_factory
 
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
                 cutoff = now - timedelta(minutes=max_age_minutes)
 
                 # Find stale connected sessions
@@ -951,8 +946,8 @@ def provision_vpn_service(
 
     async def _run():
         try:
+
             from core.database import async_session_factory
-            from sqlalchemy.orm import selectinload
 
             async with async_session_factory() as db:
                 from modules.vpn.models import VpnProtocol as VpnP
@@ -983,7 +978,7 @@ def provision_vpn_service(
                 svc = await db.get(Service, service_id)
                 if svc:
                     svc.status = ServiceStatus.ACTIVE
-                    svc.provisioned_at = datetime.now(timezone.utc)
+                    svc.provisioned_at = datetime.now(UTC)
                     await db.flush()
 
                 audit_logger = AuditLogger(db)
@@ -1008,7 +1003,7 @@ def provision_vpn_service(
                 return {
                     "status": "provisioned",
                     "task_id": self.request.id,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                     "account_id": account.id,
                     "service_id": service_id,
                     "protocol": protocol,
@@ -1068,11 +1063,12 @@ def check_vpn_expiration(self) -> dict:
 
     async def _run():
         try:
-            from core.database import async_session_factory
             from sqlalchemy.orm import selectinload
 
+            from core.database import async_session_factory
+
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
                 cutoff = now + timedelta(hours=24)
 
                 # Find VPN services expiring soon
@@ -1178,11 +1174,12 @@ def suspend_expired_vpn(self) -> dict:
 
     async def _run():
         try:
-            from core.database import async_session_factory
             from sqlalchemy.orm import selectinload
 
+            from core.database import async_session_factory
+
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
 
                 # Find expired but still active VPN accounts
                 stmt = (
@@ -1290,13 +1287,13 @@ def auto_renew_vpn(self) -> dict:
 
     async def _run():
         try:
-            from core.database import async_session_factory
             from sqlalchemy.orm import selectinload
 
-            async with async_session_factory() as db:
-                from shared.models.user import User
+            from core.database import async_session_factory
 
-                now = datetime.now(timezone.utc)
+            async with async_session_factory() as db:
+
+                now = datetime.now(UTC)
                 cutoff = now + timedelta(hours=12)
 
                 # Find VPN services expiring within 12 hours, still active

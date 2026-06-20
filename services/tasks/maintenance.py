@@ -8,7 +8,7 @@ Runs daily via Celery Beat at scheduled times.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from services.celery_app import celery_app
 
@@ -44,7 +44,7 @@ def database_cleanup(
     Returns cleanup operation summary.
     """
     try:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         cutoff_date = now - timedelta(days=retention_days)
 
         logger.info(
@@ -96,7 +96,7 @@ def cleanup_audit_logs(
     Returns cleanup operation summary.
     """
     try:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         cutoff_date = now - timedelta(days=retention_days)
 
         logger.info(

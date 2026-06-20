@@ -24,9 +24,7 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.registry.service import module_registry_service
-from dependencies.auth import get_current_user
 from dependencies.db import get_async_session
-from shared.models.user import User
 
 F = TypeVar("F", bound=Callable[..., Any])
 

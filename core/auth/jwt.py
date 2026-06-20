@@ -7,7 +7,7 @@ Auto-generates RSA key pair on first run if keys are missing.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -143,7 +143,7 @@ def generate_access_token(
         A signed JWT access token string.
     """
     settings = get_settings()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     payload: dict[str, Any] = {
         "sub": user_id,
         "role": role,
@@ -171,7 +171,7 @@ def generate_refresh_token(user_id: str) -> str:
         A signed JWT refresh token string.
     """
     settings = get_settings()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     payload: dict[str, Any] = {
         "sub": user_id,
         "iat": now,

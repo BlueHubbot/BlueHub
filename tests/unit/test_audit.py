@@ -10,9 +10,8 @@ Run: python -m pytest tests/unit/test_audit.py -v --asyncio-mode=auto
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
-from typing import Any
-from unittest.mock import AsyncMock, MagicMock, patch
+from datetime import UTC, datetime
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,31 +27,30 @@ from core.audit.service import AuditLogNotFoundError, AuditService
 from shared.models.audit_log import AuditLog
 from shared.models.enums import AuditAction
 
-
 # ──────────────────────────────────────────────
 # Fixtures
 # ──────────────────────────────────────────────
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_session():
     """Create a mock async session."""
     return AsyncMock(spec=AsyncSession)
 
 
-@pytest.fixture
+@pytest.fixture()
 def service(mock_session):
     """Create an AuditService instance with a mock session."""
     return AuditService(session=mock_session)
 
 
-@pytest.fixture
+@pytest.fixture()
 def logger(mock_session):
     """Create an AuditLogger instance with a mock session."""
     return AuditLogger(session=mock_session)
 
 
-@pytest.fixture
+@pytest.fixture()
 def sample_audit_log():
     """Create a sample AuditLog instance for testing."""
     log = MagicMock(spec=AuditLog)
@@ -65,8 +63,8 @@ def sample_audit_log():
     log.details = {"key": "value", "email": "test@example.com"}
     log.ip_address = "192.168.1.100"
     log.user_agent = "Mozilla/5.0 Test Agent"
-    log.timestamp = datetime.now(timezone.utc)
-    log.created_at = datetime.now(timezone.utc)
+    log.timestamp = datetime.now(UTC)
+    log.created_at = datetime.now(UTC)
     return log
 
 
@@ -80,7 +78,7 @@ class TestAuditService:
 
     # ── log_event ──────────────────────────────
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_event_creates_entry(self, service, mock_session):
         """Test log_event creates an AuditLog entry and returns it."""
         # Configure mock to simulate refresh setting an ID
@@ -117,7 +115,7 @@ class TestAuditService:
         assert result.ip_address == "10.0.0.1"
         assert result.user_agent == "TestAgent/1.0"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_event_with_string_action(self, service, mock_session):
         """Test log_event accepts string action values."""
         mock_session.refresh = AsyncMock()
@@ -129,7 +127,7 @@ class TestAuditService:
 
         assert result.action == AuditAction.CREATE
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_event_with_unknown_string_action(self, service, mock_session):
         """Test log_event passes through unknown string actions."""
         mock_session.refresh = AsyncMock()
@@ -141,7 +139,7 @@ class TestAuditService:
 
         assert result.action == "custom_action"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_event_minimal_params(self, service, mock_session):
         """Test log_event works with only required parameters."""
         mock_session.refresh = AsyncMock()
@@ -160,7 +158,7 @@ class TestAuditService:
 
     # ── get_log ───────────────────────────────
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_log_found(self, service, mock_session, sample_audit_log):
         """Test get_log returns the log entry when found."""
         mock_result = MagicMock()
@@ -173,7 +171,7 @@ class TestAuditService:
         assert result.id == sample_audit_log.id
         assert result.action == AuditAction.CREATE
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_log_not_found(self, service, mock_session):
         """Test get_log raises AuditLogNotFoundError when not found."""
         mock_result = MagicMock()
@@ -187,7 +185,7 @@ class TestAuditService:
 
     # ── query_logs ────────────────────────────
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_query_logs_no_filters(self, service, mock_session, sample_audit_log):
         """Test query_logs returns all entries without filters."""
         mock_count_result = MagicMock()
@@ -211,7 +209,7 @@ class TestAuditService:
         assert len(entries) == 3
         assert entries[0] is sample_audit_log
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_query_logs_with_action_filter(self, service, mock_session, sample_audit_log):
         """Test query_logs filters by action type."""
         mock_count_result = MagicMock()
@@ -229,7 +227,7 @@ class TestAuditService:
         assert total == 1
         assert len(entries) == 1
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_query_logs_with_resource_filter(self, service, mock_session, sample_audit_log):
         """Test query_logs filters by resource type."""
         mock_count_result = MagicMock()
@@ -246,7 +244,7 @@ class TestAuditService:
 
         assert total == 1
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_query_logs_with_user_filter(self, service, mock_session, sample_audit_log):
         """Test query_logs filters by user ID."""
         mock_count_result = MagicMock()
@@ -263,7 +261,7 @@ class TestAuditService:
 
         assert total == 1
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_query_logs_with_date_filters(self, service, mock_session, sample_audit_log):
         """Test query_logs filters by date range."""
         mock_count_result = MagicMock()
@@ -283,7 +281,7 @@ class TestAuditService:
 
         assert total == 1
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_query_logs_pagination(self, service, mock_session, sample_audit_log):
         """Test query_logs supports pagination."""
         mock_count_result = MagicMock()
@@ -303,7 +301,7 @@ class TestAuditService:
 
     # ── get_logs_by_user ──────────────────────
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_logs_by_user(self, service, mock_session, sample_audit_log):
         """Test get_logs_by_user delegates to query_logs with user_id."""
         mock_count_result = MagicMock()
@@ -330,7 +328,7 @@ class TestAuditService:
 
     # ── get_logs_by_resource ──────────────────
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_logs_by_resource(self, service, mock_session, sample_audit_log):
         """Test get_logs_by_resource delegates to query_logs."""
         mock_count_result = MagicMock()
@@ -353,7 +351,7 @@ class TestAuditService:
 
     # ── get_logs_by_tenant ────────────────────
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_logs_by_tenant(self, service, mock_session, sample_audit_log):
         """Test get_logs_by_tenant delegates to query_logs."""
         mock_count_result = MagicMock()
@@ -375,7 +373,7 @@ class TestAuditService:
 
     # ── cleanup_old_logs ──────────────────────
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_cleanup_old_logs(self, service, mock_session):
         """Test cleanup_old_logs deletes old entries and returns count."""
         mock_result = MagicMock()
@@ -389,7 +387,7 @@ class TestAuditService:
         assert mock_session.execute.awaited_once
         assert mock_session.commit.awaited_once
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_cleanup_old_logs_default_retention(self, service, mock_session):
         """Test cleanup_old_logs uses 365-day default retention."""
         mock_result = MagicMock()
@@ -400,7 +398,7 @@ class TestAuditService:
 
         assert count == 0
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_cleanup_old_logs_no_old_logs(self, service, mock_session):
         """Test cleanup_old_logs returns 0 when no logs to delete."""
         mock_result = MagicMock()
@@ -413,7 +411,7 @@ class TestAuditService:
 
     # ── get_stats ─────────────────────────────
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_stats(self, service, mock_session):
         """Test get_stats returns aggregated statistics."""
         # First mock: total count
@@ -454,7 +452,7 @@ class TestAuditService:
         assert stats["resources"]["user"] == 7
         assert stats["resources"]["auth"] == 3
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_stats_with_filters(self, service, mock_session):
         """Test get_stats applies tenant and date filters."""
         mock_total_result = MagicMock()
@@ -487,7 +485,7 @@ class TestAuditService:
 class TestAuditLogger:
     """Tests for AuditLogger convenience methods."""
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_create(self, logger, mock_session):
         """Test log_create convenience method."""
         mock_session.refresh = AsyncMock()
@@ -503,7 +501,7 @@ class TestAuditLogger:
         assert result.action == AuditAction.CREATE
         assert result.resource_type == "user"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_read(self, logger, mock_session):
         """Test log_read convenience method."""
         mock_session.refresh = AsyncMock()
@@ -516,7 +514,7 @@ class TestAuditLogger:
 
         assert result.action == AuditAction.READ
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_update(self, logger, mock_session):
         """Test log_update convenience method."""
         mock_session.refresh = AsyncMock()
@@ -530,7 +528,7 @@ class TestAuditLogger:
 
         assert result.action == AuditAction.UPDATE
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_delete(self, logger, mock_session):
         """Test log_delete convenience method."""
         mock_session.refresh = AsyncMock()
@@ -543,7 +541,7 @@ class TestAuditLogger:
 
         assert result.action == AuditAction.DELETE
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_login(self, logger, mock_session):
         """Test log_login convenience method."""
         mock_session.refresh = AsyncMock()
@@ -556,7 +554,7 @@ class TestAuditLogger:
         assert result.action == AuditAction.LOGIN
         assert result.resource_type == "auth"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_logout(self, logger, mock_session):
         """Test log_logout convenience method."""
         mock_session.refresh = AsyncMock()
@@ -568,7 +566,7 @@ class TestAuditLogger:
         assert result.action == AuditAction.LOGOUT
         assert result.resource_type == "auth"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_payment(self, logger, mock_session):
         """Test log_payment convenience method."""
         mock_session.refresh = AsyncMock()
@@ -591,7 +589,7 @@ class TestAuditLogger:
 class TestLogAuditDecorator:
     """Tests for the @log_audit decorator."""
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_audit_decorator_logs_after_execution(self, mock_session):
         """Test decorator logs audit event after function execution."""
         mock_session.refresh = AsyncMock()
@@ -621,7 +619,7 @@ class TestLogAuditDecorator:
         assert added_entry.resource_id == "user-1"
         assert added_entry.user_id == "actor-1"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_audit_decorator_no_session(self):
         """Test decorator handles missing session gracefully."""
         @log_audit(
@@ -636,7 +634,7 @@ class TestLogAuditDecorator:
         # Should still return result even without session
         assert result == {"id": "doc-1", "content": "test"}
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_audit_decorator_does_not_break_on_error(self, mock_session):
         """Test decorator does not break original function if audit logging fails."""
         mock_session.add = MagicMock(side_effect=Exception("DB error"))
@@ -654,7 +652,7 @@ class TestLogAuditDecorator:
         # Original function result should still be returned even if audit logging fails
         assert result == {"id": "svc-1", "name": "NewName"}
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_audit_decorator_with_all_extractors(self, mock_session):
         """Test decorator works with all extractor callables."""
         mock_session.refresh = AsyncMock()
@@ -732,7 +730,7 @@ class TestAuditSchemas:
 
     def test_audit_log_response(self):
         """Test AuditLogResponse schema with valid data."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         response = AuditLogResponse(
             id="log-1",
             action="create",
@@ -760,7 +758,7 @@ class TestAuditSchemas:
 
     def test_audit_log_response_minimal(self):
         """Test AuditLogResponse with only required fields."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         response = AuditLogResponse(
             id="log-1",
             action="read",
@@ -777,7 +775,7 @@ class TestAuditSchemas:
 
     def test_audit_log_list_response(self):
         """Test AuditLogListResponse schema."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         items = [
             AuditLogResponse(
                 id="log-1",
@@ -809,7 +807,7 @@ class TestAuditSchemas:
 
     def test_audit_log_list_response_multiple_pages(self):
         """Test AuditLogListResponse with multiple pages."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         items = [AuditLogResponse(
             id=f"log-{i}",
             action="read",
@@ -891,7 +889,7 @@ class TestAuditSchemas:
 class TestAuditServiceIntegration:
     """Integration-style tests for AuditService with real db-like mocks."""
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_log_and_retrieve_flow(self, service, mock_session, sample_audit_log):
         """Test a complete log then retrieve flow."""
         # Step 1: Create log entry
@@ -919,7 +917,7 @@ class TestAuditServiceIntegration:
         assert retrieved is sample_audit_log
         assert retrieved.resource_type == "user"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_cleanup_does_not_affect_recent_logs(self, service, mock_session):
         """Test cleanup only removes old logs, not recent ones."""
         # First call: cleanup returns count of deleted old logs
@@ -932,7 +930,7 @@ class TestAuditServiceIntegration:
         assert deleted_count == 2
         assert mock_session.commit.awaited_once
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_stats_empty(self, service, mock_session):
         """Test get_stats returns zeroed data when no logs exist."""
         mock_total_result = MagicMock()

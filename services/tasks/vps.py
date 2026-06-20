@@ -8,28 +8,19 @@ Used to keep API endpoints responsive for long-running Proxmox actions.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
 from typing import Any
 from uuid import UUID
 
 from celery import shared_task
 from celery.exceptions import MaxRetriesExceededError
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from dependencies.db import get_async_session_ctx
-from modules.vps.models import VpsInstance, VpsPowerStatus, VpsSnapshot
 from modules.vps.proxmox_client import (
-    ProxmoxClient,
-    ProxmoxClientError,
     ProxmoxConnectionError,
     ProxmoxTaskError,
     ProxmoxVMNotFoundError,
-    ProxmoxVMInfo,
-    ProxmoxTaskResult,
 )
 from modules.vps.services import (
-    VpsConsoleError,
     VpsInstanceNotFoundError,
     VpsInstanceService,
     VpsPowerActionError,

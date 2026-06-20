@@ -15,7 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.config import settings
 from core.paymenter import PaymenterWebhookResponse, paymenter_service
-from dependencies.db import get_db
+from dependencies.db import get_async_session as get_db
 
 logger = logging.getLogger(__name__)
 

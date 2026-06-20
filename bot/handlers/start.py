@@ -8,10 +8,9 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from aiogram import Router, F
+from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import Message
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 from bot.keyboards.main_menu import build_main_menu
 
@@ -21,7 +20,7 @@ router = Router(name="start")
 
 
 @router.message(Command("start"))
-async def cmd_start(message: Message, T: Any, db_user: Any, locale: str) -> None:
+async def cmd_start(message: Message, T: Any, db_user: Any, locale: str = "en") -> None:
     """
     Handle /start command.
     Sends a localized welcome message and shows the main menu.

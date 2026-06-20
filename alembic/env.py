@@ -68,6 +68,9 @@ def _get_sync_db_url() -> str:
 # NOTE: We avoid importing core.config here because it depends on
 # pydantic-settings which may not be installed in all environments.
 # Instead we resolve the DB URL from environment variables directly.
+# Import module models so Alembic can detect them for autogenerate
+import modules.vpn.models  # noqa: E402
+import modules.vps.models  # noqa: E402, F401
 import shared.models.audit_log  # noqa: E402
 import shared.models.invoice  # noqa: E402
 import shared.models.module_registry  # noqa: E402
@@ -78,10 +81,6 @@ import shared.models.service  # noqa: E402
 import shared.models.tenant  # noqa: E402
 import shared.models.transaction  # noqa: E402
 import shared.models.user  # noqa: E402, F401
-
-# Import module models so Alembic can detect them for autogenerate
-import modules.vpn.models  # noqa: E402, F401
-import modules.vps.models  # noqa: E402, F401
 from shared.models import CoreBase  # noqa: E402
 
 # Set the target metadata for autogenerate support

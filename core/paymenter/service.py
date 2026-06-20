@@ -11,7 +11,7 @@ import hashlib
 import hmac
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy import select
@@ -152,7 +152,7 @@ class PaymenterService:
             event.last_error = error
         else:
             event.processed = True
-            event.processed_at = datetime.now(timezone.utc)
+            event.processed_at = datetime.now(UTC)
             event.processing_attempts = (event.processing_attempts or 0) + 1
 
         await session.commit()

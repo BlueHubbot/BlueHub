@@ -8,10 +8,9 @@ and Redis caching.
 from __future__ import annotations
 
 import json
-import os
 import tempfile
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -23,11 +22,10 @@ from core.i18n.engine import (
     i18n_engine,
 )
 
-
 # ── Fixtures ───────────────────────────────────────────────────────────────
 
 
-@pytest.fixture
+@pytest.fixture()
 def sample_en_translations() -> dict:
     """Sample English translations for testing."""
     return {
@@ -60,7 +58,7 @@ def sample_en_translations() -> dict:
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def sample_fa_translations() -> dict:
     """Sample Persian translations for testing."""
     return {
@@ -81,7 +79,7 @@ def sample_fa_translations() -> dict:
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def temp_locale_dir(sample_en_translations, sample_fa_translations):
     """Create a temporary directory with test translation files."""
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -231,7 +229,7 @@ class TestSubstituteVariables:
 class TestI18nEngine:
     """Tests for the I18nEngine class."""
 
-    @pytest.fixture
+    @pytest.fixture()
     def engine(self, temp_locale_dir):
         """Create I18nEngine with test locale directory."""
         with patch("core.i18n.engine.settings") as mock_settings:
@@ -241,31 +239,31 @@ class TestI18nEngine:
             engine = I18nEngine(default_locale="en")
             yield engine
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_existing_key(self, engine):
         """Should return the correct translation for an existing key."""
         result = await engine.get("app.name", locale="en")
         assert result == "BlueHub"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_nested_key(self, engine):
         """Should return translation for deeply nested keys."""
         result = await engine.get("auth.errors.invalid_credentials", locale="en")
         assert result == "Invalid username or password"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_missing_key_returns_default(self, engine):
         """Should return default value when key is missing."""
         result = await engine.get("nonexistent.key", locale="en", default="Fallback")
         assert result == "Fallback"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_missing_key_returns_key(self, engine):
         """Should return the key itself when no default provided."""
         result = await engine.get("nonexistent.key", locale="en")
         assert result == "nonexistent.key"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_with_variable_substitution(self, engine):
         """Should substitute variables in the translation."""
         result = await engine.get(
@@ -276,20 +274,20 @@ class TestI18nEngine:
         )
         assert result == "Your wallet has been credited with 500,000 Toman"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_english_fallback(self, engine):
         """Should fall back to English when translation missing in target locale."""
         # 'errors.not_found' is only in en.json, not fa.json
         result = await engine.get("errors.not_found", locale="fa")
         assert result == "Resource not found"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_persian_translation(self, engine):
         """Should return Persian translation when available."""
         result = await engine.get("app.name", locale="fa")
         assert result == "بلوهاب"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_persian_with_variable(self, engine):
         """Should substitute variables in Persian translations."""
         result = await engine.get(
@@ -299,7 +297,7 @@ class TestI18nEngine:
         )
         assert result == "ماژول VPN غیرفعال است"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_batch(self, engine):
         """Should return multiple translations in batch."""
         keys = ["app.name", "app.welcome", "common.save"]
@@ -309,7 +307,7 @@ class TestI18nEngine:
         assert results["app.welcome"] == "Welcome to BlueHub"
         assert results["common.save"] == "Save"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_get_batch_with_missing_key(self, engine):
         """Should handle missing keys in batch."""
         keys = ["app.name", "nonexistent.key"]
@@ -318,7 +316,7 @@ class TestI18nEngine:
         assert results["app.name"] == "BlueHub"
         assert results["nonexistent.key"] == "nonexistent.key"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_reload_locale(self, engine):
         """Should reload translations after reload_locale."""
         # First load
@@ -332,7 +330,7 @@ class TestI18nEngine:
         result2 = await engine.get("app.name", locale="en")
         assert result2 == "BlueHub"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_default_locale(self, engine):
         """Should use default locale when none specified."""
         result = await engine.get("app.name")
@@ -393,7 +391,7 @@ class TestI18nEngine:
 class TestI18nEngineRedisCaching:
     """Tests for Redis caching in I18nEngine."""
 
-    @pytest.fixture
+    @pytest.fixture()
     def engine(self, temp_locale_dir):
         """Create engine with test locales."""
         with patch("core.i18n.engine.settings") as mock_settings:
@@ -403,7 +401,7 @@ class TestI18nEngineRedisCaching:
             engine = I18nEngine(default_locale="en", cache_ttl=3600)
             yield engine
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_redis_cache_hit(self, engine, sample_en_translations):
         """Should use cached data from Redis when available."""
         mock_redis = AsyncMock()
@@ -414,7 +412,7 @@ class TestI18nEngineRedisCaching:
             assert result == "BlueHub"
             mock_redis.get.assert_called_once_with("i18n:en")
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_redis_cache_miss_then_disk(self, engine, temp_locale_dir):
         """Should load from disk when Redis miss and cache to Redis."""
         mock_redis = AsyncMock()
@@ -428,7 +426,7 @@ class TestI18nEngineRedisCaching:
                 mock_redis.get.assert_called_once_with("i18n:en")
                 mock_redis.setex.assert_called_once()
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_redis_unavailable_fallback_to_memory(self, engine):
         """Should fall back to in-memory cache when Redis is unavailable."""
         with patch("core.i18n.engine._get_redis_client", return_value=None):
@@ -440,7 +438,7 @@ class TestI18nEngineRedisCaching:
             result2 = await engine.get("app.welcome", locale="en")
             assert result2 == "Welcome to BlueHub"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_redis_error_fallback(self, engine, sample_en_translations):
         """Should fall back gracefully on Redis error."""
         mock_redis = AsyncMock()
@@ -451,7 +449,7 @@ class TestI18nEngineRedisCaching:
             result = await engine.get("app.name", locale="en")
             assert result == "BlueHub"
 
-    @pytest.mark.asyncio
+    @pytest.mark.asyncio()
     async def test_reload_clears_redis_cache(self, engine, sample_en_translations):
         """Should delete Redis cache on reload."""
         mock_redis = AsyncMock()

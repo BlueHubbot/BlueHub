@@ -7,11 +7,9 @@ Pydantic request/response schemas for VPS (Proxmox-managed VM) operations.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
-from pydantic import BaseModel, Field, field_validator
-
+from pydantic import BaseModel, ConfigDict, Field
 
 # ------------------------------------------------------------------
 # Enums as literal strings (matches DB enum values)
@@ -70,27 +68,27 @@ class VpsInstanceBase(BaseModel):
         max_length=20,
         description="Guest OS type string for Proxmox (l26=Linux 2.6+, win10, etc.)",
     )
-    ostemplate: Optional[str] = Field(
+    ostemplate: str | None = Field(
         default=None,
         max_length=255,
         description="Proxmox container/VM template path (e.g. local:vztmpl/ubuntu-22.04...)",
     )
-    iso_image: Optional[str] = Field(
+    iso_image: str | None = Field(
         default=None,
         max_length=255,
         description="ISO image path for OS install (e.g. local:iso/ubuntu-22.04.iso)",
     )
-    ip_address: Optional[str] = Field(
+    ip_address: str | None = Field(
         default=None,
         max_length=45,
         description="Assigned public/private IP address",
     )
-    root_password: Optional[str] = Field(
+    root_password: str | None = Field(
         default=None,
         max_length=255,
         description="Initial root password (stored encrypted in DB)",
     )
-    ssh_keys: Optional[str] = Field(
+    ssh_keys: str | None = Field(
         default=None,
         description="SSH public keys for cloud-init (newline separated)",
     )
@@ -100,11 +98,11 @@ class VpsInstanceBase(BaseModel):
         le=300,
         description="Boot delay in seconds before OS starts",
     )
-    extra_config: Optional[dict] = Field(
+    extra_config: dict | None = Field(
         default=None,
         description="Additional Proxmox config as key-value dict",
     )
-    notes: Optional[str] = Field(
+    notes: str | None = Field(
         default=None,
         max_length=2000,
         description="Admin notes",
@@ -118,7 +116,7 @@ class VpsInstanceCreate(VpsInstanceBase):
     """Schema for provisioning a new VPS instance."""
 
     service_id: UUID = Field(..., description="Associated billing service ID")
-    vmid: Optional[int] = Field(
+    vmid: int | None = Field(
         default=None,
         ge=100,
         le=999999999,
@@ -136,22 +134,22 @@ class VpsInstanceCreate(VpsInstanceBase):
 class VpsInstanceUpdate(BaseModel):
     """Schema for updating a VPS instance configuration."""
 
-    proxmox_node: Optional[str] = Field(
+    proxmox_node: str | None = Field(
         default=None, max_length=100, description="Target Proxmox node"
     )
-    cores: Optional[int] = Field(default=None, ge=1, le=128)
-    memory_mb: Optional[int] = Field(default=None, ge=128, le=1048576)
-    disk_gb: Optional[int] = Field(default=None, ge=1, le=65536)
-    storage_pool: Optional[str] = Field(default=None, max_length=100)
-    network_bridge: Optional[str] = Field(default=None, max_length=50)
-    network_model: Optional[str] = Field(default=None, max_length=20)
-    ostype: Optional[str] = Field(default=None, max_length=20)
-    ip_address: Optional[str] = Field(default=None, max_length=45)
-    root_password: Optional[str] = Field(default=None, max_length=255)
-    ssh_keys: Optional[str] = None
-    boot_delay: Optional[int] = Field(default=None, ge=0, le=300)
-    extra_config: Optional[dict] = None
-    notes: Optional[str] = Field(default=None, max_length=2000)
+    cores: int | None = Field(default=None, ge=1, le=128)
+    memory_mb: int | None = Field(default=None, ge=128, le=1048576)
+    disk_gb: int | None = Field(default=None, ge=1, le=65536)
+    storage_pool: str | None = Field(default=None, max_length=100)
+    network_bridge: str | None = Field(default=None, max_length=50)
+    network_model: str | None = Field(default=None, max_length=20)
+    ostype: str | None = Field(default=None, max_length=20)
+    ip_address: str | None = Field(default=None, max_length=45)
+    root_password: str | None = Field(default=None, max_length=255)
+    ssh_keys: str | None = None
+    boot_delay: int | None = Field(default=None, ge=0, le=300)
+    extra_config: dict | None = None
+    notes: str | None = Field(default=None, max_length=2000)
 
 
 # ------------------------------------------------------------------
@@ -171,7 +169,7 @@ class VpsPowerAction(BaseModel):
         le=600,
         description="Timeout for graceful shutdown/stop operations",
     )
-    node: Optional[str] = Field(
+    node: str | None = Field(
         default=None,
         max_length=100,
         description="Proxmox node name (auto-detected if omitted)",
@@ -184,35 +182,33 @@ class VpsPowerAction(BaseModel):
 class VpsInstanceResponse(VpsInstanceBase):
     """Full VPS instance response returned to API consumers."""
 
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     service_id: UUID
-    proxmox_vmid: Optional[int] = None
+    proxmox_vmid: int | None = None
     power_status: VpsPowerStatus
-    vnc_port: Optional[int] = None
+    vnc_port: int | None = None
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 class VpsInstanceSummary(BaseModel):
     """Lightweight VPS instance representation for list endpoints."""
 
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     service_id: UUID
-    proxmox_vmid: Optional[int]
+    proxmox_vmid: int | None
     proxmox_node: str
     cores: int
     memory_mb: int
     disk_gb: int
     ostype: str
-    ip_address: Optional[str]
+    ip_address: str | None
     power_status: VpsPowerStatus
     created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 # ------------------------------------------------------------------
@@ -243,30 +239,29 @@ class VpsSnapshotCreate(BaseModel):
         pattern=r"^[a-zA-Z0-9][a-zA-Z0-9._-]*$",
         description="Proxmox snapshot name (alphanumeric, dots, hyphens, underscores)",
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         default=None, max_length=500, description="Human-readable description"
     )
     include_ram: bool = Field(
         default=False, description="Include RAM state in snapshot (Proxmox vmstate flag)"
     )
-    node: Optional[str] = Field(default=None, max_length=100)
+    node: str | None = Field(default=None, max_length=100)
 
 
 class VpsSnapshotResponse(BaseModel):
     """Snapshot metadata returned to API consumers."""
 
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     vps_instance_id: UUID
     snapshot_name: str
-    description: Optional[str] = None
-    size_bytes: Optional[int] = None
+    description: str | None = None
+    size_bytes: int | None = None
     is_ram_included: bool
-    snapshot_taken_at: Optional[datetime] = None
-    parent_snapshot_id: Optional[UUID] = None
+    snapshot_taken_at: datetime | None = None
+    parent_snapshot_id: UUID | None = None
     created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 class VpsSnapshotListResponse(BaseModel):
@@ -286,7 +281,7 @@ class VpsVncResponse(BaseModel):
     node: str
     port: int
     ticket: str = Field(..., description="One-time VNC authentication ticket")
-    websocket_path: Optional[str] = Field(
+    websocket_path: str | None = Field(
         default=None,
         description="noVNC websocket path for browser-based console",
     )
@@ -308,8 +303,8 @@ class VpsStatusDetail(BaseModel):
     memory_usage_pct: float
     max_disk_bytes: int
     uptime_seconds: int
-    template_os: Optional[str] = None
-    vnc_port: Optional[int] = None
+    template_os: str | None = None
+    vnc_port: int | None = None
 
 
 __all__ = [

@@ -16,10 +16,10 @@ def register_all_handlers(dp: Dispatcher) -> None:
         dp: Configured aiogram Dispatcher
     """
     # Import routers
-    from bot.handlers.start import router as start_router
-    from bot.handlers.admin import router as admin_router
     from bot.handlers.account import router as account_router
+    from bot.handlers.admin import router as admin_router
     from bot.handlers.language_callback import router as language_router
+    from bot.handlers.start import router as start_router
 
     # Include routers
     dp.include_router(start_router)

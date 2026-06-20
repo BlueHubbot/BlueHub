@@ -823,7 +823,7 @@ Use FastAPI router and include in main app
 ---
 
 ### TASK-021: VPN Module - Celery Tasks
-**Status:** 🟡 IN PROGRESS  
+**Status:** ✅ COMPLETE  
 **Priority:** high  
 **Estimated Time:** 10 hours  
 **Dependencies:** TASK-019  
@@ -833,15 +833,19 @@ Use FastAPI router and include in main app
 Create Celery tasks for VPN provisioning, monitoring, and renewal.
 
 **Acceptance Criteria:**
-- [ ] `provision_vpn_service` task (called after payment)
-- [ ] `poll_vpn_usage` task (scheduled every 5 minutes)
-- [ ] `check_vpn_expiration` task (daily check)
-- [ ] `auto_renew_vpn` task (if wallet has balance)
-- [ ] `suspend_expired_vpn` task
-- [ ] Error handling with retry mechanism
-- [ ] Task logging to database
-- [ ] Celery Beat schedule configured
-- [ ] Unit tests for all tasks
+- [x] `provision_vpn_service` task (called after payment)
+- [x] `poll_vpn_usage` task (scheduled every 5 minutes)
+- [x] `check_vpn_expiration` task (daily check)
+- [x] `auto_renew_vpn` task (if wallet has balance)
+- [x] `suspend_expired_vpn` task
+- [x] Error handling with retry mechanism
+- [x] Task logging to database
+- [x] Celery Beat schedule configured
+- [x] Unit tests for all tasks
+
+**Implemented Files:**
+- `modules/vpn/tasks.py` - Celery tasks for VPN provisioning, monitoring, renewal
+- `services/tasks/` - Shared task utilities
 
 **Technical Notes:**
 ```python
@@ -890,7 +894,7 @@ METADATA = ModuleMetadata(
 ---
 
 ### TASK-023: Telegram Bot - Core Structure
-**Status:** ⏳ NOT STARTED  
+**Status:** ✅ COMPLETE  
 **Priority:** critical  
 **Estimated Time:** 8 hours  
 **Dependencies:** TASK-011  
@@ -900,16 +904,26 @@ METADATA = ModuleMetadata(
 Set up Telegram bot with aiogram 3 framework and basic structure.
 
 **Acceptance Criteria:**
-- [ ] Bot initialized in `bot/main.py`
-- [ ] Router structure created for different modules
-- [ ] i18n middleware integrated
-- [ ] Authentication middleware (link Telegram user to database user)
-- [ ] `/start` command handler
-- [ ] `/help` command handler
-- [ ] Language selection menu
-- [ ] Error handler for exceptions
-- [ ] Bot runs in long polling mode (for development)
-- [ ] Webhook mode support (for production)
+- [x] Bot initialized in `bot/main.py`
+- [x] Router structure created for different modules
+- [x] i18n middleware integrated
+- [x] Authentication middleware (link Telegram user to database user)
+- [x] `/start` command handler
+- [x] `/help` command handler
+- [x] Language selection menu
+- [x] Error handler for exceptions
+- [x] Bot runs in long polling mode (for development)
+- [x] Webhook mode support (for production)
+
+**Implemented Files:**
+- `bot/main.py` - Bot initialization and startup
+- `bot/middleware/auth.py` - Authentication middleware
+- `bot/middleware/i18n.py` - i18n translation middleware
+- `bot/handlers/start.py` - /start and /help commands
+- `bot/handlers/language_callback.py` - Language selection
+- `bot/handlers/__init__.py` - Router registration
+- `bot/keyboards/main_menu.py` - Main menu keyboard
+- `bot/keyboards/language.py` - Language selector keyboard
 
 **Technical Notes:**
 Use aiogram 3.x, load bot token from environment
@@ -918,7 +932,7 @@ Middleware to inject `t()` function for translations
 ---
 
 ### TASK-024: Telegram Bot - VPN Module Handlers
-**Status:** ⏳ NOT STARTED  
+**Status:** ✅ COMPLETE  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-023, TASK-020  
@@ -928,16 +942,21 @@ Middleware to inject `t()` function for translations
 Create Telegram bot handlers for VPN module (all interactions via API).
 
 **Acceptance Criteria:**
-- [ ] Main menu with VPN button
-- [ ] VPN products list with inline keyboard
-- [ ] Product details with purchase button
-- [ ] Purchase flow (redirect to Paymenter payment link)
-- [ ] "My VPN Services" list
-- [ ] Service details with usage stats
-- [ ] Download config file button
-- [ ] QR code display for mobile setup
-- [ ] All text localized (Persian/English)
-- [ ] Error handling with user-friendly messages
+- [x] Main menu with VPN button
+- [x] VPN products list with inline keyboard
+- [x] Product details with purchase button
+- [x] Purchase flow (redirect to Paymenter payment link)
+- [x] "My VPN Services" list
+- [x] Service details with usage stats
+- [x] Download config file button
+- [x] QR code display for mobile setup
+- [x] All text localized (Persian/English)
+- [x] Error handling with user-friendly messages
+
+**Implemented Files:**
+- `bot/handlers/vpn.py` (733 lines) - Full VPN management: create, list, config, QR, renew, delete, stats
+- `bot/handlers/account.py` - Account info handler
+- `bot/keyboards/` - Inline and reply keyboards for all menus
 
 **Technical Notes:**
 All business logic calls API endpoints (no direct database access in bot)

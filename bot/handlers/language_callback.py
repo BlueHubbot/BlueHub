@@ -6,9 +6,9 @@ Handles inline keyboard callbacks for language selection.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
-from aiogram import Router, F
+from aiogram import F, Router
 from aiogram.types import CallbackQuery
 from sqlalchemy import select
 
@@ -96,7 +96,7 @@ async def _save_language_preference(db_user, locale: str) -> bool:
                 return False
 
             user.language = locale
-            user.updated_at = datetime.now(timezone.utc)
+            user.updated_at = datetime.now(UTC)
             session.add(user)
             await session.commit()
             return True

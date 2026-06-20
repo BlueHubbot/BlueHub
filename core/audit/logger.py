@@ -9,7 +9,8 @@ decorator for automatic audit logging around functions.
 from __future__ import annotations
 
 import functools
-from typing import Any, Callable, TypeVar
+from collections.abc import Callable
+from typing import Any, TypeVar
 
 from sqlalchemy.ext.asyncio import AsyncSession
 

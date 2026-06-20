@@ -16,9 +16,8 @@ import os
 import re
 import secrets
 import subprocess  # nosec: B404 - xray commands are intentionally invoked
-import tempfile
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -704,7 +703,7 @@ class XrayService:
                 subprocess.run(
                     ["taskkill", "/F", "/PID", str(pid)],
                     capture_output=True,
-                    timeout=10,
+                    timeout=10, check=False,
                 )
             else:
                 os.kill(pid, signal.SIGTERM)
@@ -756,7 +755,7 @@ class XrayService:
                 if os.name == "nt":
                     result = subprocess.run(
                         ["tasklist", "/FI", f"PID eq {pid}"],
-                        capture_output=True, text=True, timeout=10,
+                        capture_output=True, text=True, timeout=10, check=False,
                     )
                     return str(pid) in result.stdout
                 else:
@@ -1012,7 +1011,7 @@ class XrayService:
             re.IGNORECASE,
         )
 
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         traffic_map: dict[str, dict[str, int]] = {}
 
         try:
@@ -1021,7 +1020,7 @@ class XrayService:
                 try:
                     ts = datetime.strptime(
                         match.group("timestamp"), "%Y/%m/%d %H:%M:%S"
-                    ).replace(tzinfo=timezone.utc)
+                    ).replace(tzinfo=UTC)
                     if (now - ts).total_seconds() > recent_seconds:
                         continue
                 except ValueError:
@@ -1196,7 +1195,7 @@ class XrayService:
                     "message": "Config not present; account considered suspended",
                 }
 
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config: dict[str, Any] = json.load(f)
 
             # Remove user from all inbounds
@@ -1293,7 +1292,7 @@ class XrayService:
                     "message": "New config created with user restored",
                 }
 
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config: dict[str, Any] = json.load(f)
 
             # Add user to all VLESS inbounds

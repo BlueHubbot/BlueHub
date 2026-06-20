@@ -1,7 +1,6 @@
 """Search for function signatures and key patterns in xray.py"""
-import re
 
-with open("d:/BlueHub/modules/vpn/xray.py", "r") as f:
+with open("d:/BlueHub/modules/vpn/xray.py") as f:
     content = f.read()
 
 # Find function definitions

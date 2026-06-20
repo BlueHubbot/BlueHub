@@ -7,7 +7,7 @@ pagination, error handling, health checks, and standard responses.
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any, TypeVar
 
 from pydantic import Field
@@ -79,7 +79,7 @@ class ErrorResponse(BaseSchema):
     )
     request_id: str | None = Field(default=None, description="Correlation ID")
     timestamp: datetime = Field(
-        default_factory=datetime.utcnow, description="Error timestamp"
+        default_factory=lambda: datetime.now(UTC), description="Error timestamp"
     )
 
     @classmethod

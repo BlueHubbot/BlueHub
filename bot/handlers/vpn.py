@@ -19,11 +19,9 @@ Covers:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
-from typing import Any, List
 from uuid import UUID
 
-from aiogram import Router, F
+from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import (
     CallbackQuery,
@@ -40,9 +38,8 @@ from modules.vpn.models import (
     VpnAccount,
     VpnAccountStatus,
     VpnProtocol,
-    TrafficUsage,
 )
-from modules.vpn.services import VpnAccountService, AccountTrafficSummary
+from modules.vpn.services import VpnAccountService
 
 logger = logging.getLogger("bluehub.bot.handlers.vpn")
 
@@ -55,7 +52,7 @@ router = Router(name="vpn")
 
 async def _get_user_vpn_accounts(
     db: AsyncSession, user_id: UUID
-) -> List[VpnAccount]:
+) -> list[VpnAccount]:
     """Fetch all VPN accounts for a given user."""
     result = await db.execute(
         select(VpnAccount)
@@ -69,7 +66,7 @@ async def _get_user_vpn_accounts(
 
 
 async def _format_account_list(
-    accounts: List[VpnAccount], T, db: AsyncSession
+    accounts: list[VpnAccount], T, db: AsyncSession
 ) -> str:
     """Format a list of VPN accounts for display."""
     if not accounts:
@@ -159,7 +156,7 @@ def _vpn_main_keyboard(T_get, accounts_exist: bool) -> InlineKeyboardMarkup:
 
 
 def _account_selection_keyboard(
-    accounts: List[VpnAccount], action: str, T_get
+    accounts: list[VpnAccount], action: str, T_get
 ) -> InlineKeyboardMarkup:
     """Build a keyboard to select a specific VPN account for an action."""
     buttons = []
@@ -531,6 +528,7 @@ async def cb_vpn_qr(
         )
         # Generate QR code image
         import io
+
         import qrcode
 
         qr_img = qrcode.make(config_text)

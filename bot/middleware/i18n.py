@@ -6,11 +6,13 @@ Detects user language and provides translation function T() via handler data.
 from __future__ import annotations
 
 import logging
-from typing import Any, Awaitable, Callable, Dict
+from collections.abc import Awaitable, Callable
+from typing import Any
 
 try:
     from aiogram import BaseMiddleware
-    from aiogram.types import TelegramObject, User as TgUser
+    from aiogram.types import TelegramObject
+    from aiogram.types import User as TgUser
 except ImportError:
     BaseMiddleware = object  # type: ignore[assignment,misc]
     TelegramObject = object  # type: ignore[assignment,misc]
@@ -37,11 +39,24 @@ class I18nMiddleware(BaseMiddleware):
         2. Default locale (en)
     """
 
+    def __init__(self, locales_dir: str = "config/locales"):
+        super().__init__()
+        global _i18n
+        if locales_dir and locales_dir != "config/locales":
+            _i18n = I18nEngine(locales_dir=locales_dir, default_locale="en", cache_ttl=3600)
+
+    def setup(self, dispatcher: Any) -> None:
+        """Compatibility no-op for aiogram 2.x setup pattern.
+
+        In aiogram 3.x, middleware is registered via dispatcher.message.middleware()
+        or similar, not via middleware.setup(dispatcher).
+        """
+
     async def __call__(
         self,
-        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
         event: TelegramObject,
-        data: Dict[str, Any],
+        data: dict[str, Any],
     ) -> Any:
         # Determine locale from Telegram user
         locale = self._detect_locale(event)

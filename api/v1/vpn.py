@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import base64
 import io
-from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,6 +19,8 @@ try:
     import qrcode  # type: ignore[import-untyped]
 except ImportError:  # pragma: no cover
     qrcode = None
+
+from datetime import UTC
 
 from dependencies.auth import get_current_user
 from dependencies.db import get_async_session
@@ -324,9 +325,9 @@ async def update_vpn_account(
         elif hasattr(account, field):
             setattr(account, field, value)
 
-    from datetime import datetime, timezone
+    from datetime import datetime
 
-    account.updated_at = datetime.now(tz=timezone.utc)
+    account.updated_at = datetime.now(tz=UTC)
     await session.commit()
     await session.refresh(account)
 
@@ -340,7 +341,7 @@ async def update_vpn_account(
     return _build_account_response(account)
 
 
-@router.delete("/accounts/{account_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/accounts/{account_id}", status_code=status.HTTP_204_NO_CONTENT, response_model=None)
 async def delete_vpn_account(
     account_id: str,
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
@@ -724,15 +725,15 @@ async def update_vpn_server(
         if hasattr(server, field):
             setattr(server, field, value)
 
-    from datetime import datetime, timezone
+    from datetime import datetime
 
-    server.updated_at = datetime.now(tz=timezone.utc)
+    server.updated_at = datetime.now(tz=UTC)
     await session.commit()
     await session.refresh(server)
     return _build_server_response(server)
 
 
-@router.delete("/servers/{server_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/servers/{server_id}", status_code=status.HTTP_204_NO_CONTENT, response_model=None)
 async def delete_vpn_server(
     server_id: str,
     session: AsyncSession = Depends(get_async_session),  # noqa: B008

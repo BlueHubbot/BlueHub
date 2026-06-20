@@ -7,8 +7,6 @@ Provides endpoints to list, inspect, and toggle service modules.
 
 from __future__ import annotations
 
-from typing import Any
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 

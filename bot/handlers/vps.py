@@ -20,11 +20,10 @@ to keep business logic in one place.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from datetime import UTC, datetime
 from uuid import UUID
 
-from aiogram import Router, F
+from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import (
     CallbackQuery,
@@ -36,7 +35,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot.middleware.auth import require_auth
-from modules.vps.models import VpsInstance, VpsPowerStatus, VpsSnapshot
+from modules.vps.models import VpsInstance, VpsPowerStatus
 
 logger = logging.getLogger("bluehub.bot.handlers.vps")
 
@@ -47,14 +46,14 @@ router = Router(name="vps")
 # Constants
 # ------------------------------------------------------------------
 
-POWER_EMOJI_MAP: Dict[VpsPowerStatus, str] = {
+POWER_EMOJI_MAP: dict[VpsPowerStatus, str] = {
     VpsPowerStatus.RUNNING: "🟢",
     VpsPowerStatus.STOPPED: "🔴",
     VpsPowerStatus.PAUSED: "🟡",
     VpsPowerStatus.SUSPENDED: "⚫",
 }
 
-VPS_POWER_ACTIONS: Dict[str, str] = {
+VPS_POWER_ACTIONS: dict[str, str] = {
     "start": "▶️ Start",
     "stop": "⏹ Stop",
     "reboot": "🔄 Reboot",
@@ -70,7 +69,7 @@ VPS_POWER_ACTIONS: Dict[str, str] = {
 
 async def _get_user_vps_instances(
     db: AsyncSession, user_id: UUID,
-) -> List[VpsInstance]:
+) -> list[VpsInstance]:
     """Fetch all VPS instances for a given user via their services."""
     from shared.models.service import Service
     result = await db.execute(
@@ -84,7 +83,7 @@ async def _get_user_vps_instances(
 
 async def _get_instance(
     db: AsyncSession, instance_id: UUID, user_id: UUID,
-) -> Optional[VpsInstance]:
+) -> VpsInstance | None:
     """Fetch a specific VPS instance, ensuring user ownership."""
     from shared.models.service import Service
     result = await db.execute(
@@ -102,7 +101,7 @@ def _vps_main_keyboard(
     T_get, instances_exist: bool,
 ) -> InlineKeyboardMarkup:
     """Build the main VPS menu keyboard with translation-aware labels."""
-    kb: List[List[InlineKeyboardButton]] = []
+    kb: list[list[InlineKeyboardButton]] = []
 
     if instances_exist:
         kb.extend([
@@ -144,10 +143,10 @@ def _vps_main_keyboard(
 
 
 def _instance_selection_keyboard(
-    instances: List[VpsInstance], action: str, T_get,
+    instances: list[VpsInstance], action: str, T_get,
 ) -> InlineKeyboardMarkup:
     """Build a keyboard to select a specific VPS instance for an action."""
-    buttons: List[List[InlineKeyboardButton]] = []
+    buttons: list[list[InlineKeyboardButton]] = []
     for inst in instances:
         emoji = POWER_EMOJI_MAP.get(inst.power_status, "⚪")
         label = (
@@ -175,7 +174,7 @@ def _power_actions_keyboard(
     instance_id: UUID, current_status: VpsPowerStatus, T_get,
 ) -> InlineKeyboardMarkup:
     """Build keyboard with available power actions based on current status."""
-    buttons: List[List[InlineKeyboardButton]] = []
+    buttons: list[list[InlineKeyboardButton]] = []
 
     # Determine which actions make sense based on current state
     if current_status == VpsPowerStatus.RUNNING:
@@ -192,7 +191,7 @@ def _power_actions_keyboard(
     # Build buttons in pairs
     for i in range(0, len(available), 2):
         pair = available[i:i + 2]
-        row: List[InlineKeyboardButton] = []
+        row: list[InlineKeyboardButton] = []
         for action in pair:
             row.append(
                 InlineKeyboardButton(
@@ -215,7 +214,7 @@ def _snapshot_actions_keyboard(
     instance_id: UUID, snapshots_exist: bool, T_get,
 ) -> InlineKeyboardMarkup:
     """Build snapshot management keyboard."""
-    kb: List[List[InlineKeyboardButton]] = [
+    kb: list[list[InlineKeyboardButton]] = [
         [
             InlineKeyboardButton(
                 text=T_get("bot.vps.btn_snapshot_create"),
@@ -268,7 +267,7 @@ async def cmd_vps_menu(
 
 
 async def _format_instance_list(
-    instances: List[VpsInstance], T,
+    instances: list[VpsInstance], T,
 ) -> str:
     """Format a list of VPS instances for display."""
     if not instances:
@@ -634,7 +633,7 @@ async def cb_vps_snapshot_create(
 
         snapshot = await vps_service.create_snapshot(
             instance_id=instance_id,
-            snapshot_name=f"snap-{int(datetime.now(timezone.utc).timestamp())}",
+            snapshot_name=f"snap-{int(datetime.now(UTC).timestamp())}",
             description=await T("bot.vps.snapshot_bot_created"),
         )
         await db_session.commit()
@@ -742,7 +741,7 @@ async def cb_vps_snapshot_select_restore(
         )
         return
 
-    buttons: List[List[InlineKeyboardButton]] = []
+    buttons: list[list[InlineKeyboardButton]] = []
     for snap in inst.snapshots:
         taken = (
             snap.snapshot_taken_at.strftime("%m/%d %H:%M")
@@ -836,7 +835,7 @@ async def cb_vps_snapshot_select_delete(
         )
         return
 
-    buttons: List[List[InlineKeyboardButton]] = []
+    buttons: list[list[InlineKeyboardButton]] = []
     for snap in inst.snapshots:
         buttons.append([
             InlineKeyboardButton(

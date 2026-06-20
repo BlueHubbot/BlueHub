@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from sqlalchemy import select, func, and_
+from sqlalchemy import and_, func, select
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
@@ -222,7 +222,6 @@ class VpnServerCRUD:
         Returns:
             Updated VpnServer instance, or None if not found.
         """
-        from modules.vpn.models import VpnServer
 
         server = await VpnServerCRUD.get(db, server_id)
         if server is None:
@@ -260,7 +259,6 @@ class VpnServerCRUD:
         Returns:
             Updated VpnServer instance, or None if not found.
         """
-        from modules.vpn.models import VpnServer
 
         server = await VpnServerCRUD.get(db, server_id)
         if server is None:
@@ -286,7 +284,6 @@ class VpnServerCRUD:
         Returns:
             True if deleted, False if not found.
         """
-        from modules.vpn.models import VpnServer
 
         server = await VpnServerCRUD.get(db, server_id)
         if server is None:
@@ -360,7 +357,7 @@ class VpnServerCRUD:
         cmd.extend([f"{ssh_user}@{server_ip}", "echo ok"])
 
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=15, check=False)
             healthy = result.returncode == 0 and "ok" in result.stdout
             logger.debug("Health check for %s: %s", server_ip, "healthy" if healthy else "unhealthy")
             return healthy

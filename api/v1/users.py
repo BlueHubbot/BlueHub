@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import db_manager
@@ -207,12 +207,12 @@ async def update_user(
     return _build_user_response(user)
 
 
-@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{user_id}")
 async def delete_user(
     user_id: str,
     token_payload: dict = Depends(get_current_user_payload),
     session: AsyncSession = Depends(db_manager.get_async_session),
-) -> None:
+):
     """
     Soft-delete a user (set inactive).
 
@@ -228,6 +228,8 @@ async def delete_user(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e),
         )
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 # ──────────────────────────────────────────────

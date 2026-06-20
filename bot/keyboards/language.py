@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 # Supported locales with display names (displayed in their own language)

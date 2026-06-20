@@ -10,9 +10,8 @@ sys.modules["pybreaker"] = MagicMock()
 sys.modules["proxmoxer"] = MagicMock()
 sys.modules["proxmoxer.backends"] = MagicMock()
 
-import asyncio
-from datetime import datetime, timedelta, timezone
-from unittest.mock import AsyncMock, MagicMock, patch, PropertyMock
+from datetime import UTC, datetime, timedelta
+from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import uuid4
 
 import pytest
@@ -26,11 +25,12 @@ from modules.vpn.models import (
     VpnServerStatus,
     VpnSession,
     VpnSessionStatus,
-    TrafficUsage,
 )
 from modules.vpn.services import AccountTrafficSummary, VpnAccountService
 from modules.vpn.wireguard import WireGuardService
-from modules.vps.models import VpsInstance  # noqa: F401 - ensure VpsInstance is registered for Service mapper
+from modules.vps.models import (
+    VpsInstance,  # noqa: F401 - ensure VpsInstance is registered for Service mapper
+)
 from services.tasks.vpn import (
     check_exceeded_traffic,
     check_vpn_server_health,
@@ -46,16 +46,16 @@ from services.tasks.vpn import (
 # ── Fixtures ──────────────────────────────────────────────────────────────
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_db():
     """Mock AsyncSession."""
     return AsyncMock(spec=AsyncSession)
 
 
-@pytest.fixture
+@pytest.fixture()
 def sample_wg_accounts():
     """Create sample WG VpnAccount objects for testing."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     server = VpnServer(
         id=str(uuid4()),
         name="test-wg-server",
@@ -88,10 +88,10 @@ def sample_wg_accounts():
     return accounts
 
 
-@pytest.fixture
+@pytest.fixture()
 def sample_traffic_summaries(sample_wg_accounts):
     """Create sample AccountTrafficSummary objects."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     return [
         AccountTrafficSummary(
             account_id=acc.id,
@@ -429,7 +429,7 @@ class TestCleanupStaleSessions:
         """Should end stale connected sessions."""
         mock_factory.return_value.__aenter__.return_value = mock_db
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         stale_session = VpnSession(
             id=str(uuid4()),
             vpn_account_id=str(uuid4()),

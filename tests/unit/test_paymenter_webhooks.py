@@ -69,7 +69,7 @@ def _reset_service() -> None:
     paymenter_service.signature_header = TEST_SIGNATURE_HEADER
 
 
-@pytest.fixture
+@pytest.fixture()
 def user_created_payload() -> bytes:
     """Sample user.created webhook payload."""
     return _make_payload(
@@ -79,7 +79,7 @@ def user_created_payload() -> bytes:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def payment_succeeded_payload() -> bytes:
     """Sample payment.succeeded webhook payload."""
     return _make_payload(
@@ -95,7 +95,7 @@ def payment_succeeded_payload() -> bytes:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_session() -> AsyncMock:
     """Mock database session."""
     session = AsyncMock()

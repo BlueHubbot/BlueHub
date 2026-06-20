@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "@/lib/providers";
+import { TenantThemeProvider } from "@/components/theme/TenantThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <TenantThemeProvider>{children}</TenantThemeProvider>
+        </Providers>
       </body>
     </html>
   );

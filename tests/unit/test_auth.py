@@ -9,8 +9,7 @@ Run: pytest tests/unit/test_auth.py -v --asyncio-mode=auto
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from typing import Any
+from datetime import UTC, datetime, timezone
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -37,7 +36,7 @@ from core.auth.jwt import (
 )
 from core.auth.password import hash_password, verify_password
 from core.config import Settings
-from dependencies.auth import get_current_user, get_current_user_payload, security_scheme
+from dependencies.auth import get_current_user, get_current_user_payload
 
 get_settings = Settings.get_settings
 
@@ -176,7 +175,7 @@ class TestJWTTokens:
         # Create an expired token by patching the time
         with patch("core.auth.jwt.datetime") as mock_datetime:
             mock_datetime.now.return_value = datetime(
-                2020, 1, 1, tzinfo=timezone.utc
+                2020, 1, 1, tzinfo=UTC
             )
             mock_datetime.side_effect = datetime
             mock_datetime.timezone = timezone
@@ -216,7 +215,7 @@ class TestJWTTokens:
 # ──────────────────────────────────────────────
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 class TestAuthEndpoints:
     """Unit tests for auth API endpoints using mocked dependencies."""
 
@@ -294,7 +293,7 @@ class TestAuthEndpoints:
 # ──────────────────────────────────────────────
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 class TestAuthDependencies:
     """Tests for auth dependency functions."""
 
