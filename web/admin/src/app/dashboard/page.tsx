@@ -1,29 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { adminApi } from "@/lib/api";
+import { adminApi, type DashboardStats } from "@/lib/api";
 import { formatNumber, formatCurrency, formatRelativeTime } from "@/lib/utils";
 import { useAdminAuth } from "@/lib/auth";
 import {
   Users,
   Server,
-  Activity,
   DollarSign,
+  Activity,
   TrendingUp,
   TrendingDown,
   AlertTriangle,
+  Blocks,
+  Globe,
 } from "lucide-react";
-
-interface DashboardStats {
-  total_users: number;
-  active_services: number;
-  total_revenue: number;
-  revenue_growth: number;
-  active_tenants: number;
-  pending_abuse_reports: number;
-  active_services_growth: number;
-  users_growth: number;
-}
 
 export default function DashboardPage() {
   const { user } = useAdminAuth();
@@ -41,16 +32,13 @@ export default function DashboardPage() {
       setStats(response.data);
     } catch (err) {
       setError("Failed to load dashboard stats. Using demo data.");
-      // Set demo data for initial display
       setStats({
         total_users: 1250,
         active_services: 850,
-        total_revenue: 45200,
-        revenue_growth: 12.5,
-        active_tenants: 8,
+        revenue_monthly: 45200,
+        active_modules: 5,
+        total_tenants: 8,
         pending_abuse_reports: 3,
-        active_services_growth: 8.2,
-        users_growth: 15.3,
       });
     } finally {
       setLoading(false);
@@ -77,28 +65,31 @@ export default function DashboardPage() {
     {
       label: "Total Users",
       value: formatNumber(stats.total_users),
-      change: stats.users_growth,
       icon: Users,
       color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30",
     },
     {
       label: "Active Services",
       value: formatNumber(stats.active_services),
-      change: stats.active_services_growth,
       icon: Server,
       color: "text-green-600 bg-green-100 dark:bg-green-900/30",
     },
     {
       label: "Monthly Revenue",
-      value: formatCurrency(stats.total_revenue),
-      change: stats.revenue_growth,
+      value: formatCurrency(stats.revenue_monthly),
       icon: DollarSign,
       color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30",
     },
     {
-      label: "Active Tenants",
-      value: formatNumber(stats.active_tenants),
-      icon: Activity,
+      label: "Active Modules",
+      value: formatNumber(stats.active_modules),
+      icon: Blocks,
+      color: "text-indigo-600 bg-indigo-100 dark:bg-indigo-900/30",
+    },
+    {
+      label: "Tenants",
+      value: formatNumber(stats.total_tenants),
+      icon: Globe,
       color: "text-orange-600 bg-orange-100 dark:bg-orange-900/30",
     },
   ];
@@ -125,7 +116,7 @@ export default function DashboardPage() {
       )}
 
       {/* Stats Grid */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {statCards.map((card) => {
           const Icon = card.icon;
           return (
@@ -134,21 +125,6 @@ export default function DashboardPage() {
                 <div className={cn("rounded-lg p-3", card.color)}>
                   <Icon className="h-5 w-5" />
                 </div>
-                {card.change !== undefined && (
-                  <span
-                    className={cn(
-                      "flex items-center gap-1 text-xs font-medium",
-                      card.change >= 0 ? "text-green-600" : "text-red-600"
-                    )}
-                  >
-                    {card.change >= 0 ? (
-                      <TrendingUp className="h-3 w-3" />
-                    ) : (
-                      <TrendingDown className="h-3 w-3" />
-                    )}
-                    {Math.abs(card.change).toFixed(1)}%
-                  </span>
-                )}
               </div>
               <div className="mt-4">
                 <p className="text-2xl font-bold">{card.value}</p>
@@ -181,7 +157,7 @@ export default function DashboardPage() {
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Service Utilization</span>
               <span className="font-medium">
-                {stats.active_services > 0
+                {stats.total_users > 0
                   ? ((stats.active_services / stats.total_users) * 100).toFixed(1)
                   : 0}%
               </span>
@@ -191,7 +167,7 @@ export default function DashboardPage() {
                 className="h-2 rounded-full bg-primary transition-all"
                 style={{
                   width: `${
-                    stats.active_services > 0
+                    stats.total_users > 0
                       ? Math.min((stats.active_services / stats.total_users) * 100, 100)
                       : 0
                   }%`,
@@ -199,9 +175,9 @@ export default function DashboardPage() {
               />
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Tenants Active</span>
+              <span className="text-muted-foreground">Active Modules</span>
               <span className="font-medium">
-                {stats.active_tenants} / {stats.active_tenants}
+                {stats.active_modules} of {stats.active_modules}
               </span>
             </div>
           </div>
@@ -211,7 +187,7 @@ export default function DashboardPage() {
   );
 }
 
-// Helper: needed because cn import was missing in the page
+// Helper: cn utility
 function cn(...classes: (string | boolean | undefined | null)[]): string {
   return classes.filter(Boolean).join(" ");
 }

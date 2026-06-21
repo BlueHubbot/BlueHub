@@ -17,6 +17,7 @@ from shared.models.base import CoreBase, TimestampMixin, UUIDMixin
 from shared.models.enums import UserRole
 
 if TYPE_CHECKING:
+    from shared.models.abuse_report import AbuseReport
     from shared.models.audit_log import AuditLog
     from shared.models.product import ResellerCommission
     from shared.models.service import Service
@@ -128,6 +129,12 @@ class User(UUIDMixin, TimestampMixin, CoreBase):
     audit_logs: Mapped[list[AuditLog]] = relationship(
         "AuditLog",
         back_populates="user",
+        lazy="selectin",
+    )
+    abuse_reports: Mapped[list[AbuseReport]] = relationship(
+        "AbuseReport",
+        back_populates="user",
+        foreign_keys="AbuseReport.user_id",
         lazy="selectin",
     )
     commissions: Mapped[list[ResellerCommission]] = relationship(

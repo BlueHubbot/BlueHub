@@ -1,5 +1,5 @@
 # BlueHub Task Status Report
-# Last Updated: 2026-06-19
+# Last Updated: 2026-06-21
 
 ## TASK-010 (Authentication & Security):
 - Status: ✅ COMPLETED
@@ -74,15 +74,53 @@
   - /login (11.9 kB)
   - /_not-found (991 B)
 
+## TASK-030 (Admin Panel - Module Management): ✅ COMPLETED
+- Components:
+  - Module listing page with search, sort & filter
+  - ModuleCard component with enable/disable toggle, flag badges
+  - DisableConfirmModal for safe module disabling
+  - ModuleConfigModal for full feature flag management
+  - Summary bar showing total/active/flagged modules
+  - Expanded details view (order, flags, schema info)
+- Files:
+  - web/admin/src/app/dashboard/modules/page.tsx (✅ created)
+  - web/admin/src/app/dashboard/modules/components/ModuleCard.tsx (✅ created)
+  - web/admin/src/app/dashboard/modules/components/DisableConfirmModal.tsx (✅ created)
+  - web/admin/src/app/dashboard/modules/components/ModuleConfigModal.tsx (✅ created)
+
 ## Other Tasks:
 - TASK-013 (Locale/Persian Support): 🔄 IN PROGRESS
 - TASK-014 (Billing System): 🔄 IN PROGRESS
-- TASK-030 (Admin Panel - Module Management): ⏳ NOT STARTED (depends on TASK-029, TASK-012)
-- TASK-031 (Admin Panel - Product Management): ⏳ NOT STARTED (depends on TASK-029)
-- TASK-032 (Admin Panel - Tenant Management): ⏳ NOT STARTED (depends on TASK-029)
-- TASK-033 (Admin Panel - User Management): ⏳ NOT STARTED (depends on TASK-029)
-- TASK-034 (Admin Panel - Abuse Management): ⏳ NOT STARTED (depends on TASK-029)
-- TASK-035 (Admin API Endpoints): ⏳ NOT STARTED (depends on TASK-012)
+- TASK-031 (Admin Panel - Product Management): ✅ COMPLETED
+  - Product listing page with search, module filter, bulk activate/deactivate, sort by order
+  - ProductFormModal for create/edit with module selection, pricing, i18n descriptions, billing cycle, pricing formula JSON editor with validation, specs JSON editor
+  - ProductDeleteModal with confirmation details and danger styling
+  - Files: web/admin/src/app/dashboard/products/page.tsx, ProductFormModal.tsx, ProductDeleteModal.tsx
+- TASK-032 (Admin Panel - Tenant Management): ✅ COMPLETED
+  - Tenant listing page with search, status indicators, branding color stripe, license key copy
+  - TenantFormModal for create/edit with branding (color picker, font, logo upload), license key generation, Telegram bot token, signature, activate/deactivate toggle
+  - Activate/Deactivate toggle on each tenant card (via api.patch)
+  - Files: web/admin/src/app/dashboard/tenants/page.tsx, TenantFormModal.tsx
+- TASK-033 (Admin Panel - User Management): ✅ COMPLETED
+  - User listing page with search, role/status/tenant filters, server-side pagination
+  - Inline suspend/unsuspend toggle with loading states
+  - Password reset via POST /admin/users/:id/reset-password
+  - UserEditModal for editing email, username, role, language, active status
+  - UserDetailModal with tabs: Services (type/status/date) + Audit Logs (action/details/IP/date)
+  - Role-based tenant filter visibility (superadmin only)
+  - Files: web/admin/src/app/dashboard/users/page.tsx, UserEditModal.tsx, UserDetailModal.tsx
+- TASK-034 (Admin Panel - Abuse Management): ✅ COMPLETED
+  - Abuse listing page with search, status/severity/type filters, pagination, summary stats bar
+  - AbuseDetailModal with Details/Evidence/Audit Logs tabs, severity score, quick actions
+  - AbuseResolveModal with resolution action, action type, notes, notify user toggle
+  - Inline status transitions: open → investigating, investigating → resolved/dismissed, reopen
+  - Auto vs manual detection badges, IP display, severity/status color-coded badges
+  - Multi-selection support (future-ready via column checkboxes pattern)
+  - Files: web/admin/src/app/dashboard/abuse/page.tsx, AbuseDetailModal.tsx, AbuseResolveModal.tsx
+- TASK-035 (Admin API Endpoints): ✅ COMPLETED
+  - Core admin schemas (DashboardStats, Tenant/Product/AbuseReport/Service DTOs)
+  - Core admin service (AdminService with full CRUD, stats, bulk ops, license generation)
+  - API router (admin.py with 20 endpoints: dashboard, tenants, products, abuse reports, services, license, upload)
 - TASK-038 to TASK-041 (VPS Module): ⏳ NOT STARTED
 - TASK-042 to TASK-044 (Additional Modules): ⏳ NOT STARTED
 - TASK-045 to TASK-055 (Production Ready): ⏳ NOT STARTED
