@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 from uuid import UUID, uuid4
 
@@ -318,7 +318,7 @@ class VpsInstanceService:
 
         # Update DB power status
         instance.power_status = new_status
-        instance.updated_at = datetime.now(UTC)
+        instance.updated_at = datetime.now(timezone.utc)
         await self.db.commit()
 
         logger.info(
@@ -364,7 +364,7 @@ class VpsInstanceService:
         instance.cores = vm_info.cpus
         instance.memory_mb = vm_info.max_memory_bytes // (1024 * 1024)
         instance.vnc_port = vm_info.vnc_port
-        instance.updated_at = datetime.now(UTC)
+        instance.updated_at = datetime.now(timezone.utc)
         await self.db.commit()
 
         return vm_info
@@ -407,7 +407,7 @@ class VpsInstanceService:
         except ProxmoxClientError as exc:
             raise VpsResizeError(f"Resize failed: {exc}") from exc
 
-        instance.updated_at = datetime.now(UTC)
+        instance.updated_at = datetime.now(timezone.utc)
         await self.db.commit()
         await self.db.refresh(instance)
 
@@ -476,7 +476,7 @@ class VpsInstanceService:
         if ssh_keys:
             instance.ssh_keys = ssh_keys
         instance.power_status = VpsPowerStatus.RUNNING
-        instance.updated_at = datetime.now(UTC)
+        instance.updated_at = datetime.now(timezone.utc)
         await self.db.commit()
         await self.db.refresh(instance)
 
@@ -558,7 +558,7 @@ class VpsInstanceService:
             description=description,
             size_bytes=snap_info.size_bytes if snap_info else None,
             is_ram_included=include_ram,
-            snapshot_taken_at=datetime.now(UTC),
+            snapshot_taken_at=datetime.now(timezone.utc),
         )
         self.db.add(snapshot)
         await self.db.commit()
@@ -623,7 +623,7 @@ class VpsInstanceService:
 
         # Update power status after rollback
         instance.power_status = VpsPowerStatus.RUNNING if start_after else VpsPowerStatus.STOPPED
-        instance.updated_at = datetime.now(UTC)
+        instance.updated_at = datetime.now(timezone.utc)
         await self.db.commit()
 
         logger.info(

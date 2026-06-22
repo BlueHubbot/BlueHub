@@ -17,7 +17,7 @@ import re
 import secrets
 import subprocess  # nosec: B404 - xray commands are intentionally invoked
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -1011,7 +1011,7 @@ class XrayService:
             re.IGNORECASE,
         )
 
-        now = datetime.now(tz=UTC)
+        now = datetime.now(tz=timezone.utc)
         traffic_map: dict[str, dict[str, int]] = {}
 
         try:
@@ -1020,7 +1020,7 @@ class XrayService:
                 try:
                     ts = datetime.strptime(
                         match.group("timestamp"), "%Y/%m/%d %H:%M:%S"
-                    ).replace(tzinfo=UTC)
+                    ).replace(tzinfo=timezone.utc)
                     if (now - ts).total_seconds() > recent_seconds:
                         continue
                 except ValueError:

@@ -9,7 +9,7 @@ Run: pytest tests/unit/test_auth.py -v --asyncio-mode=auto
 
 from __future__ import annotations
 
-from datetime import UTC, datetime, timezone
+from datetime import timezone, datetime, timezone
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -175,7 +175,7 @@ class TestJWTTokens:
         # Create an expired token by patching the time
         with patch("core.auth.jwt.datetime") as mock_datetime:
             mock_datetime.now.return_value = datetime(
-                2020, 1, 1, tzinfo=UTC
+                2020, 1, 1, tzinfo=timezone.utc
             )
             mock_datetime.side_effect = datetime
             mock_datetime.timezone = timezone

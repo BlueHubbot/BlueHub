@@ -10,7 +10,7 @@ Run: python -m pytest tests/unit/test_audit.py -v --asyncio-mode=auto
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import timezone, datetime
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest

@@ -16,7 +16,7 @@ import logging
 import re
 import subprocess  # nosec: B404 - wg commands are intentionally invoked
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import timezone, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -481,7 +481,7 @@ class WireGuardService:
             try:
                 last_handshake_ts = int(parts[4])
                 last_handshake = (
-                    datetime.fromtimestamp(last_handshake_ts, tz=UTC)
+                    datetime.fromtimestamp(last_handshake_ts, tz=timezone.utc)
                     if last_handshake_ts > 0
                     else None
                 )
@@ -558,7 +558,7 @@ class WireGuardService:
             Dict mapping public_key -> bool (True if connected).
         """
         peers = WireGuardService.poll_traffic(interface=interface)
-        now = datetime.now(tz=UTC)
+        now = datetime.now(tz=timezone.utc)
 
         result: dict[str, bool] = {}
         for peer in peers:

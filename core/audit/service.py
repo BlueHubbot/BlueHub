@@ -7,7 +7,7 @@ and managing the immutable audit trail.
 
 from __future__ import annotations
 
-from datetime import UTC
+from datetime import timezone
 from typing import Any
 
 from sqlalchemy import delete, func, select

@@ -8,7 +8,7 @@ Runs daily via Celery Beat at scheduled times.
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime, timedelta
+from datetime import timezone, datetime, timedelta
 
 from services.celery_app import celery_app
 

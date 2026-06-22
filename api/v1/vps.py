@@ -10,7 +10,7 @@ Covers both admin and client-facing endpoints for the VPS module.
 
 from __future__ import annotations
 
-from datetime import UTC
+from datetime import timezone
 from typing import Any
 from uuid import UUID
 
@@ -296,7 +296,7 @@ async def update_vps_instance(
 
     from datetime import datetime
 
-    instance.updated_at = datetime.now(tz=UTC)
+    instance.updated_at = datetime.now(tz=timezone.utc)
     await session.commit()
     await session.refresh(instance)
 

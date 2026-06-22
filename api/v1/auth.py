@@ -7,7 +7,7 @@ All endpoints use async/await with SQLAlchemy async sessions.
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import timezone, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -252,7 +252,7 @@ async def logout(
     # Extract jti from token payload if present, otherwise use a hash of the sub+exp
     jti = token_payload.get("jti", token_payload.get("sub", ""))
     exp_timestamp = token_payload.get("exp", 0)
-    now_timestamp = datetime.now(UTC).timestamp()
+    now_timestamp = datetime.now(timezone.utc).timestamp()
     remaining_ttl = max(int(exp_timestamp - now_timestamp), 0)
 
     if remaining_ttl > 0:

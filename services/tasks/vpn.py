@@ -12,7 +12,7 @@ Periodic tasks for VPN operations:
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime, timedelta
+from datetime import timezone, datetime, timedelta
 from uuid import uuid4
 
 from sqlalchemy import select

@@ -20,7 +20,7 @@ try:
 except ImportError:  # pragma: no cover
     qrcode = None
 
-from datetime import UTC
+from datetime import timezone
 
 from dependencies.auth import get_current_user
 from dependencies.db import get_async_session
@@ -327,7 +327,7 @@ async def update_vpn_account(
 
     from datetime import datetime
 
-    account.updated_at = datetime.now(tz=UTC)
+    account.updated_at = datetime.now(tz=timezone.utc)
     await session.commit()
     await session.refresh(account)
 
@@ -727,7 +727,7 @@ async def update_vpn_server(
 
     from datetime import datetime
 
-    server.updated_at = datetime.now(tz=UTC)
+    server.updated_at = datetime.now(tz=timezone.utc)
     await session.commit()
     await session.refresh(server)
     return _build_server_response(server)
