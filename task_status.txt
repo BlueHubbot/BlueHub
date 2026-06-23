@@ -1,5 +1,5 @@
 # BlueHub Task Status Report
-# Last Updated: 2026-06-21
+# Last Updated: 2026-06-23
 
 ## TASK-010 (Authentication & Security):
 - Status: ✅ COMPLETED
@@ -121,6 +121,16 @@
   - Core admin schemas (DashboardStats, Tenant/Product/AbuseReport/Service DTOs)
   - Core admin service (AdminService with full CRUD, stats, bulk ops, license generation)
   - API router (admin.py with 20 endpoints: dashboard, tenants, products, abuse reports, services, license, upload)
-- TASK-038 to TASK-041 (VPS Module): ⏳ NOT STARTED
+- TASK-036 (Fix Model-Migration Mismatch): ✅ COMPLETED
+  - Created migration `20260623_020930_add_full_name_is_active_fix_email.py`
+  - Adds `full_name` (String, nullable) column to users table
+  - Adds `is_active` (Boolean, default=true) column to users table
+  - Fixes `email` column from nullable=True to nullable=False
+  - Creates index `ix_users_is_active`
+- TASK-038 to TASK-041 (VPS Module): ✅ COMPLETED
+  - Core VPS services (modules/vps/services.py) with full CRUD + status management
+  - VPS Celery tasks (services/tasks/vps.py) with provisioning, suspension, deletion
+  - Unit tests (tests/unit/test_vps.py) - all passing (22 tests)
+  - API endpoints registered via router in api/v1/
 - TASK-042 to TASK-044 (Additional Modules): ⏳ NOT STARTED
 - TASK-045 to TASK-055 (Production Ready): ⏳ NOT STARTED

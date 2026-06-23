@@ -23,6 +23,7 @@ celery_app = Celery(
         "services.tasks.maintenance",
         "services.tasks.monitoring",
         "services.tasks.vpn",
+        "services.tasks.vps",
     ],
 )
 
@@ -138,6 +139,67 @@ celery_app.conf.beat_schedule = {
     "vpn-suspend-expired-hourly": {
         "task": "services.tasks.vpn.suspend_expired_vpn",
         "schedule": crontab(minute=45),  # every hour at :45
+        "args": (),
+    },
+    # ── VPS Tasks ─────────────────────────────────────────────────────────
+    # Sync VPS power status from Proxmox every 2 minutes
+    "vps-sync-status-every-2-minutes": {
+        "task": "services.tasks.vps.sync_vps_status",
+        "schedule": 120.0,  # 2 minutes
+        "args": (),
+    },
+    # Poll VPS traffic every 5 minutes
+    "vps-sync-traffic-every-5-minutes": {
+        "task": "services.tasks.vps.sync_vps_traffic",
+        "schedule": 300.0,  # 5 minutes
+        "args": (),
+    },
+    # Check exceeded bandwidth limits every 10 minutes
+    "vps-check-exceeded-bandwidth-every-10-minutes": {
+        "task": "services.tasks.vps.check_exceeded_bandwidth",
+        "schedule": 600.0,  # 10 minutes
+        "args": (),
+    },
+    # Check VPS expiration hourly
+    "vps-check-expiration-hourly": {
+        "task": "services.tasks.vps.check_vps_expiration",
+        "schedule": crontab(minute=0),  # every hour at :00
+        "args": (),
+    },
+    # Auto-renew VPS services every hour at :30
+    "vps-auto-renew-hourly": {
+        "task": "services.tasks.vps.auto_renew_vps",
+        "schedule": crontab(minute=30),  # every hour at :30
+        "args": (),
+    },
+    # Suspend expired VPS services (after grace period) every hour at :45
+    "vps-suspend-expired-hourly": {
+        "task": "services.tasks.vps.suspend_expired_vps",
+        "schedule": crontab(minute=45),  # every hour at :45
+        "args": (),
+    },
+    # Auto-snapshot active VPS instances daily at 1 AM
+    "vps-auto-snapshot-daily": {
+        "task": "services.tasks.vps.auto_snapshot_vps",
+        "schedule": crontab(hour=1, minute=0),  # daily at 1 AM
+        "args": (),
+    },
+    # Check VPS server health every 5 minutes
+    "vps-check-server-health-every-5-minutes": {
+        "task": "services.tasks.vps.check_vps_server_health",
+        "schedule": 300.0,  # 5 minutes
+        "args": (),
+    },
+    # Full VPS sync every 15 minutes (status + traffic combined)
+    "vps-full-sync-every-15-minutes": {
+        "task": "services.tasks.vps.sync_all_vps",
+        "schedule": 900.0,  # 15 minutes
+        "args": (),
+    },
+    # Cleanup stale VPS instances daily at 2 AM
+    "vps-cleanup-stale-daily": {
+        "task": "services.tasks.vps.cleanup_stale_vps",
+        "schedule": crontab(hour=2, minute=0),  # daily at 2 AM
         "args": (),
     },
 }
