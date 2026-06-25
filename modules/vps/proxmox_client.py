@@ -18,11 +18,8 @@ except ImportError:  # pragma: no cover - only when deps not installed
     backoff = None  # type: ignore[assignment]
 try:
     import pybreaker  # type: ignore[import-untyped]
-except ImportError as e:  # pragma: no cover - only when deps not installed
-    raise ImportError(
-        "pybreaker is required for VPS Proxmox client. "
-        "Install with: pip install pybreaker"
-    ) from e
+except ImportError:  # pragma: no cover - only when deps not installed
+    pybreaker = None  # type: ignore[assignment]
 try:
     from proxmoxer import (  # type: ignore[import-untyped]
         AuthenticationError,
@@ -43,11 +40,15 @@ logger = logging.getLogger("bluehub.modules.vps.proxmox")
 # ------------------------------------------------------------------
 # Circuit breaker for Proxmox connection resilience
 # ------------------------------------------------------------------
-_proxmox_breaker = pybreaker.CircuitBreaker(
-    fail_max=5,
-    reset_timeout=60,
-    name="proxmox_api",
-    exclude=[AuthenticationError],
+_proxmox_breaker = (
+    pybreaker.CircuitBreaker(
+        fail_max=5,
+        reset_timeout=60,
+        name="proxmox_api",
+        exclude=[AuthenticationError],
+    )
+    if pybreaker is not None
+    else None
 )
 
 
@@ -636,7 +637,7 @@ class ProxmoxClient:
                 f"Proxmox API error ({status_code}): {exc}"
             ) from exc
         # Wait for task completion
-        status = self.api.nodes(node).tasks(upid).status.get()
+        status: dict[str, Any] = self.api.nodes(node).tasks(upid).status.get()
         return ProxmoxTaskResult(
             upid=upid,
             node=node,

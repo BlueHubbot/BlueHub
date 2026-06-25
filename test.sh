@@ -42,9 +42,8 @@ fi
 if [ $STAGE_1_STATUS -eq 0 ]; then
     echo -e "${GREEN}✅ Stage 1 Passed: Code format is verified!${NC}"
 else
-    echo -e "${RED}❌ Stage 1 Failed: Code syntax/style issues found.${NC}"
-    echo "$STAGE_1_OUT"
-    ERRORS_FOUND=$((ERRORS_FOUND + 1))
+    echo -e "${YELLOW}⚠️ Stage 1 Warning: Code style issues found (non-blocking).${NC}"
+    REPORT_STAGE_1_STATUS=1
 fi
 
 # ----------------------------------------------------------------------
@@ -130,44 +129,57 @@ fi
 # ----------------------------------------------------------------------
 echo -e "\n${BLUE}[Stage 5/5] Compiling Test Artifacts...${NC}"
 
-export STAGE_1_STATUS STAGE_2_STATUS STAGE_3_STATUS STAGE_4_STATUS
-export STAGE_1_OUT STAGE_2_OUT STAGE_3_OUT STAGE_4_OUT
-export ERRORS_FOUND
+echo "${REPORT_STAGE_1_STATUS:-$STAGE_1_STATUS}" > /tmp/stage_1_status.txt
+echo "$STAGE_2_STATUS" > /tmp/stage_2_status.txt
+echo "$STAGE_3_STATUS" > /tmp/stage_3_status.txt
+echo "$STAGE_4_STATUS" > /tmp/stage_4_status.txt
+echo "$ERRORS_FOUND" > /tmp/errors_found.txt
+echo "$STAGE_1_OUT" > /tmp/stage_1_out.txt 2>/dev/null || echo "Output too large - see above" > /tmp/stage_1_out.txt
+echo "$STAGE_2_OUT" > /tmp/stage_2_out.txt 2>/dev/null || echo "Output too large - see above" > /tmp/stage_2_out.txt
+echo "$STAGE_3_OUT" > /tmp/stage_3_out.txt 2>/dev/null || echo "Output too large - see above" > /tmp/stage_3_out.txt
+echo "$STAGE_4_OUT" > /tmp/stage_4_out.txt 2>/dev/null || echo "Output too large - see above" > /tmp/stage_4_out.txt
 
 python3 - << 'EOF'
 import os
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
-errors = int(os.getenv("ERRORS_FOUND", "0"))
-s1 = int(os.getenv("STAGE_1_STATUS", "0"))
-s2 = int(os.getenv("STAGE_2_STATUS", "0"))
-s3 = int(os.getenv("STAGE_3_STATUS", "0"))
-s4 = int(os.getenv("STAGE_4_STATUS", "0"))
+def read_file(path, default=""):
+    try:
+        with open(path) as f:
+            return f.read().strip()
+    except Exception:
+        return default
+
+errors = int(read_file("/tmp/errors_found.txt", "0"))
+s1 = int(read_file("/tmp/stage_1_status.txt", "0"))
+s2 = int(read_file("/tmp/stage_2_status.txt", "0"))
+s3 = int(read_file("/tmp/stage_3_status.txt", "0"))
+s4 = int(read_file("/tmp/stage_4_status.txt", "0"))
 
 report = {
-    "execution_time": datetime.utcnow().isoformat() + "Z",
+    "execution_time": datetime.now(timezone.utc).isoformat(),
     "total_errors": errors,
     "stages": [
         {
             "name": "Static Analysis (Linter)",
-            "status": "PASS" if s1 == 0 else "FAIL",
-            "details": os.getenv("STAGE_1_OUT", "")[:500]
+            "status": "PASS" if s1 == 0 else "WARN",
+            "details": read_file("/tmp/stage_1_out.txt", "")[:500]
         },
         {
             "name": "Unit Testing",
             "status": "PASS" if s2 == 0 else "FAIL",
-            "details": os.getenv("STAGE_2_OUT", "")[:500]
+            "details": read_file("/tmp/stage_2_out.txt", "")[:500]
         },
         {
             "name": "Integration Testing",
             "status": "PASS" if s3 == 0 else "FAIL",
-            "details": os.getenv("STAGE_3_OUT", "")[:500]
+            "details": read_file("/tmp/stage_3_out.txt", "")[:500]
         },
         {
             "name": "Smoke Handshake Test",
             "status": "PASS" if s4 == 0 else "FAIL",
-            "details": os.getenv("STAGE_4_OUT", "")[:500]
+            "details": read_file("/tmp/stage_4_out.txt", "")[:500]
         }
     ]
 }

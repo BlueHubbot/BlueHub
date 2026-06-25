@@ -22,6 +22,8 @@ from api.v1 import (
     modules,
     monitoring,
     rbac,
+    smartdns,
+    tenants,
     users,
     vpn,
     vps,
@@ -129,8 +131,10 @@ app.include_router(monitoring.router)
 app.include_router(rbac.router)
 app.include_router(billing.router)
 app.include_router(audit.router)
+app.include_router(tenants.router)
 app.include_router(vpn.router)
 app.include_router(vps.router)
+app.include_router(smartdns.router)
 
 
 # ── Exception Handler Registration ─────────────────────────────────────────

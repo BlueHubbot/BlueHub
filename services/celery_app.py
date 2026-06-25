@@ -22,6 +22,7 @@ celery_app = Celery(
         "services.tasks.heartbeat",
         "services.tasks.maintenance",
         "services.tasks.monitoring",
+        "services.tasks.smartdns",
         "services.tasks.vpn",
         "services.tasks.vps",
     ],

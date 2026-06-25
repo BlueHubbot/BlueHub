@@ -70,12 +70,6 @@ def upgrade() -> None:
             name="fk_vpn_accounts_service_id_services",
             ondelete="CASCADE",
         ),
-        sa.ForeignKeyConstraint(
-            ["server_id"],
-            ["vpn_servers.id"],
-            name="fk_vpn_accounts_server_id_vpn_servers",
-            ondelete="SET NULL",
-        ),
     )
 
     # -----------------------------------------------------------------------

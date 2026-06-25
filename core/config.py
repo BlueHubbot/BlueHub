@@ -271,6 +271,28 @@ class Settings(BaseSettings):
         default=30, ge=1, description="Paymenter HTTP timeout in seconds"
     )
 
+    # --- PowerDNS / SmartDNS Integration ---
+    PDNS_API_URL: str = Field(
+        default="http://localhost:8081",
+        description="PowerDNS Authoritative Server API base URL",
+    )
+    PDNS_API_KEY: str = Field(
+        default="changeme",
+        description="PowerDNS API key",
+    )
+    PDNS_SERVER_ID: str = Field(
+        default="localhost",
+        description="PowerDNS server ID",
+    )
+    PDNS_DEFAULT_ZONE_SUFFIX: str = Field(
+        default="smartdns.bluehub.local",
+        description="Default zone suffix for SmartDNS profiles",
+    )
+    PDNS_DEFAULT_NAMESERVERS: list[str] = Field(
+        default=["ns1.bluehub.local.", "ns2.bluehub.local."],
+        description="Default nameservers for created zones",
+    )
+
     # --- Proxmox VE Integration ---
     PROXMOX_HOST: str | None = Field(
         default=None, description="Proxmox VE host"

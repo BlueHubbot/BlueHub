@@ -5,7 +5,7 @@ Uses SQLAlchemy's PostgreSQL DDL compiler to produce CREATE TABLE statements.
 
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -53,7 +53,7 @@ def create_initial_migration() -> None:
     generate_create_table_statements(metadata)
 
     # Generate a unique revision ID
-    revision_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    revision_id = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
     down_revision = None  # This is the initial migration
 
     # Count the tables
@@ -70,7 +70,7 @@ Contains all core tables for multi-tenant operation.
 
 Revision ID: {revision_id}
 Revises: {down_revision}
-Create Date: {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S.%f") + " (UTC)"}
+Create Date: {datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S.%f") + " (UTC)"}
 """
 
 from typing import Sequence, Union

@@ -461,7 +461,7 @@ class TestModuleMetadataFiles:
 
         assert isinstance(metadata, ModuleMetadata)
         assert metadata.name == "vps"
-        assert metadata.display_name == "VPS Service"
+        assert metadata.display_name["en"] == "VPS Service"
         assert metadata.default_flags.enabled is True
 
     def test_smartdns_metadata(self) -> None:
@@ -470,7 +470,7 @@ class TestModuleMetadataFiles:
 
         assert isinstance(metadata, ModuleMetadata)
         assert metadata.name == "smartdns"
-        assert metadata.display_name == "SmartDNS Service"
+        assert metadata.display_name["en"] == "SmartDNS Service"
 
     def test_streaming_metadata(self) -> None:
         """Test Streaming module metadata."""
@@ -478,7 +478,7 @@ class TestModuleMetadataFiles:
 
         assert isinstance(metadata, ModuleMetadata)
         assert metadata.name == "streaming"
-        assert metadata.display_name == "Streaming Service"
+        assert metadata.display_name["en"] == "Streaming Service"
 
     def test_game_metadata(self) -> None:
         """Test Game module metadata."""
@@ -486,7 +486,7 @@ class TestModuleMetadataFiles:
 
         assert isinstance(metadata, ModuleMetadata)
         assert metadata.name == "game"
-        assert metadata.display_name == "Game Service"
+        assert metadata.display_name["en"] == "Game Service"
 
     def test_all_metadata_have_unique_names(self) -> None:
         """Test all module names are unique."""

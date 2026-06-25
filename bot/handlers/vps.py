@@ -20,7 +20,7 @@ to keep business logic in one place.
 from __future__ import annotations
 
 import logging
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 from uuid import UUID
 
 from aiogram import F, Router

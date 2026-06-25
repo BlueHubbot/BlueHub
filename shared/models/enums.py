@@ -102,6 +102,14 @@ class VpsPowerStatus(str, Enum):
     SUSPENDED = "suspended"
 
 
+class AbuseReportStatus(str, Enum):
+    """Abuse report resolution statuses."""
+
+    PENDING = "pending"
+    RESOLVED = "resolved"
+    DISMISSED = "dismissed"
+
+
 class VpnServerStatus(str, Enum):
     """VPN server statuses."""
 

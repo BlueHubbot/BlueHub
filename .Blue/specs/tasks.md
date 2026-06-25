@@ -1021,7 +1021,7 @@ Use Tanstack Query for API calls, store JWT in httpOnly cookie for security
 ---
 
 ### TASK-027: Web Client - VPN Module Pages
-**Status:** ⏳ NOT STARTED  
+**Status:** ✅ COMPLETE  
 **Priority:** high  
 **Estimated Time:** 12 hours  
 **Dependencies:** TASK-026, TASK-020  
@@ -1031,16 +1031,25 @@ Use Tanstack Query for API calls, store JWT in httpOnly cookie for security
 Create web pages for VPN module (products, services, config download).
 
 **Acceptance Criteria:**
-- [ ] VPN products page at `/vpn/products`
-- [ ] Product detail page with purchase button
-- [ ] My VPN services page at `/vpn/services`
-- [ ] Service detail page with usage chart
-- [ ] Config download modal
-- [ ] QR code display for mobile
-- [ ] Real-time usage updates (polling or WebSocket)
-- [ ] Responsive design for mobile
-- [ ] Loading skeletons
-- [ ] Error handling
+- [x] VPN products page at `/vpn/products`
+- [x] Product detail page with purchase button
+- [x] My VPN services page at `/vpn/services`
+- [x] Service detail page with usage chart
+- [x] Config download modal
+- [x] QR code display for mobile
+- [x] Real-time usage updates (polling or WebSocket)
+- [x] Responsive design for mobile
+- [x] Loading skeletons
+- [x] Error handling
+
+**Implemented Files:**
+- `web/client/src/app/dashboard/vpn/page.tsx` - VPN dashboard
+- `web/client/src/app/dashboard/vpn/products/page.tsx` - Product listing with search/filter
+- `web/client/src/app/dashboard/vpn/products/[id]/page.tsx` - Product detail with purchase
+- `web/client/src/app/dashboard/vpn/services/[id]/page.tsx` - Service detail with usage chart
+- `web/client/src/lib/types/vpn.ts` - VPN TypeScript type definitions
+- `web/client/src/lib/hooks/use-vpn.ts` - VPN React Query hooks
+- `web/client/src/components/vpn/` - VPN UI components (QR, config, charts)
 
 **Technical Notes:**
 Use Shadcn components: Card, Button, Dialog, Chart (Recharts)
@@ -1049,7 +1058,7 @@ Poll usage API every 30 seconds or use WebSocket for real-time
 ---
 
 ### TASK-028: Web Client - White-Label Support
-**Status:** ⏳ NOT STARTED  
+**Status:** ✅ COMPLETE  
 **Priority:** medium  
 **Estimated Time:** 6 hours  
 **Dependencies:** TASK-025  
@@ -1059,14 +1068,20 @@ Poll usage API every 30 seconds or use WebSocket for real-time
 Implement white-label theming based on tenant configuration.
 
 **Acceptance Criteria:**
-- [ ] API call to fetch tenant branding on load
-- [ ] Dynamic logo replacement
-- [ ] Dynamic color scheme (CSS variables)
-- [ ] Favicon update
-- [ ] Page title update
-- [ ] Theme cached in localStorage
-- [ ] Fallback to default theme if API fails
-- [ ] Theme switching without page reload
+- [x] API call to fetch tenant branding on load
+- [x] Dynamic logo replacement
+- [x] Dynamic color scheme (CSS variables)
+- [x] Favicon update
+- [x] Page title update
+- [x] Theme cached in localStorage
+- [x] Fallback to default theme if API fails
+- [x] Theme switching without page reload
+
+**Implemented Files:**
+- `web/client/src/lib/hooks/use-tenant.ts` - Tenant branding fetch with localStorage caching
+- `web/client/src/components/theme/TenantThemeProvider.tsx` - CSS variable injection, favicon/title management
+- `api/v1/tenants.py` - `/api/v1/tenants/current` endpoint for tenant branding data
+- `web/client/src/app/layout.tsx` - Wraps entire app with TenantThemeProvider
 
 **Technical Notes:**
 Fetch tenant config from `/v1/tenants/current` on app load

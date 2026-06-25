@@ -6,7 +6,7 @@ Handles inline keyboard callbacks for language selection.
 from __future__ import annotations
 
 import logging
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 
 from aiogram import F, Router
 from aiogram.types import CallbackQuery

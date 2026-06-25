@@ -10,7 +10,7 @@ Run: python -m pytest tests/unit/test_audit.py -v --asyncio-mode=auto
 
 from __future__ import annotations
 
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -24,6 +24,11 @@ from core.audit.schemas import (
     AuditLogStatsResponse,
 )
 from core.audit.service import AuditLogNotFoundError, AuditService
+
+# Ensure module models are loaded for SQLAlchemy relationship resolution
+from modules.smartdns.models import SmartDnsProfile  # noqa: F401
+from modules.vpn.models import VpnAccount  # noqa: F401
+from modules.vps.models import VpsInstance  # noqa: F401
 from shared.models.audit_log import AuditLog
 from shared.models.enums import AuditAction
 

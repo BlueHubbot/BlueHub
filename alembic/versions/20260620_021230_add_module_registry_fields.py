@@ -10,12 +10,13 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 import sqlalchemy as sa
-from alembic import op
 from sqlalchemy.dialects.postgresql import JSONB
+
+from alembic import op
 
 # revision identifiers
 revision: str = "20260620_021230"
-down_revision: str | None = "20260615_201200_vps_tables"
+down_revision: str | None = "20260615_201200"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 

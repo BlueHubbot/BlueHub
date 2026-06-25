@@ -10,11 +10,11 @@ Covers both admin and client-facing endpoints for the VPS module.
 
 from __future__ import annotations
 
-from datetime import timezone
+from datetime import UTC
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -296,7 +296,7 @@ async def update_vps_instance(
 
     from datetime import datetime
 
-    instance.updated_at = datetime.now(tz=timezone.utc)
+    instance.updated_at = datetime.now(tz=UTC)
     await session.commit()
     await session.refresh(instance)
 

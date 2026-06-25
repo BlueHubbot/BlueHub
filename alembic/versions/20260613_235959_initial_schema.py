@@ -44,18 +44,9 @@ def upgrade() -> None:
     op.execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
 
     # -----------------------------------------------------------------------
-    # 2. Create ENUM types for PostgreSQL
+    # 2. ENUM types will be auto-created by SQLAlchemy via sa.Enum
+    #    (checkfirst=True is the default, uses CREATE TYPE IF NOT EXISTS)
     # -----------------------------------------------------------------------
-    # User roles
-    op.execute("CREATE TYPE userrole AS ENUM ('superadmin', 'admin', 'reseller', 'user')")
-    # Service lifecycle statuses
-    op.execute("CREATE TYPE servicestatus AS ENUM ('pending', 'active', 'suspended', 'expired', 'cancelled', 'terminated')")
-    # Billing cycles
-    op.execute("CREATE TYPE billingcycle AS ENUM ('monthly', 'quarterly', 'semi_annually', 'annually', 'biennially', 'triennially')")
-    # Commission statuses
-    op.execute("CREATE TYPE commissionstatus AS ENUM ('pending', 'paid', 'cancelled')")
-    # Audit action types
-    op.execute("CREATE TYPE auditaction AS ENUM ('create', 'read', 'update', 'delete', 'login', 'logout', 'suspend', 'unsuspend', 'terminate', 'payment', 'refund')")
 
     # -----------------------------------------------------------------------
     # 3. Create tables
@@ -90,7 +81,7 @@ def upgrade() -> None:
         sa.Column("email", sa.String(length=255), nullable=True, unique=True, index=True),
         sa.Column("password_hash", sa.String(length=255), nullable=True),
         sa.Column("role", sa.Enum("superadmin", "admin", "reseller", "user",
-                                  name="userrole", create_type=False),
+                                  name="userrole", create_type=True),
                   nullable=False, server_default="user"),
         sa.Column("language_code", sa.String(length=10), nullable=False,
                   server_default="en"),
@@ -124,7 +115,7 @@ def upgrade() -> None:
         sa.Column("base_price", sa.Float(), nullable=False),
         sa.Column("billing_cycle", sa.Enum("monthly", "quarterly", "semi_annually",
                                            "annually", "biennially", "triennially",
-                                           name="billingcycle", create_type=False),
+                                           name="billingcycle", create_type=True),
                   nullable=False, server_default="monthly"),
         sa.Column("billing_cycle_days", sa.Integer(), nullable=False),
         sa.Column("specs", postgresql.JSONB, nullable=True),
@@ -146,7 +137,7 @@ def upgrade() -> None:
         sa.Column("module_name", sa.String(length=50), nullable=False),
         sa.Column("status", sa.Enum("pending", "active", "suspended",
                                     "expired", "cancelled", "terminated",
-                                    name="servicestatus", create_type=False),
+                                    name="servicestatus", create_type=True),
                   nullable=False, server_default="pending", index=True),
         sa.Column("price_paid", sa.Float(), nullable=True),
         sa.Column("expires_at", sa.DateTime(timezone=True), nullable=True, index=True),
@@ -209,7 +200,7 @@ def upgrade() -> None:
         sa.Column("commission_rate", sa.Float(), nullable=False),
         sa.Column("commission_amount", sa.Float(), nullable=False),
         sa.Column("status", sa.Enum("pending", "paid", "cancelled",
-                                    name="commissionstatus", create_type=False),
+                                    name="commissionstatus", create_type=True),
                   nullable=False, server_default="pending"),
         sa.Column("paid_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False,
@@ -258,7 +249,7 @@ def upgrade() -> None:
         sa.Column("action", sa.Enum("create", "read", "update", "delete",
                                     "login", "logout", "suspend", "unsuspend",
                                     "terminate", "payment", "refund",
-                                    name="auditaction", create_type=False),
+                                    name="auditaction", create_type=True),
                   nullable=False, index=True),
         sa.Column("entity_type", sa.String(length=100), nullable=False, index=True),
         sa.Column("entity_id", sa.String(length=255), nullable=True),

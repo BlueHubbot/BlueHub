@@ -7,7 +7,7 @@ Auto-generates RSA key pair on first run if keys are missing.
 """
 from __future__ import annotations
 
-from datetime import timezone, datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 

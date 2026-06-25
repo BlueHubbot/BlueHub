@@ -9,12 +9,12 @@ Uses mocked AsyncSession and ProxmoxClient to avoid external dependencies.
 
 from __future__ import annotations
 
-from typing import Any
-from unittest.mock import ANY, AsyncMock, MagicMock, patch
-from uuid import UUID, uuid4
+from unittest.mock import AsyncMock, MagicMock, patch
+from uuid import uuid4
 
 import pytest
 
+import modules.vpn.models  # noqa: F401 - ensure VpnAccount is registered before Service mapper init
 from modules.vps.models import VpsInstance, VpsPowerStatus, VpsSnapshot
 from modules.vps.proxmox_client import (
     ProxmoxClient,
@@ -43,10 +43,17 @@ from modules.vps.services import (
 # ------------------------------------------------------------------
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_db() -> AsyncMock:
-    """Create a mock AsyncSession with commonly-needed async methods."""
-    session = AsyncMock(spec_set=["execute", "add", "commit", "refresh", "delete", "close"])
+    """Create a mock AsyncSession with async methods natively awaitable."""
+    session = AsyncMock()
+    # All async methods must be AsyncMock themselves for 'await' to work
+    session.execute = AsyncMock()
+    session.add = MagicMock()  # sync method
+    session.commit = AsyncMock()
+    session.refresh = AsyncMock()
+    session.delete = AsyncMock()  # service code uses await self.db.delete()
+    session.close = AsyncMock()
     # By default execute() returns an empty result
     mock_result = MagicMock()
     mock_result.scalar_one_or_none.return_value = None
@@ -56,7 +63,7 @@ def mock_db() -> AsyncMock:
     return session
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_proxmox() -> MagicMock:
     """Create a mock ProxmoxClient with all async methods as AsyncMock."""
     client = MagicMock(spec=ProxmoxClient)
@@ -162,14 +169,14 @@ def mock_proxmox() -> MagicMock:
     return client
 
 
-@pytest.fixture
+@pytest.fixture()
 def service(mock_db: AsyncMock, mock_proxmox: MagicMock) -> VpsInstanceService:
     """Create a VpsInstanceService instance with mocked dependencies."""
     svc = VpsInstanceService(db=mock_db, proxmox=mock_proxmox)
     return svc
 
 
-@pytest.fixture
+@pytest.fixture()
 def sample_vps() -> VpsInstance:
     """Create a sample VpsInstance for use in tests."""
     instance = VpsInstance(
@@ -199,7 +206,7 @@ def sample_vps() -> VpsInstance:
 class TestVpsInstanceServiceInit:
     """Test service construction and default behaviours."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_constructor_with_explicit_proxmox(
         self, mock_db: AsyncMock, mock_proxmox: MagicMock
     ) -> None:
@@ -208,7 +215,7 @@ class TestVpsInstanceServiceInit:
         assert svc.db is mock_db
         assert svc._proxmox is mock_proxmox
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_constructor_without_proxmox(self, mock_db: AsyncMock) -> None:
         """Verify proxmox is None when not provided."""
         svc = VpsInstanceService(db=mock_db)
@@ -224,7 +231,7 @@ class TestVpsInstanceServiceInit:
 class TestGetInstance:
     """Tests for VpsInstanceService.get_instance()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_get_instance_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -238,7 +245,7 @@ class TestGetInstance:
         assert result.id == sample_vps.id
         mock_db.execute.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_get_instance_not_found(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -255,7 +262,7 @@ class TestGetInstance:
 class TestGetInstanceByVmid:
     """Tests for VpsInstanceService.get_instance_by_vmid()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_found(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -267,7 +274,7 @@ class TestGetInstanceByVmid:
         result = await service.get_instance_by_vmid(100)
         assert result is sample_vps
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_not_found(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -283,7 +290,7 @@ class TestGetInstanceByVmid:
 class TestGetInstanceByService:
     """Tests for VpsInstanceService.get_instance_by_service()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_found(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -295,7 +302,7 @@ class TestGetInstanceByService:
         result = await service.get_instance_by_service(sample_vps.service_id)
         assert result is sample_vps
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_not_found(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -311,7 +318,7 @@ class TestGetInstanceByService:
 class TestListInstances:
     """Tests for VpsInstanceService.list_instances()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_list_all(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -326,7 +333,7 @@ class TestListInstances:
         assert len(results) == 1
         assert results[0] is sample_vps
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_list_with_node_filter(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -340,7 +347,7 @@ class TestListInstances:
         results = await service.list_instances(node="pve")
         assert len(results) == 1
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_list_with_status_filter(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -354,7 +361,7 @@ class TestListInstances:
         results = await service.list_instances(status=VpsPowerStatus.RUNNING)
         assert len(results) == 1
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_list_with_pagination(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -377,7 +384,7 @@ class TestListInstances:
 class TestProvision:
     """Tests for VpsInstanceService.provision()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_provision_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock
     ) -> None:
@@ -395,7 +402,7 @@ class TestProvision:
 
         assert result.service_id == service_id
         assert result.proxmox_node == "pve"
-        assert result.cores == 2  # Note: service sets 'cores' but model has 'cpu_cores'
+        assert result.cpu_cores == 2
         assert result.memory_mb == 2048
         assert result.disk_gb == 50
         assert result.power_status == VpsPowerStatus.RUNNING
@@ -403,7 +410,7 @@ class TestProvision:
         mock_db.add.assert_called_once()
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_provision_with_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock
     ) -> None:
@@ -415,7 +422,7 @@ class TestProvision:
         assert result.proxmox_vmid == 200
         assert result.power_status == VpsPowerStatus.STOPPED
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_provision_auto_assign_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock
     ) -> None:
@@ -426,7 +433,7 @@ class TestProvision:
         result = await service.provision(service_id=service_id, node="pve")
         assert result.proxmox_vmid == 101
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_provision_proxmox_error(
         self, service: VpsInstanceService, mock_proxmox: MagicMock
     ) -> None:
@@ -435,7 +442,7 @@ class TestProvision:
         with pytest.raises(VpsProvisioningError, match="Failed to create VM"):
             await service.provision(service_id=uuid4(), node="pve")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_provision_task_failed(
         self, service: VpsInstanceService, mock_proxmox: MagicMock
     ) -> None:
@@ -459,7 +466,7 @@ class TestProvision:
 class TestPowerAction:
     """Tests for VpsInstanceService.power_action()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_start(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -473,7 +480,7 @@ class TestPowerAction:
         sample_vps.power_status = VpsPowerStatus.RUNNING
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_stop(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -486,7 +493,7 @@ class TestPowerAction:
         assert result.success is True
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_shutdown(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -499,7 +506,7 @@ class TestPowerAction:
         assert result.success is True
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_reboot(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -512,7 +519,7 @@ class TestPowerAction:
         assert result.success is True
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_reset(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -525,7 +532,7 @@ class TestPowerAction:
         assert result.success is True
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_suspend(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -538,7 +545,7 @@ class TestPowerAction:
         assert result.success is True
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_resume(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -551,7 +558,7 @@ class TestPowerAction:
         assert result.success is True
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_unknown_action(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -563,7 +570,7 @@ class TestPowerAction:
         with pytest.raises(VpsPowerActionError, match="Unknown power action"):
             await service.power_action(sample_vps.id, "fly")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_resource_busy(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -576,7 +583,7 @@ class TestPowerAction:
         with pytest.raises(VpsInvalidStateError, match="locked"):
             await service.power_action(sample_vps.id, "start")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_proxmox_error(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -589,7 +596,7 @@ class TestPowerAction:
         with pytest.raises(VpsPowerActionError, match="connection lost"):
             await service.power_action(sample_vps.id, "start")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -604,7 +611,7 @@ class TestPowerAction:
         with pytest.raises(VpsInvalidStateError, match="no VMID"):
             await service.power_action(instance.id, "start")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_power_action_timeout_seconds(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -625,7 +632,7 @@ class TestPowerAction:
 class TestSyncStatus:
     """Tests for VpsInstanceService.sync_status()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_sync_status_running(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -639,11 +646,11 @@ class TestSyncStatus:
         assert sample_vps.power_status == VpsPowerStatus.STOPPED
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_sync_status_vm_not_found(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
-        """When VM is not found on Proxmox, mark status UNKNOWN and raise error."""
+        """When VM is not found on Proxmox, mark status STOPPED and raise error."""
         mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = sample_vps
         mock_db.execute.return_value = mock_result
@@ -652,10 +659,10 @@ class TestSyncStatus:
         with pytest.raises(VpsInstanceNotFoundError, match="not found"):
             await service.sync_status(sample_vps.id)
 
-        assert sample_vps.power_status == VpsPowerStatus.UNKNOWN
+        assert sample_vps.power_status == VpsPowerStatus.STOPPED
         mock_db.commit.assert_awaited()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_sync_status_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -677,7 +684,7 @@ class TestSyncStatus:
 class TestResize:
     """Tests for VpsInstanceService.resize()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_resize_cpu(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -688,11 +695,10 @@ class TestResize:
 
         result = await service.resize(sample_vps.id, cores=4)
         assert result is not None
-        # Note: service sets instance.cores but model has cpu_cores
         mock_proxmox.resize_vm.assert_awaited_with("pve", 100, cores=4, memory_mb=None)
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_resize_memory(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -706,7 +712,7 @@ class TestResize:
         mock_proxmox.resize_vm.assert_awaited_with("pve", 100, cores=None, memory_mb=4096)
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_resize_disk(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -720,7 +726,7 @@ class TestResize:
         mock_proxmox.resize_disk.assert_awaited_with("pve", 100, "scsi0", 100)
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_resize_all(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -735,7 +741,7 @@ class TestResize:
         mock_proxmox.resize_disk.assert_awaited()
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_resize_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -748,7 +754,7 @@ class TestResize:
         with pytest.raises(VpsInvalidStateError, match="no VMID"):
             await service.resize(instance.id, cores=4)
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_resize_resource_busy(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -761,7 +767,7 @@ class TestResize:
         with pytest.raises(VpsResizeError, match="Cannot resize"):
             await service.resize(sample_vps.id, cores=4)
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_resize_proxmox_error(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -783,7 +789,7 @@ class TestResize:
 class TestReinstall:
     """Tests for VpsInstanceService.reinstall()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_reinstall_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -807,20 +813,20 @@ class TestReinstall:
         mock_proxmox.start_vm.assert_awaited_once()
         mock_db.commit.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_reinstall_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
-        """Raise VpsInvalidStateError when instance has no VMID."""
-        instance = VpsInstance(id=uuid4(), service_id=uuid4(), proxmox_vmid=None)
+        """Raise VpsInvalidStateError when instance has no Proxmox node."""
+        instance = VpsInstance(id=uuid4(), service_id=uuid4(), proxmox_vmid=None, proxmox_node=None)
         mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = instance
         mock_db.execute.return_value = mock_result
 
-        with pytest.raises(VpsInvalidStateError, match="no VMID"):
+        with pytest.raises(VpsInvalidStateError, match="no Proxmox node"):
             await service.reinstall(instance.id)
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_reinstall_stop_fails(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -842,7 +848,7 @@ class TestReinstall:
 class TestDecommission:
     """Tests for VpsInstanceService.decommission()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_decommission_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -856,7 +862,7 @@ class TestDecommission:
         mock_db.delete.assert_called_once_with(sample_vps)
         mock_db.commit.assert_awaited()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_decommission_vm_already_gone(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -871,7 +877,7 @@ class TestDecommission:
         mock_db.delete.assert_called_once_with(sample_vps)
         mock_db.commit.assert_awaited()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_decommission_proxmox_error(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -884,7 +890,7 @@ class TestDecommission:
         with pytest.raises(VpsServiceError, match="VM destruction failed"):
             await service.decommission(sample_vps.id)
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_decommission_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -909,7 +915,7 @@ class TestDecommission:
 class TestCreateSnapshot:
     """Tests for VpsInstanceService.create_snapshot()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_create_snapshot_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -938,7 +944,7 @@ class TestCreateSnapshot:
         mock_db.add.assert_called_once()
         mock_db.commit.assert_awaited()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_create_snapshot_with_ram(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -955,7 +961,7 @@ class TestCreateSnapshot:
             "pve", 100, "backup-with-ram", None, True
         )
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_create_snapshot_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -968,7 +974,7 @@ class TestCreateSnapshot:
         with pytest.raises(VpsInvalidStateError, match="no VMID"):
             await service.create_snapshot(instance.id, "snap1")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_create_snapshot_proxmox_error(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -981,7 +987,7 @@ class TestCreateSnapshot:
         with pytest.raises(VpsSnapshotError, match="Snapshot creation failed"):
             await service.create_snapshot(sample_vps.id, "snap1")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_create_snapshot_task_failed(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1004,7 +1010,7 @@ class TestCreateSnapshot:
 class TestDeleteSnapshot:
     """Tests for VpsInstanceService.delete_snapshot()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_delete_snapshot_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1029,7 +1035,7 @@ class TestDeleteSnapshot:
         mock_db.delete.assert_called_once_with(snapshot_record)
         mock_db.commit.assert_awaited()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_delete_snapshot_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -1042,7 +1048,7 @@ class TestDeleteSnapshot:
         with pytest.raises(VpsInvalidStateError, match="no VMID"):
             await service.delete_snapshot(instance.id, "backup-1")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_delete_snapshot_proxmox_error(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1059,7 +1065,7 @@ class TestDeleteSnapshot:
 class TestRollbackSnapshot:
     """Tests for VpsInstanceService.rollback_snapshot()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_rollback_snapshot_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1073,7 +1079,7 @@ class TestRollbackSnapshot:
         mock_proxmox.rollback_snapshot.assert_awaited_with("pve", 100, "backup-1", True)
         mock_db.commit.assert_awaited()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_rollback_snapshot_no_start(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1086,7 +1092,7 @@ class TestRollbackSnapshot:
         assert result.success is True
         mock_proxmox.rollback_snapshot.assert_awaited_with("pve", 100, "backup-1", False)
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_rollback_snapshot_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -1099,7 +1105,7 @@ class TestRollbackSnapshot:
         with pytest.raises(VpsInvalidStateError, match="no VMID"):
             await service.rollback_snapshot(instance.id, "backup-1")
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_rollback_snapshot_proxmox_error(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1116,7 +1122,7 @@ class TestRollbackSnapshot:
 class TestListSnapshots:
     """Tests for VpsInstanceService.list_snapshots()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_list_snapshots_empty(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -1130,7 +1136,7 @@ class TestListSnapshots:
         snapshots = await service.list_snapshots(sample_vps.id)
         assert snapshots == []
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_list_snapshots_with_data(
         self, service: VpsInstanceService, mock_db: AsyncMock, sample_vps: VpsInstance
     ) -> None:
@@ -1169,7 +1175,7 @@ class TestListSnapshots:
 class TestGetVncConsole:
     """Tests for VpsInstanceService.get_vnc_console()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_get_vnc_console_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1187,7 +1193,7 @@ class TestGetVncConsole:
         mock_proxmox.get_vnc_proxy.assert_awaited_once()
         mock_proxmox.get_vnc_websocket.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_get_vnc_console_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -1200,7 +1206,7 @@ class TestGetVncConsole:
         with pytest.raises(VpsInvalidStateError, match="no VMID"):
             await service.get_vnc_console(instance.id)
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_get_vnc_console_proxmox_error(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1222,7 +1228,7 @@ class TestGetVncConsole:
 class TestClone:
     """Tests for VpsInstanceService.clone()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_clone_success(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1242,7 +1248,7 @@ class TestClone:
         mock_db.add.assert_called_once()
         mock_db.commit.assert_awaited()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_clone_no_vmid(
         self, service: VpsInstanceService, mock_db: AsyncMock
     ) -> None:
@@ -1255,7 +1261,7 @@ class TestClone:
         with pytest.raises(VpsInvalidStateError, match="no VMID"):
             await service.clone(instance.id, uuid4())
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_clone_proxmox_error(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1268,7 +1274,7 @@ class TestClone:
         with pytest.raises(VpsProvisioningError, match="Clone failed"):
             await service.clone(sample_vps.id, uuid4())
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_clone_task_failed(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock, sample_vps: VpsInstance
     ) -> None:
@@ -1296,7 +1302,7 @@ class TestClone:
 class TestGetProxmox:
     """Tests for VpsInstanceService._get_proxmox()."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_auto_connect(
         self, mock_db: AsyncMock, mock_proxmox: MagicMock
     ) -> None:
@@ -1307,7 +1313,7 @@ class TestGetProxmox:
         assert proxmox is mock_proxmox
         mock_proxmox.connect.assert_awaited_once()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_already_connected(
         self, mock_db: AsyncMock, mock_proxmox: MagicMock
     ) -> None:
@@ -1318,7 +1324,7 @@ class TestGetProxmox:
         assert proxmox is mock_proxmox
         mock_proxmox.connect.assert_not_awaited()
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_create_new_proxmox(
         self, mock_db: AsyncMock
     ) -> None:
@@ -1349,7 +1355,7 @@ class TestGetProxmox:
 class TestExceptionHierarchy:
     """Verify the exception class hierarchy is correct."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     def test_service_error_base(self) -> None:
         """All service exceptions inherit from VpsServiceError."""
         assert issubclass(VpsProvisioningError, VpsServiceError)
@@ -1360,7 +1366,7 @@ class TestExceptionHierarchy:
         assert issubclass(VpsInstanceNotFoundError, VpsServiceError)
         assert issubclass(VpsInvalidStateError, VpsServiceError)
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     def test_exception_message(self) -> None:
         """Exceptions preserve their message."""
         msg = "test error message"
@@ -1376,7 +1382,7 @@ class TestExceptionHierarchy:
 class TestVpsTrafficSummary:
     """Tests for the VpsTrafficSummary dataclass."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     def test_create_summary(self) -> None:
         """Create a VpsTrafficSummary instance."""
         summary = VpsTrafficSummary(
@@ -1394,7 +1400,7 @@ class TestVpsTrafficSummary:
         assert summary.memory_mb == 2048
         assert summary.disk_gb == 50
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     def test_summary_is_dataclass(self) -> None:
         """VpsTrafficSummary should be a dataclass."""
         import dataclasses
@@ -1409,7 +1415,7 @@ class TestVpsTrafficSummary:
 class TestFullLifecycle:
     """Simulate a full VPS lifecycle: provision → power → snapshot → resize → decommission."""
 
-    @pytest.mark.vps
+    @pytest.mark.vps()
     async def test_full_lifecycle(
         self, service: VpsInstanceService, mock_db: AsyncMock, mock_proxmox: MagicMock
     ) -> None:

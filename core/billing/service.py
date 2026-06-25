@@ -90,7 +90,7 @@ class BillingService:
 
     async def _generate_invoice_number(self) -> str:
         """Generate a unique invoice number."""
-        timestamp = int(datetime.now(UTC).timestamp())
+        timestamp = int(datetime.now(timezone.utc).timestamp())
         # Use count for ordering to ensure uniqueness
         stmt = select(func.count(Invoice.id))
         result = await self.session.execute(stmt)
@@ -407,7 +407,7 @@ class BillingService:
         """
         invoice = await self.get_invoice(invoice_id)
         invoice.status = "paid"
-        invoice.paid_at = paid_at or datetime.now(UTC)
+        invoice.paid_at = paid_at or datetime.now(timezone.utc)
 
         await self.session.flush()
         await self.session.refresh(invoice)
@@ -785,7 +785,7 @@ class BillingService:
         Raises:
             CommissionNotFoundError: If any commission is not found.
         """
-        now = datetime.now(UTC)
+        now = datetime.now(timezone.utc)
         updated_commissions = []
 
         for commission_id in request.commission_ids:

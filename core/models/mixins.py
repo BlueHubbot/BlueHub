@@ -8,7 +8,7 @@ audit trails, versioning, ownership, and status tracking.
 from __future__ import annotations
 
 import uuid
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 
 from sqlalchemy import Boolean, DateTime, Float, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID

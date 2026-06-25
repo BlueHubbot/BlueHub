@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Awaitable, Callable
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 from typing import Any
 
 from aiogram import BaseMiddleware

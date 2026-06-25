@@ -16,8 +16,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.registry.schemas import (
-    AdminMenuConfig,
-    BotKeyboardConfig,
     ModuleFlag,
     ModuleMetadata,
     ModuleRegistryResponse,

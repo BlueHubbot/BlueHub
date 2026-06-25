@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
@@ -75,7 +75,7 @@ class VpsTrafficSummary:
 
     instance_id: str
     vm_status: str
-    node: str
+    node: str | None
     cores: int
     memory_mb: int
     disk_gb: int
@@ -108,6 +108,13 @@ class VpsInstanceService:
         if self._proxmox._api is None:  # type: ignore[has-type]
             await self._proxmox.connect()
         return self._proxmox
+
+    @staticmethod
+    def _require_node(node: str | None) -> str:
+        """Raise if node is None, otherwise return the node string."""
+        if node is None:
+            raise VpsInvalidStateError("Instance has no Proxmox node assigned.")
+        return node
 
     # ------------------------------------------------------------------
     # CRUD helpers
@@ -171,7 +178,7 @@ class VpsInstanceService:
         ssh_keys: str | None = None,
         vmid: int | None = None,
         start: bool = True,
-        extra_config: dict | None = None,
+        extra_config: dict[str, Any] | None = None,
         notes: str | None = None,
     ) -> VpsInstance:
         """
@@ -221,27 +228,32 @@ class VpsInstanceService:
         except ProxmoxClientError:
             logger.warning("Could not fetch VNC port for VMID %d", vmid)
 
+        # Build extra_config with infrastructure details not stored as columns
+        infra_config: dict[str, Any] = dict(extra_config or {})
+        infra_config.update({
+            "storage_pool": storage,
+            "network_bridge": network_bridge,
+            "network_model": network_model,
+            "ostype": ostype,
+            "iso_image": iso_image,
+            "ssh_keys": ssh_keys,
+        })
+
         # Create DB record
         instance = VpsInstance(
             id=uuid4(),
             service_id=service_id,
             proxmox_node=node,
             proxmox_vmid=vmid,
-            cores=cores,
+            cpu_cores=cores,
             memory_mb=memory_mb,
             disk_gb=disk_gb,
-            storage_pool=storage,
-            network_bridge=network_bridge,
-            network_model=network_model,
-            ostype=ostype,
-            ostemplate=ostemplate,
-            iso_image=iso_image,
-            ip_address=ip_address,
+            primary_ipv4=ip_address,
+            os_template=ostemplate,
             root_password=root_password,
-            ssh_keys=ssh_keys,
             power_status=VpsPowerStatus.RUNNING if start else VpsPowerStatus.STOPPED,
             vnc_port=vnc_port,
-            extra_config=extra_config or {},
+            extra_config=infra_config,
             notes=notes,
         )
         self.db.add(instance)
@@ -262,7 +274,7 @@ class VpsInstanceService:
             existing_vms = await proxmox.list_vms(node)
             used_ids = {vm.vmid for vm in existing_vms}
         except ProxmoxClientError:
-            used_ids = set()
+            used_ids: set[int] = set()
         # Start from 100, find first gap
         candidate = 100
         while candidate in used_ids:
@@ -282,7 +294,7 @@ class VpsInstanceService:
         instance = await self.get_instance(instance_id)
         proxmox = await self._get_proxmox()
         vmid = instance.proxmox_vmid
-        node = instance.proxmox_node
+        node = self._require_node(instance.proxmox_node)
 
         if vmid is None:
             raise VpsInvalidStateError(f"Instance {instance_id} has no VMID assigned.")
@@ -318,7 +330,7 @@ class VpsInstanceService:
 
         # Update DB power status
         instance.power_status = new_status
-        instance.updated_at = datetime.now(timezone.utc)
+        instance.updated_at = datetime.now(UTC)
         await self.db.commit()
 
         logger.info(
@@ -341,30 +353,32 @@ class VpsInstanceService:
         if instance.proxmox_vmid is None:
             raise VpsInvalidStateError(f"Instance {instance_id} has no VMID.")
 
+        node = self._require_node(instance.proxmox_node)
+
         try:
             vm_info = await proxmox.get_vm_status(
-                instance.proxmox_vmid, instance.proxmox_node
+                instance.proxmox_vmid, node
             )
         except ProxmoxVMNotFoundError:
-            instance.power_status = VpsPowerStatus.UNKNOWN
+            instance.power_status = VpsPowerStatus.STOPPED
             await self.db.commit()
             raise VpsInstanceNotFoundError(
-                f"VM {instance.proxmox_vmid} not found on Proxmox node '{instance.proxmox_node}'."
+                f"VM {instance.proxmox_vmid} not found on Proxmox node '{node}'."
             )
 
         # Map Proxmox status to enum
-        status_map = {
+        status_map: dict[str, VpsPowerStatus] = {
             "running": VpsPowerStatus.RUNNING,
             "stopped": VpsPowerStatus.STOPPED,
-            "paused": VpsPowerStatus.PAUSED,
+            "paused": VpsPowerStatus.STOPPED,
             "suspended": VpsPowerStatus.SUSPENDED,
         }
-        new_status = status_map.get(vm_info.status, VpsPowerStatus.UNKNOWN)
+        new_status = status_map.get(vm_info.status, VpsPowerStatus.STOPPED)
         instance.power_status = new_status
-        instance.cores = vm_info.cpus
+        instance.cpu_cores = vm_info.cpus
         instance.memory_mb = vm_info.max_memory_bytes // (1024 * 1024)
         instance.vnc_port = vm_info.vnc_port
-        instance.updated_at = datetime.now(timezone.utc)
+        instance.updated_at = datetime.now(UTC)
         await self.db.commit()
 
         return vm_info
@@ -383,7 +397,7 @@ class VpsInstanceService:
         instance = await self.get_instance(instance_id)
         proxmox = await self._get_proxmox()
         vmid = instance.proxmox_vmid
-        node = instance.proxmox_node
+        node = self._require_node(instance.proxmox_node)
 
         if vmid is None:
             raise VpsInvalidStateError("Instance has no VMID.")
@@ -393,7 +407,7 @@ class VpsInstanceService:
             if cores is not None or memory_mb is not None:
                 await proxmox.resize_vm(node, vmid, cores=cores, memory_mb=memory_mb)
                 if cores is not None:
-                    instance.cores = cores
+                    instance.cpu_cores = cores
                 if memory_mb is not None:
                     instance.memory_mb = memory_mb
 
@@ -407,7 +421,7 @@ class VpsInstanceService:
         except ProxmoxClientError as exc:
             raise VpsResizeError(f"Resize failed: {exc}") from exc
 
-        instance.updated_at = datetime.now(timezone.utc)
+        instance.updated_at = datetime.now(UTC)
         await self.db.commit()
         await self.db.refresh(instance)
 
@@ -432,7 +446,7 @@ class VpsInstanceService:
         instance = await self.get_instance(instance_id)
         proxmox = await self._get_proxmox()
         vmid = instance.proxmox_vmid
-        node = instance.proxmox_node
+        node = self._require_node(instance.proxmox_node)
 
         if vmid is None:
             raise VpsInvalidStateError("Instance has no VMID.")
@@ -468,15 +482,20 @@ class VpsInstanceService:
 
         # Update DB record
         if ostemplate:
-            instance.ostemplate = ostemplate
-        if iso_image:
-            instance.iso_image = iso_image
+            instance.os_template = ostemplate
         if root_password:
             instance.root_password = root_password
-        if ssh_keys:
-            instance.ssh_keys = ssh_keys
         instance.power_status = VpsPowerStatus.RUNNING
-        instance.updated_at = datetime.now(timezone.utc)
+        instance.updated_at = datetime.now(UTC)
+
+        # Store reinstall params in extra_config
+        extra = dict(instance.extra_config or {})
+        if iso_image:
+            extra["iso_image"] = iso_image
+        if ssh_keys:
+            extra["ssh_keys"] = ssh_keys
+        instance.extra_config = extra
+
         await self.db.commit()
         await self.db.refresh(instance)
 
@@ -492,8 +511,9 @@ class VpsInstanceService:
         proxmox = await self._get_proxmox()
 
         if instance.proxmox_vmid is not None:
+            node = self._require_node(instance.proxmox_node)
             try:
-                await proxmox.delete_vm(instance.proxmox_node, instance.proxmox_vmid)
+                await proxmox.delete_vm(node, instance.proxmox_vmid)
             except ProxmoxVMNotFoundError:
                 logger.warning(
                     "VM %d already gone on Proxmox, removing DB record.",
@@ -520,7 +540,7 @@ class VpsInstanceService:
         instance = await self.get_instance(instance_id)
         proxmox = await self._get_proxmox()
         vmid = instance.proxmox_vmid
-        node = instance.proxmox_node
+        node = self._require_node(instance.proxmox_node)
 
         if vmid is None:
             raise VpsInvalidStateError("Instance has no VMID.")
@@ -558,7 +578,7 @@ class VpsInstanceService:
             description=description,
             size_bytes=snap_info.size_bytes if snap_info else None,
             is_ram_included=include_ram,
-            snapshot_taken_at=datetime.now(timezone.utc),
+            snapshot_taken_at=datetime.now(UTC),
         )
         self.db.add(snapshot)
         await self.db.commit()
@@ -576,7 +596,7 @@ class VpsInstanceService:
         instance = await self.get_instance(instance_id)
         proxmox = await self._get_proxmox()
         vmid = instance.proxmox_vmid
-        node = instance.proxmox_node
+        node = self._require_node(instance.proxmox_node)
 
         if vmid is None:
             raise VpsInvalidStateError("Instance has no VMID.")
@@ -611,7 +631,7 @@ class VpsInstanceService:
         instance = await self.get_instance(instance_id)
         proxmox = await self._get_proxmox()
         vmid = instance.proxmox_vmid
-        node = instance.proxmox_node
+        node = self._require_node(instance.proxmox_node)
 
         if vmid is None:
             raise VpsInvalidStateError("Instance has no VMID.")
@@ -623,7 +643,7 @@ class VpsInstanceService:
 
         # Update power status after rollback
         instance.power_status = VpsPowerStatus.RUNNING if start_after else VpsPowerStatus.STOPPED
-        instance.updated_at = datetime.now(timezone.utc)
+        instance.updated_at = datetime.now(UTC)
         await self.db.commit()
 
         logger.info(
@@ -650,7 +670,7 @@ class VpsInstanceService:
         instance = await self.get_instance(instance_id)
         proxmox = await self._get_proxmox()
         vmid = instance.proxmox_vmid
-        node = instance.proxmox_node
+        node = self._require_node(instance.proxmox_node)
 
         if vmid is None:
             raise VpsInvalidStateError("Instance has no VMID.")
@@ -688,12 +708,13 @@ class VpsInstanceService:
         if source.proxmox_vmid is None:
             raise VpsInvalidStateError("Source instance has no VMID.")
 
-        new_vmid = await self._next_available_vmid(proxmox, source.proxmox_node)
+        source_node = self._require_node(source.proxmox_node)
+        new_vmid = await self._next_available_vmid(proxmox, source_node)
         name = new_name or f"bluehub-clone-{str(new_service_id)[:8]}"
 
         try:
             task = await proxmox.clone_vm(
-                node=source.proxmox_node,
+                node=source_node,
                 template_vmid=source.proxmox_vmid,
                 new_vmid=new_vmid,
                 name=name,
@@ -709,40 +730,44 @@ class VpsInstanceService:
         # Start the clone if requested
         if start:
             try:
-                await proxmox.start_vm(source.proxmox_node, new_vmid)
+                await proxmox.start_vm(source_node, new_vmid)
             except ProxmoxClientError as exc:
                 logger.warning("Could not start cloned VM %d: %s", new_vmid, exc)
 
+        # Build extra_config with storage info
+        clone_extra: dict[str, Any] = dict(source.extra_config or {})
+        clone_extra["storage_pool"] = storage
+        clone_extra["network_bridge"] = clone_extra.get("network_bridge", "vmbr0")
+        clone_extra["network_model"] = clone_extra.get("network_model", "virtio")
+        clone_extra["ostype"] = clone_extra.get("ostype", "l26")
+
         # Create new DB record
-        clone = VpsInstance(
+        cloned = VpsInstance(
             id=uuid4(),
             service_id=new_service_id,
-            proxmox_node=source.proxmox_node,
+            proxmox_node=source_node,
             proxmox_vmid=new_vmid,
-            cores=source.cores,
+            cpu_cores=source.cpu_cores,
             memory_mb=source.memory_mb,
             disk_gb=source.disk_gb,
-            storage_pool=storage,
-            network_bridge=source.network_bridge,
-            network_model=source.network_model,
-            ostype=source.ostype,
-            ostemplate=source.ostemplate,
-            iso_image=source.iso_image,
+            primary_ipv4=source.primary_ipv4,
+            os_template=source.os_template,
+            root_password=source.root_password,
             power_status=VpsPowerStatus.RUNNING if start else VpsPowerStatus.STOPPED,
-            extra_config=source.extra_config,
+            extra_config=clone_extra,
             notes=f"Cloned from instance {instance_id}",
         )
-        self.db.add(clone)
+        self.db.add(cloned)
         await self.db.commit()
-        await self.db.refresh(clone)
+        await self.db.refresh(cloned)
 
         logger.info(
             "Cloned instance %s -> %s (new VMID=%d)",
             instance_id,
-            clone.id,
+            cloned.id,
             new_vmid,
         )
-        return clone
+        return cloned
 
 
 __all__ = [

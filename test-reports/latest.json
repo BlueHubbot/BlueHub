@@ -1,21 +1,21 @@
 {
-  "execution_time": "2026-06-19T03:39:18.062340Z",
-  "total_errors": 2,
+  "execution_time": "2026-06-25T11:14:58.414460+00:00",
+  "total_errors": 1,
   "stages": [
     {
       "name": "Static Analysis (Linter)",
-      "status": "FAIL",
+      "status": "WARN",
       "details": ".Blue/docops/auto_reporter.py:29:18: ANN101 Missing type annotation for `self` in method\n.Blue/docops/auto_reporter.py:45:30: ANN101 Missing type annotation for `self` in method\n.Blue/docops/auto_reporter.py:55:100: E501 Line too long (106 > 100)\n.Blue/docops/auto_reporter.py:67:32: ANN101 Missing type annotation for `self` in method\n.Blue/docops/auto_reporter.py:78:101: E501 Line too long (116 > 100)\n.Blue/docops/auto_reporter.py:80:38: PLR2004 Magic value used in comparison, consider replacing"
     },
     {
       "name": "Unit Testing",
       "status": "FAIL",
-      "details": "============================= test session starts ==============================\nplatform linux -- Python 3.12.13, pytest-8.2.2, pluggy-1.6.0 -- /usr/local/bin/python3.12\ncachedir: .pytest_cache\nrootdir: /app\nconfigfile: pyproject.toml\nplugins: anyio-4.14.0, asyncio-0.23.7\nasyncio: mode=Mode.AUTO\ncollecting ... collected 402 items\n\ntests/unit/test_audit.py::TestAuditService::test_log_event_creates_entry PASSED [  0%]\ntests/unit/test_audit.py::TestAuditService::test_log_event_with_string_action P"
+      "details": "============================= test session starts ==============================\nplatform linux -- Python 3.12.13, pytest-8.2.2, pluggy-1.6.0 -- /usr/local/bin/python3.12\ncachedir: .pytest_cache\nrootdir: /app\nconfigfile: pyproject.toml\nplugins: asyncio-0.23.7, anyio-4.14.1\nasyncio: mode=Mode.AUTO\ncollecting ... collected 477 items\n\ntests/unit/test_audit.py::TestAuditService::test_log_event_creates_entry PASSED [  0%]\ntests/unit/test_audit.py::TestAuditService::test_log_event_with_string_action P"
     },
     {
       "name": "Integration Testing",
       "status": "PASS",
-      "details": "============================= test session starts ==============================\nplatform linux -- Python 3.12.13, pytest-8.2.2, pluggy-1.6.0 -- /usr/local/bin/python3.12\ncachedir: .pytest_cache\nrootdir: /app\nconfigfile: pyproject.toml\nplugins: anyio-4.14.0, asyncio-0.23.7\nasyncio: mode=Mode.AUTO\ncollecting ... collected 3 items\n\ntests/integration/test_integration_example.py::test_api_resolves_valid_tenant_header PASSED [ 33%]\ntests/integration/test_integration_example.py::test_api_rejects_missi"
+      "details": "============================= test session starts ==============================\nplatform linux -- Python 3.12.13, pytest-8.2.2, pluggy-1.6.0 -- /usr/local/bin/python3.12\ncachedir: .pytest_cache\nrootdir: /app\nconfigfile: pyproject.toml\nplugins: asyncio-0.23.7, anyio-4.14.1\nasyncio: mode=Mode.AUTO\ncollecting ... collected 3 items\n\ntests/integration/test_integration_example.py::test_api_resolves_valid_tenant_header PASSED [ 33%]\ntests/integration/test_integration_example.py::test_api_rejects_missi"
     },
     {
       "name": "Smoke Handshake Test",

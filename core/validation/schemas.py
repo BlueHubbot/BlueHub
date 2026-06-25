@@ -7,7 +7,7 @@ pagination, error handling, health checks, and standard responses.
 
 from __future__ import annotations
 
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 from typing import Any, TypeVar
 
 from pydantic import Field

@@ -1,11 +1,11 @@
 ====================================================
           BLUEHUB AUTOMATED TEST SUMMARY            
 ====================================================
-Time: 2026-06-19T03:39:18.062340Z
+Time: 2026-06-25T11:14:58.414460+00:00
 Overall Result: FAILURE
-Total Defect Signatures: 2
+Total Defect Signatures: 1
 
-- Static Analysis (Linter): FAIL
+- Static Analysis (Linter): WARN
 - Unit Testing: FAIL
 - Integration Testing: PASS
 - Smoke Handshake Test: PASS

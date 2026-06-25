@@ -85,11 +85,31 @@ def upgrade() -> None:
     op.create_index("ix_vpn_servers_is_active_current_clients", "vpn_servers",
                     ["is_active", "current_clients"])
 
+    # -----------------------------------------------------------------------
+    # Add FK from vpn_accounts.server_id -> vpn_servers.id
+    # (table was created in previous migration without this constraint)
+    # -----------------------------------------------------------------------
+    op.create_foreign_key(
+        "fk_vpn_accounts_server_id_vpn_servers",
+        "vpn_accounts",
+        "vpn_servers",
+        ["server_id"],
+        ["id"],
+        ondelete="SET NULL",
+    )
+
 
 def downgrade() -> None:
     """
-    Drop the vpn_servers table.
+    Drop the vpn_servers table (and its FK)
     """
+    # Drop FK constraint first
+    op.drop_constraint(
+        "fk_vpn_accounts_server_id_vpn_servers",
+        "vpn_accounts",
+        type_="foreignkey",
+    )
+
     # Drop indexes
     op.drop_index("ix_vpn_servers_is_active_current_clients", table_name="vpn_servers")
     op.drop_index("ix_vpn_servers_is_active_country", table_name="vpn_servers")

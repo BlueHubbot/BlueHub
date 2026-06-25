@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
 
@@ -293,7 +293,7 @@ class VpnAccountService:
 
         # --- Create account record ---
         account_id = str(uuid4())
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
 
         account = VpnAccount(
             id=account_id,
@@ -726,9 +726,9 @@ class VpnAccountService:
                 )
 
         account.status = VpnAccountStatus.SUSPENDED
-        account.updated_at = datetime.now(tz=timezone.utc)
+        account.updated_at = datetime.now(tz=UTC)
         account.notes = (
-            f"{account.notes or ''}\n[SUSPENDED {datetime.now(tz=timezone.utc).isoformat()}] {reason}"
+            f"{account.notes or ''}\n[SUSPENDED {datetime.now(tz=UTC).isoformat()}] {reason}"
         ).strip()
 
         # End all active sessions
@@ -740,7 +740,7 @@ class VpnAccountService:
             )
             .values(
                 status=VpnSessionStatus.DISCONNECTED,
-                disconnected_at=datetime.now(tz=timezone.utc),
+                disconnected_at=datetime.now(tz=UTC),
                 disconnect_reason=f"suspension: {reason}",
             )
         )
@@ -794,9 +794,9 @@ class VpnAccountService:
                 ) from exc
 
         account.status = VpnAccountStatus.ACTIVE
-        account.updated_at = datetime.now(tz=timezone.utc)
+        account.updated_at = datetime.now(tz=UTC)
         account.notes = (
-            f"{account.notes or ''}\n[UNSUSPENDED {datetime.now(tz=timezone.utc).isoformat()}] {reason}"
+            f"{account.notes or ''}\n[UNSUSPENDED {datetime.now(tz=UTC).isoformat()}] {reason}"
         ).strip()
 
         await db.commit()
@@ -854,13 +854,13 @@ class VpnAccountService:
                 server.current_clients -= 1
 
         account.status = VpnAccountStatus.CANCELLED
-        account.updated_at = datetime.now(tz=timezone.utc)
+        account.updated_at = datetime.now(tz=UTC)
         account.notes = (
-            f"{account.notes or ''}\n[TERMINATED {datetime.now(tz=timezone.utc).isoformat()}] {reason}"
+            f"{account.notes or ''}\n[TERMINATED {datetime.now(tz=UTC).isoformat()}] {reason}"
         ).strip()
 
         # End all active sessions
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         await db.execute(
             update(VpnSession)
             .where(
@@ -1031,7 +1031,7 @@ class VpnAccountService:
             account.total_bytes = session_bytes
 
         account.last_handshake_at = traffic.last_handshake
-        account.updated_at = datetime.now(tz=timezone.utc)
+        account.updated_at = datetime.now(tz=UTC)
         await db.commit()
 
         # Count active sessions
@@ -1134,7 +1134,7 @@ class VpnAccountService:
             return {}
 
         connections = WireGuardService.detect_connections(interface=interface)
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
 
         # Get all active WG accounts with their public keys
         stmt = (

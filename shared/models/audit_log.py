@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -43,6 +44,7 @@ class AuditLog(UUIDMixin, TimestampMixin, CoreBase):
         doc="Foreign key to tenants table",
     )
     action: Mapped[AuditAction] = mapped_column(
+        SAEnum(AuditAction, name="auditaction", create_type=False),
         nullable=False,
         index=True,
         doc="Type of action performed",

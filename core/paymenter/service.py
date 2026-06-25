@@ -11,7 +11,7 @@ import hashlib
 import hmac
 import json
 import logging
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy import select

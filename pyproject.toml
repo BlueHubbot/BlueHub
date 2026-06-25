@@ -287,6 +287,8 @@ filterwarnings = [
     "ignore::DeprecationWarning:pkg_resources:",
     "ignore::DeprecationWarning:crypt:",
     "ignore::DeprecationWarning:passlib.*:",
+    "ignore::DeprecationWarning:cryptography.*:",
+    "ignore::DeprecationWarning:python_jose.*:",
     "ignore::pytest.PytestUnraisableExceptionWarning:",
 ]
 markers = [

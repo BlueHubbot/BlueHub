@@ -8,7 +8,7 @@ Runs every minute via Celery Beat.
 from __future__ import annotations
 
 import logging
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 
 from services.celery_app import celery_app
 

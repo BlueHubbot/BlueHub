@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, Float, ForeignKey, String, Text
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -17,6 +18,7 @@ from shared.models.base import CoreBase, TimestampMixin, UUIDMixin
 from shared.models.enums import ServiceStatus
 
 if TYPE_CHECKING:
+    from modules.smartdns.models import SmartDnsProfile
     from modules.vpn.models import VpnAccount
     from modules.vps.models import VpsInstance
     from shared.models.product import Product, ResellerCommission
@@ -59,6 +61,7 @@ class Service(UUIDMixin, TimestampMixin, CoreBase):
         doc="Module identifier (vpn, vps, smartdns, streaming, game)",
     )
     status: Mapped[ServiceStatus] = mapped_column(
+        SAEnum(ServiceStatus, name="servicestatus", create_type=False),
         default=ServiceStatus.PENDING,
         nullable=False,
         index=True,
@@ -128,6 +131,12 @@ class Service(UUIDMixin, TimestampMixin, CoreBase):
     )
     vps_instance: Mapped[VpsInstance | None] = relationship(
         "VpsInstance",
+        back_populates="service",
+        lazy="selectin",
+        uselist=False,
+    )
+    smartdns_profile: Mapped[SmartDnsProfile | None] = relationship(
+        "SmartDnsProfile",
         back_populates="service",
         lazy="selectin",
         uselist=False,

@@ -6,9 +6,10 @@ SQLAlchemy ORM models for product catalog, tenant-specific pricing, and reseller
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import Boolean, Float, ForeignKey, Integer, String
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -46,7 +47,7 @@ class Product(UUIDMixin, TimestampMixin, CoreBase):
         nullable=False,
         doc="Product display name",
     )
-    description_i18n: Mapped[dict | None] = mapped_column(
+    description_i18n: Mapped[dict[str, str] | None] = mapped_column(
         JSONB,
         nullable=True,
         default=dict,
@@ -58,6 +59,7 @@ class Product(UUIDMixin, TimestampMixin, CoreBase):
         doc="Base price in default currency",
     )
     billing_cycle: Mapped[BillingCycle] = mapped_column(
+        SAEnum(BillingCycle, name="billingcycle", create_type=False),
         default=BillingCycle.MONTHLY,
         nullable=False,
         doc="Billing cycle type",
@@ -67,7 +69,7 @@ class Product(UUIDMixin, TimestampMixin, CoreBase):
         nullable=False,
         doc="Number of days in billing cycle",
     )
-    specs: Mapped[dict | None] = mapped_column(
+    specs: Mapped[dict[str, Any] | None] = mapped_column(
         JSONB,
         nullable=True,
         default=dict,
@@ -179,6 +181,7 @@ class ResellerCommission(UUIDMixin, TimestampMixin, CoreBase):
         doc="Calculated commission amount",
     )
     status: Mapped[CommissionStatus] = mapped_column(
+        SAEnum(CommissionStatus, name="commissionstatus", create_type=False),
         default=CommissionStatus.PENDING,
         nullable=False,
         doc="Commission payout status",

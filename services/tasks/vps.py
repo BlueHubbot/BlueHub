@@ -12,16 +12,15 @@ Periodic tasks for VPS operations:
 from __future__ import annotations
 
 import logging
-from datetime import timezone, datetime, timedelta
-from uuid import uuid4
+from datetime import UTC, datetime, timedelta
 
-from sqlalchemy import select, and_
+from sqlalchemy import and_, select
 
 from core.audit.logger import AuditLogger
-from modules.vps.models import VpsInstance, VpsSnapshot
-from modules.vps.services import VpsInstanceService, VpsTrafficSummary
-from modules.vps.exceptions import (
+from modules.vps.models import VpsInstance
+from modules.vps.services import (
     VpsInstanceNotFoundError,
+    VpsInstanceService,
     VpsInvalidStateError,
     VpsServiceError,
 )
@@ -120,7 +119,7 @@ def sync_vps_status(
                 audit_logger = AuditLogger(db)
                 await audit_logger.log_update(
                     resource_type="vps_status_sync",
-                    resource_id=f"sync_{datetime.now(timezone.utc).isoformat()}",
+                    resource_id=f"sync_{datetime.now(UTC).isoformat()}",
                     tenant_id="system",
                     details={
                         "status_counts": status_counts,
@@ -132,7 +131,7 @@ def sync_vps_status(
                 return {
                     "status": "completed",
                     "task_id": self.request.id,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                     "total_instances": len(instances),
                     "status_counts": status_counts,
                     "errors": errors,
@@ -210,7 +209,7 @@ def sync_all_vps(
         return {
             "status": "completed",
             "task_id": self.request.id,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "results": results,
             "errors": [k for k, v in results.items() if "error" in v],
         }
@@ -310,7 +309,7 @@ def sync_vps_traffic(
                 audit_logger = AuditLogger(db)
                 await audit_logger.log_update(
                     resource_type="vps_traffic_sync",
-                    resource_id=f"traffic_{datetime.now(timezone.utc).isoformat()}",
+                    resource_id=f"traffic_{datetime.now(UTC).isoformat()}",
                     tenant_id="system",
                     details={
                         "instances_polled": polled_count,
@@ -322,7 +321,7 @@ def sync_vps_traffic(
                 return {
                     "status": "completed",
                     "task_id": self.request.id,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                     "instances_polled": polled_count,
                     "total_bytes_in": total_bytes_in,
                     "total_bytes_out": total_bytes_out,
@@ -434,7 +433,7 @@ def check_exceeded_bandwidth(
                 audit_logger = AuditLogger(db)
                 await audit_logger.log_update(
                     resource_type="vps_bandwidth_check",
-                    resource_id=f"bandwidth_{datetime.now(timezone.utc).isoformat()}",
+                    resource_id=f"bandwidth_{datetime.now(UTC).isoformat()}",
                     tenant_id="system",
                     details={
                         "total_checked": len(instances),
@@ -447,7 +446,7 @@ def check_exceeded_bandwidth(
                 return {
                     "status": "completed",
                     "task_id": self.request.id,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                     "total_checked": len(instances),
                     "exceeded_count": len(exceeded_list),
                     "suspended_count": suspended_count,
@@ -502,7 +501,7 @@ def check_vps_expiration(
             from core.database import async_session_factory
 
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
                 warning_boundary = now + timedelta(hours=24)
 
                 stmt = (
@@ -603,7 +602,7 @@ def auto_renew_vps(
             from core.database import async_session_factory
 
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
 
                 # Find expired VPS services that are still marked as active
                 stmt = (
@@ -711,7 +710,7 @@ def suspend_expired_vps(
             from core.database import async_session_factory
 
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
                 grace_boundary = now - timedelta(hours=24)
 
                 stmt = (
@@ -861,11 +860,11 @@ def auto_snapshot_vps(
 
                 for instance in instances:
                     try:
-                        snapshot_name = f"{snapshot_label}-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
+                        snapshot_name = f"{snapshot_label}-{datetime.now(UTC).strftime('%Y%m%d-%H%M%S')}"
                         await service.create_snapshot(
                             instance_id=instance.id,
                             snapshot_name=snapshot_name,
-                            description=f"Auto-backup by Celery task at {datetime.now(timezone.utc).isoformat()}",
+                            description=f"Auto-backup by Celery task at {datetime.now(UTC).isoformat()}",
                             include_ram=False,
                         )
                         created_count += 1
@@ -877,7 +876,7 @@ def auto_snapshot_vps(
                             if s.snapshot_name.startswith(snapshot_label)
                         ]
                         # Sort by creation date (oldest first)
-                        auto_snapshots.sort(key=lambda s: s.created_at or datetime.min.replace(tzinfo=timezone.utc))
+                        auto_snapshots.sort(key=lambda s: s.created_at or datetime.min.replace(tzinfo=UTC))
 
                         while len(auto_snapshots) > max_snapshots_per_instance:
                             oldest = auto_snapshots.pop(0)
@@ -902,7 +901,7 @@ def auto_snapshot_vps(
                 audit_logger = AuditLogger(db)
                 await audit_logger.log_update(
                     resource_type="vps_auto_snapshot",
-                    resource_id=f"snapshot_{datetime.now(timezone.utc).isoformat()}",
+                    resource_id=f"snapshot_{datetime.now(UTC).isoformat()}",
                     tenant_id="system",
                     details={
                         "instances_processed": len(instances),
@@ -915,7 +914,7 @@ def auto_snapshot_vps(
                 return {
                     "status": "completed",
                     "task_id": self.request.id,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                     "instances_processed": len(instances),
                     "snapshots_created": created_count,
                     "snapshots_cleaned": cleaned_count,
@@ -1032,7 +1031,7 @@ def check_vps_server_health(
                 audit_logger = AuditLogger(db)
                 await audit_logger.log_update(
                     resource_type="vps_health_check",
-                    resource_id=f"health_{datetime.now(timezone.utc).isoformat()}",
+                    resource_id=f"health_{datetime.now(UTC).isoformat()}",
                     tenant_id="system",
                     details={
                         "nodes_checked": len(nodes_to_check),
@@ -1045,7 +1044,7 @@ def check_vps_server_health(
                 return {
                     "status": "completed",
                     "task_id": self.request.id,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                     "nodes_checked": len(nodes_to_check),
                     "health_status": health_status,
                     "unhealthy_nodes": [
@@ -1106,7 +1105,7 @@ def cleanup_stale_vps(
             from core.database import async_session_factory
 
             async with async_session_factory() as db:
-                now = datetime.now(timezone.utc)
+                now = datetime.now(UTC)
                 stale_boundary = now - timedelta(days=stale_days)
 
                 stmt = (

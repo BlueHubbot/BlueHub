@@ -10,6 +10,7 @@ from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, DateTime, Float, ForeignKey, String
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -69,6 +70,7 @@ class User(UUIDMixin, TimestampMixin, CoreBase):
         doc="User's full display name",
     )
     role: Mapped[UserRole] = mapped_column(
+        SAEnum(UserRole, name="userrole", create_type=False),
         default=UserRole.USER,
         nullable=False,
         doc="RBAC role",

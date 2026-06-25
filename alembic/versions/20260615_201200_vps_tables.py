@@ -35,12 +35,12 @@ def upgrade() -> None:
     Create VPS enum type, vps_instances table, and vps_snapshots table.
     """
     # -----------------------------------------------------------------------
-    # 0. Create vpspowerstatus enum type
+    # 0. vpspowerstatus enum type (auto-created by SQLAlchemy via column usage)
     # -----------------------------------------------------------------------
     vpspowerstatus_enum = sa.Enum(
-        "running", "stopped", "suspended", name="vpspowerstatus"
+        "running", "stopped", "suspended", name="vpspowerstatus",
+        create_type=True,
     )
-    vpspowerstatus_enum.create(op.get_bind(), checkfirst=True)
 
     # -----------------------------------------------------------------------
     # 1. Create vps_instances table
@@ -91,7 +91,6 @@ def upgrade() -> None:
             vpspowerstatus_enum,
             nullable=False,
             server_default=sa.text("'stopped'"),
-            index=True,
         ),
         # Networking
         sa.Column("primary_ipv4", sa.String(length=45), nullable=True),
@@ -120,6 +119,9 @@ def upgrade() -> None:
         # VNC / Console access
         sa.Column("vnc_port", sa.Integer(), nullable=True),
         sa.Column("vnc_password", sa.String(length=255), nullable=True),
+        sa.Column("tags", postgresql.JSONB(), nullable=True,
+                  server_default=sa.text("'[]'::jsonb"),
+                  doc="Array of tags for filtering/labeling"),
         # Extra metadata
         sa.Column(
             "extra_config",
@@ -197,6 +199,17 @@ def upgrade() -> None:
         ["power_status"],
     )
     op.create_index(
+        "ix_vps_instances_tags",
+        "vps_instances",
+        ["tags"],
+        postgresql_using="gin",
+    )
+    op.create_index(
+        "ix_vps_instances_created_at",
+        "vps_instances",
+        ["created_at"],
+    )
+    op.create_index(
         "ix_vps_snapshots_instance_snapshot",
         "vps_snapshots",
         ["vps_instance_id", "snapshot_name"],
@@ -211,6 +224,14 @@ def downgrade() -> None:
     op.drop_index(
         "ix_vps_snapshots_instance_snapshot",
         table_name="vps_snapshots",
+    )
+    op.drop_index(
+        "ix_vps_instances_created_at",
+        table_name="vps_instances",
+    )
+    op.drop_index(
+        "ix_vps_instances_tags",
+        table_name="vps_instances",
     )
     op.drop_index(
         "ix_vps_instances_power_status",

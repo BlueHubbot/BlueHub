@@ -8,7 +8,7 @@ user management, and abuse report handling.
 from __future__ import annotations
 
 import secrets
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -542,7 +542,7 @@ class AdminService:
             AbuseReportStatus.RESOLVED.value,
             AbuseReportStatus.DISMISSED.value,
         ):
-            report.resolved_at = datetime.now(timezone.utc)
+            report.resolved_at = datetime.now(UTC)
 
         await self.session.flush()
         await self.session.refresh(report)

@@ -10,7 +10,7 @@ Run: pytest tests/unit/test_rbac.py -v --asyncio-mode=auto
 
 from __future__ import annotations
 
-from datetime import timezone, datetime
+from datetime import UTC, datetime
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest

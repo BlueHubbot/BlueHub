@@ -1,3 +1,9 @@
-"""SmartDNS module package."""
+"""
+BlueHub SmartDNS Module
+"""
 
-__all__: list[str] = []
+from __future__ import annotations
+
+from modules.smartdns.metadata import metadata
+
+__all__ = ["metadata"]
