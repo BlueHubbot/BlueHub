@@ -77,3 +77,26 @@ Do not attempt to write or plan any of the following Phase 7 features unless exp
 - Windows/PowerShell Terminal Rules: Do not use complex, chained shell commands (like `&&`, `2>nul`, or loops) for directory creation or file filtering that cause agentic loops.
 - Always verify if a directory or file exists before running creation commands.
 - Focus strictly on file-system updates through Cursor's Composer or direct file writes without invoking redundant docker or make tests unless explicitly asked.
+# ============================================
+# DEPLOYMENT RULES - SERVER ONLY
+# ============================================
+
+## ALL development work MUST be done on the server
+- Server: root@109.199.108.30
+- Path: /BlueHub
+- NEVER work on local (D:\BlueHub) for development
+
+## When making any changes:
+1. SSH to server: ssh root@109.199.108.30
+2. cd /BlueHub
+3. Edit files with: nano or cat > file << 'EOF'
+4. Build: docker compose build admin --no-cache
+5. Run: docker compose up -d admin
+6. Test: curl http://localhost:3001
+7. Check logs: docker logs bluehub-admin --tail 30
+
+## IMPORTANT:
+- No password needed (SSH key already set up)
+- Always test after changes
+- Report results after each step
+- If you see errors, fix them and continue

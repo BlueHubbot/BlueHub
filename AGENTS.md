@@ -1,5 +1,19 @@
 AGENTS.md - Multi-Agent Unified Directive for BlueHub Platform
 This file establishes the cross-agent runtime standard for AI Coding Assistants working on the BlueHub Platform. It defines the operational roles, collaborative tasks, and boundaries when navigating the codebase.
+## Deployment Rules
+
+### Server-Only Development
+- **All changes go directly to server:** `root@109.199.108.30:/BlueHub`
+- **No local development:** Everything is done via SSH
+- **SSH key:** Already set up, no password needed
+
+### Workflow
+1. SSH to server
+2. Make changes
+3. Build Docker
+4. Deploy
+5. Test
+6. Report back
 
 ## 0. CRITICAL RULES – ABSOLUTE PRIORITY (ADDED)
 | Rule | Description |
