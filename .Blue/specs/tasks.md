@@ -1089,203 +1089,1067 @@ Apply CSS variables: `--primary-color`, `--secondary-color`, etc.
 
 ---
 
-## Phase 3: Admin Panel (Week 6-7)
+    ## Phase 3: Admin Panel (Week 6-7) - COMPLETE IMPLEMENTATION
 
-### TASK-029: Admin Panel - Next.js Setup
-**Status:** ⏳ NOT STARTED  
-**Priority:** high  
-**Estimated Time:** 6 hours  
-**Dependencies:** TASK-025  
-**Assigned To:** Frontend Developer
+    ### 📋 OVERVIEW
+    **هدف:** پیاده‌سازی کامل پنل مدیریت با قابلیت‌های White-Label، Dockerized، RTL و فارسی
 
-**Description:**
-Initialize Next.js project for admin panel (separate from client portal).
+    **تکنولوژی‌ها:**
+    - Next.js 15 (App Router)
+    - TypeScript
+    - Tailwind CSS v4
+    - shadcn/ui
+    - Recharts (نمودارها)
+    - React Hook Form + Zod
+    - TanStack Table
+    - Zustand (State Management)
+    - Docker + Docker Compose
 
-**Acceptance Criteria:**
-- [ ] Next.js 15 project created in `web/admin/`
-- [ ] Same tech stack as client portal (TypeScript, Tailwind, Shadcn)
-- [ ] Admin-specific layout with sidebar navigation
-- [ ] Role-based route protection
-- [ ] Dashboard landing page
-- [ ] Responsive design
-- [ ] Dark mode
+    **منبع (برای استفاده  و تغییرات در راستای خواسته های ما در فاز3 ):** https://github.com/arhamkhnz/next-shadcn-admin-dashboard
 
-**Technical Notes:**
-Can share some components with client portal via `web/shared/`
+    ---
 
----
+    ### 🏗️ TASK-029: Admin Panel - Next.js Setup
+    **Status:** ⏳ NOT STARTED  
+    **Priority:** high  
+    **Estimated Time:** 6 hours  
+    **Dependencies:** TASK-025  
+    **Assigned To:** Frontend Developer
 
-### TASK-030: Admin Panel - Module Management Page
-**Status:** ⏳ NOT STARTED  
-**Priority:** critical  
-**Estimated Time:** 10 hours  
-**Dependencies:** TASK-029, TASK-012  
-**Assigned To:** Frontend Developer
+    **Description:**
+    راه‌اندازی پروژه Next.js برای پنل مدیریت با قابلیت‌های کامل
 
-**Description:**
-Create admin page to enable/disable modules with feature flags.
+    **Acceptance Criteria:**
+    - [ ] Next.js 15 project created in `web/admin/`
+    - [ ] TypeScript, Tailwind CSS v4, shadcn/ui نصب و تنظیم شده
+    - [ ] Admin-specific layout with sidebar navigation
+    - [ ] Role-based route protection (SuperAdmin, Admin, Reseller)
+    - [ ] Dashboard landing page با آمار کلی
+    - [ ] Responsive design (Mobile-first)
+    - [ ] Dark mode / Light mode (قابل تغییر)
+    - [ ] RTL support کامل (فارسی)
+    - [ ] Dockerfile با multi-stage build
+    - [ ] docker-compose.yml با سرویس admin-panel
+    - [ ] محیط توسعه و تولید جداگانه
 
-**Acceptance Criteria:**
-- [ ] List all modules with enabled status
-- [ ] Toggle switch to enable/disable
-- [ ] Disable mode selection: "stop_new_sales" or "terminate_services"
-- [ ] Confirmation dialog for "terminate_services" mode
-- [ ] Active services count displayed per module
-- [ ] Module configuration editor (JSON)
-- [ ] Real-time updates (optimistic UI)
-- [ ] Permission check (superadmin only)
+    **Technical Notes:**
+    ```typescript
+    // src/lib/auth.ts - مدیریت احراز هویت
+    export const auth = {
+    isAuthenticated: () => {
+        return typeof window !== 'undefined' && localStorage.getItem('token') !== null;
+    },
+    getToken: () => {
+        return typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    },
+    getRole: () => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        return user.role || 'user';
+    },
+    hasPermission: (requiredRoles: string[]) => {
+        const role = auth.getRole();
+        return requiredRoles.includes(role);
+    },
+    login: (token: string, user: any) => {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+    },
+    logout: () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+    },
+    };
+    File Structure:
 
-**Technical Notes:**
-Use Shadcn Switch component, Dialog for confirmation
-API: PATCH `/v1/admin/modules/{module_name}`
+    text
+    web/admin/
+    ├── Dockerfile
+    ├── next.config.js
+    ├── package.json
+    ├── tailwind.config.js
+    ├── tsconfig.json
+    ├── postcss.config.js
+    ├── .env.local (development)
+    ├── .env.production (production)
+    ├── src/
+    │   ├── app/
+    │   │   ├── (auth)/
+    │   │   │   ├── login/
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── register/
+    │   │   │   │   └── page.tsx
+    │   │   │   └── layout.tsx
+    │   │   ├── dashboard/
+    │   │   │   ├── page.tsx (main dashboard)
+    │   │   │   ├── users/
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── products/
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── modules/
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── tenants/
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── abuse/
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── logs/
+    │   │   │   │   └── page.tsx
+    │   │   │   └── settings/
+    │   │   │       └── page.tsx
+    │   │   ├── layout.tsx (با RTL و Vazirmatn)
+    │   │   └── globals.css (با متغیرهای White-Label)
+    │   ├── components/
+    │   │   ├── layout/
+    │   │   │   ├── Sidebar.tsx
+    │   │   │   ├── Header.tsx
+    │   │   │   └── Footer.tsx
+    │   │   ├── ui/
+    │   │   │   ├── Button.tsx
+    │   │   │   ├── Card.tsx
+    │   │   │   ├── Table.tsx
+    │   │   │   ├── Modal.tsx
+    │   │   │   ├── Switch.tsx
+    │   │   │   └── ...
+    │   │   ├── dashboard/
+    │   │   │   ├── StatsCards.tsx
+    │   │   │   ├── RevenueChart.tsx
+    │   │   │   └── ActivityTable.tsx
+    │   │   └── shared/
+    │   │       ├── ThemeToggle.tsx
+    │   │       └── LanguageToggle.tsx
+    │   ├── lib/
+    │   │   ├── api.ts
+    │   │   ├── auth.ts
+    │   │   ├── utils.ts
+    │   │   └── branding.ts
+    │   ├── hooks/
+    │   │   ├── useAuth.ts
+    │   │   └── useTheme.ts
+    │   ├── store/
+    │   │   ├── authStore.ts
+    │   │   └── themeStore.ts
+    │   └── i18n/
+    │       ├── en.json
+    │       └── fa.json
+    🎛️ TASK-030: Admin Panel - Module Management Page
+    Status: ⏳ NOT STARTED
+    Priority: critical
+    Estimated Time: 10 hours
+    Dependencies: TASK-029, TASK-012
+    Assigned To: Frontend Developer
 
----
+    Description:
+    صفحه مدیریت ماژول‌ها با قابلیت فعال/غیرفعال کردن و Feature Flags
 
-### TASK-031: Admin Panel - Product Management
-**Status:** ⏳ NOT STARTED  
-**Priority:** high  
-**Estimated Time:** 12 hours  
-**Dependencies:** TASK-029  
-**Assigned To:** Frontend Developer
+    Acceptance Criteria:
 
-**Description:**
-Create product management interface with pricing formulas.
+    List all modules with enabled status and version
 
-**Acceptance Criteria:**
-- [ ] Product list page with CRUD operations
-- [ ] Create product form with module selection
-- [ ] Pricing formula editor (JSON or visual builder)
-- [ ] Multi-language description editor
-- [ ] Product activation toggle
-- [ ] Product ordering (drag-and-drop)
-- [ ] Preview product in client view
-- [ ] Bulk actions (activate/deactivate multiple)
+    Toggle switch to enable/disable (با تأیید)
 
-**Technical Notes:**
-Pricing formula examples:
-```json
-{
-  "base_price": 9.99,
-  "volume_discount": [
-    {"min_quantity": 5, "discount_percent": 10},
-    {"min_quantity": 10, "discount_percent": 20}
-  ]
-}
-```
+    Disable mode selection: "stop_new_sales" یا "terminate_services"
 
----
+    Confirmation dialog برای "terminate_services" mode
 
-### TASK-032: Admin Panel - Tenant Management
-**Status:** ⏳ NOT STARTED  
-**Priority:** high  
-**Estimated Time:** 12 hours  
-**Dependencies:** TASK-029  
-**Assigned To:** Frontend Developer
+    Active services count displayed per module
 
-**Description:**
-Create tenant (white-label) management interface.
+    Module configuration editor (JSON with validation)
 
-**Acceptance Criteria:**
-- [ ] Tenant list page
-- [ ] Create tenant form (name, domain, branding)
-- [ ] Logo upload to MinIO
-- [ ] Color picker for branding
-- [ ] Telegram bot token input
-- [ ] Generate license key and signature
-- [ ] Display license key (copy button)
-- [ ] Edit tenant configuration
-- [ ] Activate/deactivate tenant
-- [ ] Permission check (superadmin only)
+    Real-time updates (optimistic UI with toast)
 
-**Technical Notes:**
-Use color picker library (e.g., react-colorful)
-File upload to MinIO via API endpoint
+    Permission check (superadmin only)
 
----
+    نمایش وضعیت هر ماژول با رنگ‌های مختلف:
 
-### TASK-033: Admin Panel - User Management
-**Status:** ⏳ NOT STARTED  
-**Priority:** medium  
-**Estimated Time:** 10 hours  
-**Dependencies:** TASK-029  
-**Assigned To:** Frontend Developer
+    🟢 فعال
 
-**Description:**
-Create user management interface for admins.
+    🟡 توقف فروش جدید
 
-**Acceptance Criteria:**
-- [ ] User list with filters (role, status, tenant)
-- [ ] Search by email or Telegram ID
-- [ ] User detail view with services
-- [ ] Edit user (email, role, language)
-- [ ] Suspend/unsuspend user
-- [ ] Reset password (send reset link)
-- [ ] View user's audit logs
-- [ ] Pagination (100 users per page)
-- [ ] Tenant filtering (admins see only their tenant)
+    🔴 خاتمه سرویس‌ها
 
-**Technical Notes:**
-API: GET `/v1/admin/users?tenant_id={id}&role={role}`
-Use Shadcn Table component with sorting
+    ⚪ غیرفعال
 
----
+    جستجو و فیلتر ماژول‌ها
 
-### TASK-034: Admin Panel - Abuse Management
-**Status:** ⏳ NOT STARTED  
-**Priority:** medium  
-**Estimated Time:** 8 hours  
-**Dependencies:** TASK-029  
-**Assigned To:** Frontend Developer
+    Technical Notes:
 
-**Description:**
-Create interface for viewing and managing abuse reports.
+    typescript
+    // API calls
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000/api/v1/admin';
 
-**Acceptance Criteria:**
-- [ ] Abuse reports list with filters
-- [ ] Report detail view with evidence
-- [ ] Suspend service button
-- [ ] Unsuspend service button (with reason)
-- [ ] Whitelist user (mark as false positive)
-- [ ] Email notification to user
-- [ ] Export report to PDF
-- [ ] Auto-suspend toggle per abuse type
+    export const moduleApi = {
+    getAll: async () => {
+        const res = await fetch(`${API_BASE}/modules`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    toggle: async (moduleName: string, data: any) => {
+        const res = await fetch(`${API_BASE}/modules/${moduleName}`, {
+        method: 'PATCH',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        });
+        return res.json();
+    },
+    };
 
-**Technical Notes:**
-Abuse types: spam, DDoS, copyright, illegal content
-Evidence: connection logs, bandwidth graphs, external reports
+    // Module types
+    interface Module {
+    id: string;
+    module_name: string;
+    display_name: string;
+    description: string;
+    version: string;
+    enabled: boolean;
+    order: number;
+    flags: {
+        stop_new_sales: boolean;
+        terminate_services: boolean;
+        maintenance_mode: boolean;
+    };
+    active_services_count: number;
+    config_schema: any;
+    default_config: any;
+    }
 
----
+    // Toggle data
+    interface ToggleData {
+    enabled?: boolean;
+    stop_new_sales?: boolean;
+    terminate_services?: boolean;
+    maintenance_mode?: boolean;
+    }
+    UI Components:
 
-### TASK-035: Admin API Endpoints
-**Status:** ⏳ NOT STARTED  
-**Priority:** high  
-**Estimated Time:** 12 hours  
-**Dependencies:** TASK-012  
-**Assigned To:** Backend Developer
+    Shadcn Switch
 
-**Description:**
-Create admin-only API endpoints for management operations.
+    Dialog for confirmation
 
-**Acceptance Criteria:**
-- [ ] GET `/v1/admin/modules` - List modules
-- [ ] PATCH `/v1/admin/modules/{name}` - Update module
-- [ ] POST `/v1/admin/products` - Create product
-- [ ] PUT `/v1/admin/products/{id}` - Update product
-- [ ] DELETE `/v1/admin/products/{id}` - Delete product
-- [ ] POST `/v1/admin/tenants` - Create tenant
-- [ ] PUT `/v1/admin/tenants/{id}` - Update tenant
-- [ ] GET `/v1/admin/users` - List users
-- [ ] PATCH `/v1/admin/users/{id}` - Update user
-- [ ] GET `/v1/admin/abuse-reports` - List abuse reports
-- [ ] POST `/v1/admin/services/{id}/suspend` - Suspend service
-- [ ] All endpoints require admin or superadmin role
-- [ ] OpenAPI documentation
-- [ ] Integration tests
+    Card for each module
 
-**Technical Notes:**
-Use `@require_role("admin", "superadmin")` decorator
-Tenant-scoped queries for admin role
+    Badge for status
 
+    Tooltip for help text
+
+    Toast for notifications
+
+    📦 TASK-031: Admin Panel - Product Management
+    Status: ⏳ NOT STARTED
+    Priority: high
+    Estimated Time: 12 hours
+    Dependencies: TASK-029
+    Assigned To: Frontend Developer
+
+    Description:
+    مدیریت محصولات با قیمت‌گذاری و فرمول‌های پیشرفته
+
+    Acceptance Criteria:
+
+    Product list page with CRUD operations
+
+    Create/Edit product form with module selection
+
+    Pricing formula editor (JSON or visual builder)
+
+    Multi-language description editor (en, fa, ar)
+
+    Product activation toggle
+
+    Product ordering (drag-and-drop with dnd-kit)
+
+    Preview product in client view (mockup)
+
+    Bulk actions (activate/deactivate multiple)
+
+    Sync with Paymenter (ارسال قیمت‌ها)
+
+    نمایش وضعیت sync (موفق/ناموفق)
+
+    Technical Notes:
+
+    typescript
+    // Pricing formula
+    interface PricingFormula {
+    base_price: number;
+    billing_cycle: 'monthly' | 'quarterly' | 'semi_annually' | 'annually' | 'biennially' | 'triennially';
+    billing_cycle_days: number;
+    volume_discount?: {
+        min_quantity: number;
+        discount_percent: number;
+    }[];
+    promo_codes?: string[];
+    }
+
+    // Product form
+    interface ProductForm {
+    module_name: string;
+    product_key: string;
+    name: string;
+    description_i18n: {
+        en: string;
+        fa: string;
+        ar?: string;
+    };
+    base_price: number;
+    billing_cycle: string;
+    billing_cycle_days: number;
+    specs: any;
+    order: number;
+    active: boolean;
+    }
+
+    // API
+    export const productApi = {
+    getAll: async (filters?: any) => {
+        const params = new URLSearchParams(filters);
+        const res = await fetch(`${API_BASE}/products?${params}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    create: async (data: ProductForm) => {
+        const res = await fetch(`${API_BASE}/products`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        });
+        return res.json();
+    },
+    update: async (id: string, data: ProductForm) => {
+        const res = await fetch(`${API_BASE}/products/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        });
+        return res.json();
+    },
+    delete: async (id: string) => {
+        const res = await fetch(`${API_BASE}/products/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    sync: async (id: string) => {
+        const res = await fetch(`${API_BASE}/products/${id}/sync`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    };
+    🏢 TASK-032: Admin Panel - Tenant Management
+    Status: ⏳ NOT STARTED
+    Priority: high
+    Estimated Time: 12 hours
+    Dependencies: TASK-029
+    Assigned To: Frontend Developer
+
+    Description:
+    مدیریت تیننت‌ها (برندهای مستقل) با قابلیت White-Label کامل
+
+    Acceptance Criteria:
+
+    Tenant list page with search and filters
+
+    Create tenant form with fields:
+
+    Name (required)
+
+    Domain (unique)
+
+    Logo upload to MinIO (drag-and-drop)
+
+    Color picker for branding (primary, secondary)
+
+    Telegram bot token
+
+    License key (auto-generate)
+
+    Signature (auto-generate)
+
+    Display license key with copy button
+
+    Edit tenant configuration
+
+    Activate/deactivate tenant
+
+    View tenant statistics (users, services, revenue)
+
+    Permission check (superadmin only)
+
+    Branding preview (نمایش زنده تغییرات)
+
+    Technical Notes:
+
+    typescript
+    // Branding types
+    interface BrandingConfig {
+    primary_color: string;
+    secondary_color: string;
+    brand_name: string;
+    logo_url: string;
+    favicon_url: string;
+    dark_mode: boolean;
+    }
+
+    // Tenant form
+    interface TenantForm {
+    name: string;
+    domain: string;
+    logo?: File;
+    branding_config: BrandingConfig;
+    telegram_bot_token: string;
+    license_key: string;
+    signature: string;
+    active: boolean;
+    }
+
+    // API
+    export const tenantApi = {
+    getAll: async () => {
+        const res = await fetch(`${API_BASE}/tenants`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    create: async (data: FormData) => {
+        const res = await fetch(`${API_BASE}/tenants`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: data,
+        });
+        return res.json();
+    },
+    update: async (id: string, data: FormData) => {
+        const res = await fetch(`${API_BASE}/tenants/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: data,
+        });
+        return res.json();
+    },
+    delete: async (id: string) => {
+        const res = await fetch(`${API_BASE}/tenants/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    };
+    👤 TASK-033: Admin Panel - User Management
+    Status: ⏳ NOT STARTED
+    Priority: medium
+    Estimated Time: 10 hours
+    Dependencies: TASK-029
+    Assigned To: Frontend Developer
+
+    Description:
+    مدیریت کاربران با فیلترها و جستجوی پیشرفته
+
+    Acceptance Criteria:
+
+    User list with filters (role, status, tenant)
+
+    Search by email, Telegram ID, or full name
+
+    User detail view with services list
+
+    Edit user (email, role, language, full_name)
+
+    Suspend/unsuspend user (با دلیل)
+
+    Reset password (send reset link email)
+
+    View user's audit logs
+
+    Pagination (100 users per page)
+
+    Tenant filtering (admins see only their tenant)
+
+    Export users to CSV
+
+    Bulk actions (suspend, delete, change role)
+
+    Technical Notes:
+
+    typescript
+    // User types
+    interface User {
+    id: string;
+    email: string;
+    full_name: string;
+    role: 'superadmin' | 'admin' | 'reseller' | 'user';
+    is_active: boolean;
+    language_code: string;
+    tenant_id: string;
+    created_at: string;
+    services: Service[];
+    }
+
+    // Filters
+    interface UserFilters {
+    role?: string;
+    status?: 'active' | 'suspended';
+    tenant_id?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+    }
+
+    // API
+    export const userApi = {
+    getAll: async (filters: UserFilters) => {
+        const params = new URLSearchParams(filters as any);
+        const res = await fetch(`${API_BASE}/users?${params}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    getById: async (id: string) => {
+        const res = await fetch(`${API_BASE}/users/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    update: async (id: string, data: any) => {
+        const res = await fetch(`${API_BASE}/users/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        });
+        return res.json();
+    },
+    suspend: async (id: string, reason: string) => {
+        const res = await fetch(`${API_BASE}/users/${id}/suspend`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reason }),
+        });
+        return res.json();
+    },
+    unsuspend: async (id: string) => {
+        const res = await fetch(`${API_BASE}/users/${id}/unsuspend`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    };
+    🚨 TASK-034: Admin Panel - Abuse Management
+    Status: ⏳ NOT STARTED
+    Priority: medium
+    Estimated Time: 8 hours
+    Dependencies: TASK-029
+    Assigned To: Frontend Developer
+
+    Description:
+    مدیریت گزارش‌های تخلف با قابلیت Suspension خودکار
+
+    Acceptance Criteria:
+
+    Abuse reports list with filters (type, severity, status)
+
+    Report detail view with evidence (logs, graphs)
+
+    Suspend service button (با انتخاب مدت زمان)
+
+    Unsuspend service button (with reason)
+
+    Whitelist user (mark as false positive)
+
+    Email notification to user
+
+    Export report to PDF
+
+    Auto-suspend toggle per abuse type
+
+    گزارش آمار تخلفات (نمودار)
+
+    Technical Notes:
+
+    typescript
+    // Abuse types
+    enum AbuseType {
+    SPAM = 'spam',
+    DDOS = 'ddos',
+    COPYRIGHT = 'copyright',
+    ILLEGAL_CONTENT = 'illegal_content',
+    }
+
+    enum AbuseSeverity {
+    LOW = 'low',
+    MEDIUM = 'medium',
+    HIGH = 'high',
+    CRITICAL = 'critical',
+    }
+
+    // API
+    export const abuseApi = {
+    getAll: async (filters: any) => {
+        const params = new URLSearchParams(filters);
+        const res = await fetch(`${API_BASE}/abuse-reports?${params}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    getById: async (id: string) => {
+        const res = await fetch(`${API_BASE}/abuse-reports/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        });
+        return res.json();
+    },
+    resolve: async (id: string, data: any) => {
+        const res = await fetch(`${API_BASE}/abuse-reports/${id}/resolve`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        });
+        return res.json();
+    },
+    dismiss: async (id: string, reason: string) => {
+        const res = await fetch(`${API_BASE}/abuse-reports/${id}/dismiss`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reason }),
+        });
+        return res.json();
+    },
+    };
+    📊 TASK-035: Admin API Endpoints
+    Status: ⏳ NOT STARTED
+    Priority: high
+    Estimated Time: 12 hours
+    Dependencies: TASK-012
+    Assigned To: Backend Developer
+
+    Description:
+    ایجاد APIهای مدیریتی با امنیت کامل
+
+    Acceptance Criteria:
+
+    GET /v1/admin/modules - List all modules
+
+    PATCH /v1/admin/modules/{name} - Update module
+
+    POST /v1/admin/products - Create product
+
+    PUT /v1/admin/products/{id} - Update product
+
+    DELETE /v1/admin/products/{id} - Delete product
+
+    POST /v1/admin/tenants - Create tenant
+
+    PUT /v1/admin/tenants/{id} - Update tenant
+
+    DELETE /v1/admin/tenants/{id} - Delete tenant
+
+    GET /v1/admin/users - List users
+
+    GET /v1/admin/users/{id} - Get user details
+
+    PATCH /v1/admin/users/{id} - Update user
+
+    POST /v1/admin/users/{id}/suspend - Suspend user
+
+    POST /v1/admin/users/{id}/unsuspend - Unsuspend user
+
+    GET /v1/admin/abuse-reports - List abuse reports
+
+    POST /v1/admin/services/{id}/suspend - Suspend service
+
+    POST /v1/admin/services/{id}/unsuspend - Unsuspend service
+
+    All endpoints require admin or superadmin role
+
+    OpenAPI documentation (Swagger)
+
+    Integration tests (100% coverage)
+
+    Rate limiting (100 requests per minute)
+
+    Audit logging for all admin actions
+
+    Technical Notes:
+
+    python
+    # api/v1/admin/__init__.py
+    from fastapi import APIRouter, Depends
+    from core.auth import require_role
+    from core.database import get_db
+
+    router = APIRouter(prefix="/admin", tags=["Admin"])
+
+    @router.get("/modules")
+    @require_role("superadmin")
+    async def get_modules(
+        db: AsyncSession = Depends(get_db),
+        current_user: User = Depends(require_role("superadmin"))
+    ):
+        """Get all modules with their status"""
+        service = ModuleRegistryService()
+        modules = await service.get_all_modules(db)
+        return modules
+
+    @router.patch("/modules/{module_name}")
+    @require_role("superadmin")
+    async def update_module(
+        module_name: str,
+        data: ModuleToggleRequest,
+        db: AsyncSession = Depends(get_db),
+        current_user: User = Depends(require_role("superadmin"))
+    ):
+        """Update module status and flags"""
+        service = ModuleRegistryService()
+        result = await service.toggle_module(module_name, data, db)
+        if not result:
+            raise HTTPException(404, "Module not found")
+        return result
+
+    @router.get("/users")
+    @require_role("admin")
+    async def get_users(
+        filters: UserFilters = Depends(),
+        db: AsyncSession = Depends(get_db),
+        current_user: User = Depends(require_role("admin"))
+    ):
+        """Get users with filters"""
+        service = UserService()
+        users = await service.get_all(db, filters, current_user.tenant_id)
+        return users
+    🐳 Docker & Deployment Configuration
+    Dockerfile:
+
+    dockerfile
+    # Stage 1: Builder
+    FROM node:20-alpine AS builder
+    WORKDIR /app
+
+    # Install dependencies
+    COPY package*.json ./
+    RUN npm ci
+
+    # Copy source
+    COPY . .
+
+    # Build
+    RUN npm run build
+
+    # Stage 2: Runner
+    FROM node:20-alpine AS runner
+    WORKDIR /app
+
+    ENV NODE_ENV=production
+
+    # Copy built files
+    COPY --from=builder /app/.next/standalone ./
+    COPY --from=builder /app/.next/static ./.next/static
+    COPY --from=builder /app/public ./public
+
+    EXPOSE 3000
+
+    CMD ["node", "server.js"]
+    next.config.js:
+
+    javascript
+    /** @type {import('next').NextConfig} */
+    const nextConfig = {
+    output: 'standalone',
+    reactStrictMode: true,
+    swcMinify: true,
+    images: {
+        domains: ['localhost', 'backend', 'minio'],
+    },
+    async rewrites() {
+        return [
+        {
+            source: '/api/:path*',
+            destination: process.env.NEXT_PUBLIC_API_URL 
+            ? `${process.env.NEXT_PUBLIC_API_URL}/:path*`
+            : 'http://backend:8000/api/v1/:path*',
+        },
+        ];
+    },
+    experimental: {
+        optimizePackageImports: ['shadcn-ui', 'lucide-react'],
+    },
+    };
+
+    module.exports = nextConfig;
+    docker-compose.yml (قسمت admin-panel):
+
+    yaml
+    services:
+    admin-panel:
+        build:
+        context: ./web/admin
+        dockerfile: Dockerfile
+        container_name: bluehub-admin
+        ports:
+        - "3000:3000"
+        environment:
+        - NEXT_PUBLIC_API_URL=http://backend:8000/api/v1
+        - NEXT_PUBLIC_APP_URL=http://localhost:3000
+        - NODE_ENV=production
+        depends_on:
+        - backend
+        restart: unless-stopped
+        networks:
+        - bluehub-network
+    🎨 RTL & Persian Support
+    src/app/layout.tsx:
+
+    tsx
+    import { Vazirmatn } from 'next/font/google';
+    import { dir } from 'i18next';
+    import './globals.css';
+
+    const vazirmatn = Vazirmatn({ 
+    subsets: ['arabic'],
+    display: 'swap',
+    variable: '--font-vazirmatn',
+    });
+
+    export default function RootLayout({
+    children,
+    }: {
+    children: React.ReactNode;
+    }) {
+    // Detect language from localStorage or default to 'fa'
+    const lang = 'fa';
+    
+    return (
+        <html lang={lang} dir="rtl" className={vazirmatn.variable}>
+        <body className="font-sans antialiased">
+            <ThemeProvider>
+            {children}
+            </ThemeProvider>
+        </body>
+        </html>
+    );
+    }
+    globals.css:
+
+    css
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    @layer base {
+    :root {
+        /* BlueHub default colors - قابل تغییر با White-Label */
+        --primary: 37 99 235; /* #2563eb */
+        --primary-50: 239 246 255;
+        --primary-100: 219 234 254;
+        --primary-200: 191 219 254;
+        --primary-300: 147 197 253;
+        --primary-400: 96 165 250;
+        --primary-500: 59 130 246;
+        --primary-600: 37 99 235;
+        --primary-700: 29 78 216;
+        --primary-800: 30 64 175;
+        --primary-900: 30 58 138;
+        
+        --background: 255 255 255;
+        --foreground: 15 23 42;
+        
+        --radius: 0.5rem;
+    }
+    
+    .dark {
+        --background: 15 23 42;
+        --foreground: 241 245 249;
+    }
+    }
+
+    /* RTL improvements */
+    [dir="rtl"] {
+    text-align: right;
+    }
+
+    [dir="rtl"] .flex-row {
+    flex-direction: row-reverse;
+    }
+
+    /* Vazirmatn font */
+    .font-vazirmatn {
+    font-family: var(--font-vazirmatn), system-ui, sans-serif;
+    }
+    src/lib/branding.ts:
+
+    typescript
+    // White-Label configuration
+    interface BrandingConfig {
+    primaryColor: string;
+    secondaryColor: string;
+    brandName: string;
+    logoUrl: string;
+    faviconUrl: string;
+    }
+
+    export const getBranding = (): BrandingConfig => {
+    // Try to get from localStorage (set by tenant)
+    if (typeof window !== 'undefined') {
+        const tenantStr = localStorage.getItem('tenant');
+        if (tenantStr) {
+        try {
+            const tenant = JSON.parse(tenantStr);
+            if (tenant.branding_config) {
+            return {
+                primaryColor: tenant.branding_config.primary_color || '#2563eb',
+                secondaryColor: tenant.branding_config.secondary_color || '#1d4ed8',
+                brandName: tenant.branding_config.brand_name || 'BlueHub',
+                logoUrl: tenant.branding_config.logo_url || '/logo.png',
+                faviconUrl: tenant.branding_config.favicon_url || '/favicon.ico',
+            };
+            }
+        } catch (e) {
+            // Fallback to defaults
+        }
+        }
+    }
+    
+    // Default branding
+    return {
+        primaryColor: '#2563eb',
+        secondaryColor: '#1d4ed8',
+        brandName: 'BlueHub',
+        logoUrl: '/logo.png',
+        faviconUrl: '/favicon.ico',
+    };
+    };
+
+    // Apply branding to CSS variables
+    export const applyBranding = (config: BrandingConfig) => {
+    if (typeof document === 'undefined') return;
+    
+    const root = document.documentElement;
+    root.style.setProperty('--primary', config.primaryColor);
+    root.style.setProperty('--primary-600', config.primaryColor);
+    root.style.setProperty('--brand-name', config.brandName);
+    };
+    🧪 Testing Requirements
+    Package.json - Test Scripts:
+
+    json
+    {
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "cypress": "cypress open",
+        "cypress:run": "cypress run"
+    },
+    "devDependencies": {
+        "@testing-library/react": "^15.0.0",
+        "@testing-library/jest-dom": "^6.0.0",
+        "@testing-library/user-event": "^14.0.0",
+        "jest": "^29.0.0",
+        "jest-environment-jsdom": "^29.0.0",
+        "cypress": "^13.0.0"
+    }
+    }
+    Tests Structure:
+
+    text
+    web/admin/__tests__/
+    ├── components/
+    ├── lib/
+    ├── pages/
+    ├── integration/
+    └── e2e/
+    📋 Final Checklist
+    Before Deployment:
+
+    All 7 tasks (TASK-029 to TASK-035) completed
+
+    docker-compose build بدون خطا
+
+    docker-compose up -d همه سرویس‌ها رو بالا بیاره
+
+    پنل در http://localhost:3000 قابل دسترس باشه
+
+    RTL و فارسی درست کار کنه
+
+    White-Label قابلیت تغییر رنگ و لوگو داشته باشه
+
+    همه API calls به backend متصل بشن
+
+    تست‌های واحد و یکپارچه پاس بشن
+
+    هیچ تست اضافی اجرا نشه
+
+    لاگ‌های build بدون خطا باشن
+
+    امنیت: فقط admin/superadmin دسترسی داشته باشن
+
+    Commit Message:
+
+    text
+    feat(admin): complete Phase 3 admin panel with Docker support
+
+    - TASK-029: Next.js admin setup with RTL and Persian
+    - TASK-030: Module management with feature flags
+    - TASK-031: Product management with pricing
+    - TASK-032: Tenant management with White-Label
+    - TASK-033: User management with filters
+    - TASK-034: Abuse management with auto-suspend
+    - TASK-035: Admin API endpoints with RBAC
+    - Full Docker support with docker-compose
+    - White-Label support (customizable branding)
+    - RTL + Persian support
 ---
 
 ## Phase 4: VPS Module (Week 8-10)

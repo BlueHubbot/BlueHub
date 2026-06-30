@@ -902,7 +902,7 @@ class TestTrafficParsing:
 
         traffic_list = XrayService.parse_traffic_from_log(
             log_path=str(log_file),
-            recent_seconds=999999,
+            recent_seconds=9999999,  # large window to cover any test date
         )
 
         # user-uuid-1 should be aggregated
@@ -931,7 +931,7 @@ class TestTrafficParsing:
         traffic = XrayService.get_user_traffic(
             user_id="user-uuid-1",
             log_path=str(log_file),
-            recent_seconds=999999,
+            recent_seconds=9999999,  # large window to cover any test date
         )
         assert traffic is not None
         assert isinstance(traffic, XrayTraffic)

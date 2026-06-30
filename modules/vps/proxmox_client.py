@@ -637,7 +637,7 @@ class ProxmoxClient:
                 f"Proxmox API error ({status_code}): {exc}"
             ) from exc
         # Wait for task completion
-        status: dict[str, Any] = self.api.nodes(node).tasks(upid).status.get()
+        status = self.api.nodes(node).tasks(upid).status.get()
         return ProxmoxTaskResult(
             upid=upid,
             node=node,

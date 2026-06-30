@@ -162,19 +162,284 @@ Task execution order MUST follow this rigid sequence. **Phase 5 must NOT start b
 * **TASK-028:** Integrate frontend white-label asset replacement reading the active `TenantMiddleware` context. *[Depends on: TASK-027]*
 
 ---
-
 ### 💼 Phase 3: Centralized Admin Dashboard (Weeks 6-7)
 *Gate: Blocked until Phase 2 is 100% complete.*
 
-* **TASK-029:** Create isolated super-admin API operations to audit multi-brand data and sub-licenses. *[Depends on: TASK-028]*
-* **TASK-030:** Scaffold the dedicated administrative control dashboard utilizing Next.js App Router. *[Depends on: TASK-029]*
-* **TASK-031:** Build an enterprise metrics view reporting active system health and gross transaction margins. *[Depends on: TASK-030]*
-* **TASK-032:** Design functional tenant control panels to manage independent brand properties. *[Depends on: Extends TASK-031]*
-* **TASK-033:** Create an interactive Feature-Flag management board to disable global modules. *[Depends on: TASK-032]*
-* **TASK-034:** Implement dynamic catalog synchronization interfaces binding inputs to Paymenter pricing. *[Depends on: TASK-033]*
-* **TASK-035:** Author real-time stream logs to browse system-wide administrative traces. *[Depends on: TASK-034]*
+---
+## دستور العمل اجرایی:
+
+### ۱. منبع (پایه):
+مخزن زیر رو به عنوان پایه استفاده کن (فقط برای ساختار و ایده، نه کپی کامل):
+https://github.com/arhamkhnz/next-shadcn-admin-dashboard
+
+### ۲. نحوه اجرا:
+۱. مخزن رو clone کن یا محتواش رو به `web/admin/` منتقل کن
+۲. همه چیز رو برای BlueHub بازنویسی کن:
+   - برندینگ: "BlueHub"
+   - RTL و فارسی (وزیرمتن)
+   - رنگ‌ها: #1a56db (قابل تغییر White-Label)
+۳. پنل رو Dockerized کن:
+   - Dockerfile در web/admin/
+   - docker-compose.yml با سرویس admin-panel
+
+#### **TASK-029: Super-Admin API & Audit Setup**
+**هدف:** ایجاد APIهای امن برای مدیریت چند-برندی و ممیزی
+
+**زیرتسک‌ها:**
+- [ ] ایجاد `api/v1/admin/audit.py` با endpointهای:
+  - `GET /admin/audit/logs` - مشاهده تمام لاگ‌های سیستم
+  - `GET /admin/audit/tenants/{tenant_id}` - لاگ‌های یک تیننت خاص
+  - `POST /admin/audit/export` - خروجی گرفتن از لاگ‌ها
+- [ ] اضافه کردن `AdminPermission` در RBAC
+- [ ] تست امنیت: فقط SuperAdmin دسترسی داشته باشد
+
+**فایل‌های مورد نیاز:**
+api/v1/admin/audit.py
+api/v1/admin/permissions.py
+core/admin/audit_service.py
+esponsive and mobile-friendly
+Customizable theme presets (light/dark modes with color schemes like Tangerine, Brutalist, and more)
+Flexible layouts (collapsible sidebar, variable content widths)
+Authentication flows and screens
+Prebuilt dashboards (Default, CRM, Finance, Analytics, Productivity) plus legacy variants
+Role-Based Access Control (RBAC) with config-driven UI and multi-tenant support 
+
+text
 
 ---
+
+#### **TASK-030: Scaffold Admin Panel (Next.js)**
+**هدف:** راه‌اندازی پروژه Next.js برای پنل ادمین
+
+**زیرتسک‌ها:**
+- [ ] ایجاد `web/admin/` با Next.js 14 + TypeScript
+- [ ] نصب و تنظیم Tailwind CSS + shadcn/ui
+- [ ] ایجاد `Dockerfile` با multi-stage build
+- [ ] تنظیم `docker-compose.yml` برای سرویس `admin-panel`
+
+**فایل‌های مورد نیاز:**
+web/admin/Dockerfile
+web/admin/next.config.js
+web/admin/package.json
+web/admin/tailwind.config.js
+web/admin/src/app/layout.tsx
+web/admin/src/app/page.tsx
+
+text
+
+Default Dashboard
+CRM Dashboard
+Finance Dashboard
+Analytics Dashboard
+Productivity Dashboard
+E-commerce Dashboard
+Academy Dashboard
+Logistics Dashboard
+Infrastructure Dashboard
+Chat Page
+Email Page
+Users Management
+Roles Management
+Kanban Board
+Tasks Page
+Invoice Page
+Calendar Page
+Authentication (4 screens)
+Legacy: Default v1, CRM v1, Finance v1, Analytics v1
+---
+
+#### **TASK-031: Enterprise Metrics Dashboard**
+**هدف:** داشبورد اصلی با آمار سیستم و حاشیه سود
+
+**زیرتسک‌ها:**
+- [ ] کارت‌های آمار:
+  - تعداد کل کاربران
+  - تعداد سرویس‌های فعال
+  - درآمد کل (ماه جاری)
+  - تعداد تیننت‌ها
+- [ ] نمودارها با Recharts:
+  - رشد کاربران در ۶ ماه اخیر
+  - توزیع سرویس‌ها
+  - درآمد ماهانه
+- [ ] جدول آخرین فعالیت‌ها (Audit Logs)
+
+**فایل‌های مورد نیاز:**
+web/admin/src/app/dashboard/page.tsx
+web/admin/src/components/dashboard/StatsCards.tsx
+web/admin/src/components/dashboard/RevenueChart.tsx
+web/admin/src/components/dashboard/ActivityTable.tsx
+
+text
+
+---
+
+#### **TASK-032: Tenant Control Panels**
+**هدف:** پنل مدیریت تیننت‌ها (برندهای مستقل)
+
+**زیرتسک‌ها:**
+- [ ] لیست تمام تیننت‌ها با صفحه‌بندی
+- [ ] ایجاد/ویرایش/حذف تیننت
+- [ ] مدیریت برندینگ هر تیننت (رنگ، لوگو، نام)
+- [ ] نمایش آمار هر تیننت (کاربران، سرویس‌ها، درآمد)
+
+**فایل‌های مورد نیاز:**
+web/admin/src/app/dashboard/tenants/page.tsx
+web/admin/src/app/dashboard/tenants/components/TenantFormModal.tsx
+web/admin/src/app/dashboard/tenants/components/TenantStats.tsx
+
+text
+
+---
+
+#### **TASK-033: Feature-Flag Management Board**
+**هدف:** پنل مدیریت Feature Flags برای ماژول‌ها
+
+**زیرتسک‌ها:**
+- [ ] لیست تمام ماژول‌های ثبت‌شده
+- [ ] toggle کردن فعال/غیرفعال برای هر ماژول
+- [ ] تنظیمات پیشرفته:
+  - `stop_new_sales`: توقف فروش جدید
+  - `terminate_services`: خاتمه سرویس‌ها
+  - `maintenance_mode`: حالت نگهداری
+- [ ] نمایش وضعیت هر ماژول با رنگ‌های مختلف
+
+**فایل‌های مورد نیاز:**
+web/admin/src/app/dashboard/modules/page.tsx
+web/admin/src/app/dashboard/modules/components/ModuleCard.tsx
+web/admin/src/app/dashboard/modules/components/ModuleConfigModal.tsx
+
+text
+
+---
+
+#### **TASK-034: Product Catalog Sync**
+**هدف:** همگام‌سازی کاتالوگ محصولات با Paymenter
+
+**زیرتسک‌ها:**
+- [ ] لیست محصولات با فیلتر ماژول
+- [ ] ایجاد/ویرایش/حذف محصول
+- [ ] sync با Paymenter (ارسال قیمت‌ها)
+- [ ] نمایش وضعیت sync (موفق/ناموفق)
+
+**فایل‌های مورد نیاز:**
+web/admin/src/app/dashboard/products/page.tsx
+web/admin/src/app/dashboard/products/components/ProductFormModal.tsx
+web/admin/src/app/dashboard/products/components/SyncStatus.tsx
+
+text
+
+---
+
+#### **TASK-035: Real-time Admin Logs**
+**هدف:** نمایش لاگ‌های سیستمی به صورت لحظه‌ای
+
+**زیرتسک‌ها:**
+- [ ] نمایش لاگ‌های Audit با فیلتر (نوع، کاربر، تیننت)
+- [ ] جستجو در لاگ‌ها
+- [ ] صفحه‌بندی و خروجی CSV
+- [ ] WebSocket یا Polling برای به‌روزرسانی لحظه‌ای
+
+**فایل‌های مورد نیاز:**
+web/admin/src/app/dashboard/logs/page.tsx
+web/admin/src/app/dashboard/logs/components/LogFilter.tsx
+web/admin/src/app/dashboard/logs/components/LogTable.tsx
+
+text
+
+---
+
+### **پیش‌نیازهای فنی (قبل از شروع)**
+
+#### ۱. **Dockerize کردن پنل:**
+
+**Dockerfile:**
+```dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+EXPOSE 3000
+CMD ["node", "server.js"]
+next.config.js:
+
+javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'standalone',
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: ['localhost', 'backend'],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://backend:8000/api/v1/:path*',
+      },
+    ];
+  },
+};
+module.exports = nextConfig;
+docker-compose.yml (قسمت admin-panel):
+
+yaml
+services:
+  admin-panel:
+    build: ./web/admin
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000/api/v1
+    depends_on:
+      - backend
+    restart: unless-stopped
+۲. RTL و فارسی:
+layout.tsx:
+
+tsx
+import { Vazirmatn } from 'next/font/google';
+const vazirmatn = Vazirmatn({ subsets: ['arabic'] });
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="fa" dir="rtl" className={vazirmatn.className}>
+      <body>{children}</body>
+    </html>
+  );
+}
+۳. White-Label (قابل تغییر):
+src/lib/branding.ts:
+
+typescript
+export const getBranding = () => {
+  const tenant = JSON.parse(localStorage.getItem('tenant') || '{}');
+  return {
+    primaryColor: tenant.branding_config?.primary_color || '#1a56db',
+    brandName: tenant.branding_config?.brand_name || 'BlueHub',
+    logoUrl: tenant.branding_config?.logo_url || '/logo.png',
+  };
+};
+خروجی نهایی فاز ۳:
+docker-compose up -d همه چی رو بالا بیاره
+
+پنل در http://localhost:3000 قابل دسترس باشه
+
+RTL و فارسی درست کار کنه
+
+قابلیت White-Label فعال باشه
+
+همه ۷ تسک کامل شده باشن
+
+تست‌های پنل پاس بشن
 
 ### 🖥️ Phase 4: VPS Provisioning Module (Weeks 8-9)
 *Gate: Runs in parallel workflow logic after Phase 2, but must finish jointly with Phase 3 before Phase 5 blocks drop.*
@@ -221,6 +486,8 @@ Task execution order MUST follow this rigid sequence. **Phase 5 must NOT start b
 * **TASK-057:** AI Adaptive Obfuscation Engine (A²OE) for dynamic protocol shape-shifting.
 * **TASK-058:** Distributed Hybrid Peer-to-Peer Relay Network construction.
 * **TASK-059:** Deployment of NIST-standardized Quantum-Resistant Encryption algorithms.
+
+
 
 ## 10. DOCKER CONFIGURATION
 Docker path: `C:\Program Files\Docker\Docker\resources\bin\docker`
