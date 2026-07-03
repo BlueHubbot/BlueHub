@@ -38,7 +38,7 @@ export default function DashboardPage() {
         revenue_monthly: 45200,
         active_modules: 5,
         total_tenants: 8,
-        pending_abuse_reports: 3,
+        pending_abuse_reports: 12,
       });
     } finally {
       setLoading(false);
@@ -75,7 +75,7 @@ export default function DashboardPage() {
       color: "text-green-600 bg-green-100 dark:bg-green-900/30",
     },
     {
-      label: "Monthly Revenue",
+      label: "Total Revenue",
       value: formatCurrency(stats.revenue_monthly),
       icon: DollarSign,
       color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30",
@@ -140,8 +140,8 @@ export default function DashboardPage() {
         {/* Pending Abuse Reports */}
         <div className="stat-card">
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-red-100 p-3 dark:bg-red-900/30">
-              <AlertTriangle className="h-5 w-5 text-red-600" />
+            <div className="rounded-lg bg-yellow-100 p-3 dark:bg-yellow-900/30">
+              <AlertTriangle className="h-5 w-5 text-yellow-600" />
             </div>
             <div>
               <p className="text-2xl font-bold">{stats.pending_abuse_reports}</p>
@@ -175,7 +175,7 @@ export default function DashboardPage() {
               />
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Active Modules</span>
+              <span className="text-muted-foreground">Online Modules</span>
               <span className="font-medium">
                 {stats.active_modules} of {stats.active_modules}
               </span>
