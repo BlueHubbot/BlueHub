@@ -13,6 +13,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+import logging
+logger = logging.getLogger(__name__)
 
 from api.v1 import (
     admin,
@@ -39,29 +41,20 @@ from core.registry import module_registry_service
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    """
-    Application lifespan handler for startup/shutdown events.
-    Initialize and dispose of database connections.
-    """
-    # Startup: verify database connectivity
     db_ok = await db_manager.check_connection()
     if not db_ok:
-        app.logger.warning(
+        logger.warning(
             "Database connection check failed on startup. "
             "Service may be unavailable until database is reachable."
         )
     else:
-        # Register modules on startup
         try:
             async with db_manager.async_session_factory() as session:
                 count = await module_registry_service.register_modules(session)
-                app.logger.info("Registered %d modules on startup", count)
+                logger.info("Registered %d modules on startup", count)
         except Exception:
-            app.logger.exception("Failed to register modules on startup")
-
+            logger.exception("Failed to register modules on startup")
     yield
-
-    # Shutdown: dispose of all engine connections
     await db_manager.close()
 
 
@@ -106,15 +99,13 @@ app = FastAPI(
 
 
 # ── CORS Middleware ────────────────────────────────────────────────────────
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=["*"],  # برای تست سریع این کار را می‌کنیم
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # ── I18n Middleware ────────────────────────────────────────────────────────
 
 app.add_middleware(I18nMiddleware)

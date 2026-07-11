@@ -1,0 +1,77 @@
+# BlueHub Test Runner Dockerfile
+# Used for running automated test pipelines in Docker
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy package files
+COPY pyproject.toml .
+COPY _packages/ ./_packages/
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir \
+    fastapi[standard] \
+    uvicorn \
+    pydantic \
+    pydantic-settings \
+    python-multipart \
+    sqlalchemy[asyncio] \
+    asyncpg \
+    alembic \
+    redis \
+    celery \
+    httpx \
+    python-jose[cryptography] \
+    passlib[bcrypt] \
+    aiogram \
+    minio \
+    structlog \
+    pytz \
+    python-dateutil \
+    jinja2 \
+    pytest \
+    pytest-asyncio \
+    pytest-cov \
+    httpx
+
+RUN pip install --no-cache-dir --find-links ./_packages/ \
+    pytest_asyncio \
+    email_validator \
+    python_multipart \
+    bcrypt \
+    ecdsa \
+    rsa \
+    dnspython
+
+# Copy application code
+COPY core/ ./core/
+COPY modules/ ./modules/
+COPY api/ ./api/
+COPY bot/ ./bot/
+COPY services/ ./services/
+COPY shared/ ./shared/
+COPY config/ ./config/
+COPY infrastructure/ ./infrastructure/
+COPY dependencies/ ./dependencies/
+COPY tests/ ./tests/
+COPY main.py .
+COPY alembic.ini .
+COPY run_tests.py .
+
+# Set environment variables for testing
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV TESTING=1
+ENV DATABASE_URL=sqlite+aiosqlite:///test.db
+ENV REDIS_URL=redis://localhost:6379/0
+
+# Run tests
+CMD ["python", "-m", "pytest", "tests/", "-v", "--tb=short", "-p", "no:cacheprovider"]

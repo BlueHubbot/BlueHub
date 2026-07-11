@@ -104,7 +104,13 @@ class Settings(BaseSettings):
     PORT: int = Field(default=8000, ge=1, le=65535, description="Server port")
     WORKERS: int = Field(default=4, ge=1, le=32, description="Number of workers")
     CORS_ORIGINS: list[str] = Field(
-        default=["*"], description="Allowed CORS origins"
+        default=[
+            "http://109.199.108.30:3001",
+            "http://localhost:3001",
+            "http://localhost:8000",
+            "http://109.199.108.30:8000",
+        ],
+        description="Allowed CORS origins"
     )
 
     # --- Database (async with asyncpg) ---

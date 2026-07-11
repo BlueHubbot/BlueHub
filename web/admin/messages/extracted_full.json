@@ -1,0 +1,2607 @@
+[
+  {
+    "key": "loading",
+    "en": "Loading",
+    "file": "src/components/ui/spinner.tsx"
+  },
+  {
+    "key": "cn_toast",
+    "en": "cn-toast",
+    "file": "src/components/ui/sonner.tsx"
+  },
+  {
+    "key": "sidebar",
+    "en": "Sidebar",
+    "file": "src/components/ui/sidebar.tsx"
+  },
+  {
+    "key": "displays_the_mobile_sidebar",
+    "en": "Displays the mobile sidebar.",
+    "file": "src/components/ui/sidebar.tsx"
+  },
+  {
+    "key": "toggle_sidebar",
+    "en": "Toggle Sidebar",
+    "file": "src/components/ui/sidebar.tsx"
+  },
+  {
+    "key": "close",
+    "en": "Close",
+    "file": "src/components/ui/sheet.tsx"
+  },
+  {
+    "key": "more_pages",
+    "en": "More pages",
+    "file": "src/components/ui/pagination.tsx"
+  },
+  {
+    "key": "pagination",
+    "en": "pagination",
+    "file": "src/components/ui/pagination.tsx"
+  },
+  {
+    "key": "go_to_previous_page",
+    "en": "Go to previous page",
+    "file": "src/components/ui/pagination.tsx"
+  },
+  {
+    "key": "go_to_next_page",
+    "en": "Go to next page",
+    "file": "src/components/ui/pagination.tsx"
+  },
+  {
+    "key": "button",
+    "en": "button",
+    "file": "src/components/ui/input-group.tsx"
+  },
+  {
+    "key": "previous_slide",
+    "en": "Previous slide",
+    "file": "src/components/ui/carousel.tsx"
+  },
+  {
+    "key": "next_slide",
+    "en": "Next slide",
+    "file": "src/components/ui/carousel.tsx"
+  },
+  {
+    "key": "carousel",
+    "en": "carousel",
+    "file": "src/components/ui/carousel.tsx"
+  },
+  {
+    "key": "slide",
+    "en": "slide",
+    "file": "src/components/ui/carousel.tsx"
+  },
+  {
+    "key": "more",
+    "en": "More",
+    "file": "src/components/ui/breadcrumb.tsx"
+  },
+  {
+    "key": "breadcrumb",
+    "en": "breadcrumb",
+    "file": "src/components/ui/breadcrumb.tsx"
+  },
+  {
+    "key": "page_not_found",
+    "en": "Page not found.",
+    "file": "src/app/not-found.tsx"
+  },
+  {
+    "key": "the_page_you_are_looking_for_could_not_be_found",
+    "en": "The page you are looking for could not be found.",
+    "file": "src/app/not-found.tsx"
+  },
+  {
+    "key": "go_back_home",
+    "en": "Go back home",
+    "file": "src/app/not-found.tsx"
+  },
+  {
+    "key": "unauthorized_access",
+    "en": "Unauthorized Access",
+    "file": "src/app/(main)/unauthorized/page.tsx"
+  },
+  {
+    "key": "loading_mail",
+    "en": "Loading mail...",
+    "file": "src/app/(main)/mail/_components/mail.tsx"
+  },
+  {
+    "key": "mail_message",
+    "en": "Mail message",
+    "file": "src/app/(main)/mail/_components/mail.tsx"
+  },
+  {
+    "key": "read_the_selected_email_message",
+    "en": "Read the selected email message",
+    "file": "src/app/(main)/mail/_components/mail.tsx"
+  },
+  {
+    "key": "close_message",
+    "en": "Close message",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "previous_message",
+    "en": "Previous message",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "next_message",
+    "en": "Next message",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "pin_thread",
+    "en": "Pin thread",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "archive",
+    "en": "Archive",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "reply",
+    "en": "Reply",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "more_actions",
+    "en": "More actions",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "move_to_trash",
+    "en": "Move to trash",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "no_email_selected",
+    "en": "No email selected",
+    "file": "src/app/(main)/mail/_components/mail-view.tsx"
+  },
+  {
+    "key": "new_email",
+    "en": "New email",
+    "file": "src/app/(main)/mail/_components/mail-sidebar.tsx"
+  },
+  {
+    "key": "folders",
+    "en": "Folders",
+    "file": "src/app/(main)/mail/_components/mail-sidebar.tsx"
+  },
+  {
+    "key": "accounts",
+    "en": "Accounts",
+    "file": "src/app/(main)/mail/_components/mail-sidebar.tsx"
+  },
+  {
+    "key": "open_account_menu",
+    "en": "Open account menu",
+    "file": "src/app/(main)/mail/_components/mail-sidebar.tsx"
+  },
+  {
+    "key": "inbox",
+    "en": "Inbox",
+    "file": "src/app/(main)/mail/_components/mail-inbox.tsx"
+  },
+  {
+    "key": "search",
+    "en": "Search...",
+    "file": "src/app/(main)/mail/_components/mail-inbox.tsx"
+  },
+  {
+    "key": "users",
+    "en": "Users",
+    "file": "src/app/(main)/dashboard/users/_components/users.tsx"
+  },
+  {
+    "key": "role",
+    "en": "Role:",
+    "file": "src/app/(main)/dashboard/users/_components/users.tsx"
+  },
+  {
+    "key": "team",
+    "en": "Team:",
+    "file": "src/app/(main)/dashboard/users/_components/users.tsx"
+  },
+  {
+    "key": "status",
+    "en": "Status:",
+    "file": "src/app/(main)/dashboard/users/_components/users.tsx"
+  },
+  {
+    "key": "workspace",
+    "en": "Workspace:",
+    "file": "src/app/(main)/dashboard/users/_components/users.tsx"
+  },
+  {
+    "key": "search_users",
+    "en": "Search users...",
+    "file": "src/app/(main)/dashboard/users/_components/users.tsx"
+  },
+  {
+    "key": "list_view",
+    "en": "List view",
+    "file": "src/app/(main)/dashboard/users/_components/users.tsx"
+  },
+  {
+    "key": "grid_view",
+    "en": "Grid view",
+    "file": "src/app/(main)/dashboard/users/_components/users.tsx"
+  },
+  {
+    "key": "rows_per_page",
+    "en": "Rows per page",
+    "file": "src/app/(main)/dashboard/users/_components/users-table.tsx"
+  },
+  {
+    "key": "actions",
+    "en": "Actions",
+    "file": "src/app/(main)/dashboard/users/_components/users-columns.tsx"
+  },
+  {
+    "key": "view_profile",
+    "en": "View profile",
+    "file": "src/app/(main)/dashboard/users/_components/users-columns.tsx"
+  },
+  {
+    "key": "edit_user",
+    "en": "Edit user",
+    "file": "src/app/(main)/dashboard/users/_components/users-columns.tsx"
+  },
+  {
+    "key": "manage_team",
+    "en": "Manage team",
+    "file": "src/app/(main)/dashboard/users/_components/users-columns.tsx"
+  },
+  {
+    "key": "resend_invite",
+    "en": "Resend invite",
+    "file": "src/app/(main)/dashboard/users/_components/users-columns.tsx"
+  },
+  {
+    "key": "deactivate_user",
+    "en": "Deactivate user",
+    "file": "src/app/(main)/dashboard/users/_components/users-columns.tsx"
+  },
+  {
+    "key": "select_all_users",
+    "en": "Select all users",
+    "file": "src/app/(main)/dashboard/users/_components/users-columns.tsx"
+  },
+  {
+    "key": "welcome_back",
+    "en": "Welcome back!",
+    "file": "src/app/(main)/dashboard/tasks/page.tsx"
+  },
+  {
+    "key": "here_s_a_list_of_your_tasks_for_this_month",
+    "en": "Here's a list of your tasks for this month!",
+    "file": "src/app/(main)/dashboard/tasks/page.tsx"
+  },
+  {
+    "key": "go_to_first_page",
+    "en": "Go to first page",
+    "file": "src/app/(main)/dashboard/tasks/_components/tasks.tsx"
+  },
+  {
+    "key": "go_to_last_page",
+    "en": "Go to last page",
+    "file": "src/app/(main)/dashboard/tasks/_components/tasks.tsx"
+  },
+  {
+    "key": "toggle_columns",
+    "en": "Toggle columns",
+    "file": "src/app/(main)/dashboard/tasks/_components/tasks-toolbar.tsx"
+  },
+  {
+    "key": "filter_tasks",
+    "en": "Filter tasks...",
+    "file": "src/app/(main)/dashboard/tasks/_components/tasks-toolbar.tsx"
+  },
+  {
+    "key": "open_menu",
+    "en": "Open menu",
+    "file": "src/app/(main)/dashboard/tasks/_components/columns.tsx"
+  },
+  {
+    "key": "edit",
+    "en": "Edit",
+    "file": "src/app/(main)/dashboard/tasks/_components/columns.tsx"
+  },
+  {
+    "key": "make_a_copy",
+    "en": "Make a copy",
+    "file": "src/app/(main)/dashboard/tasks/_components/columns.tsx"
+  },
+  {
+    "key": "favorite",
+    "en": "Favorite",
+    "file": "src/app/(main)/dashboard/tasks/_components/columns.tsx"
+  },
+  {
+    "key": "labels",
+    "en": "Labels",
+    "file": "src/app/(main)/dashboard/tasks/_components/columns.tsx"
+  },
+  {
+    "key": "select_all",
+    "en": "Select all",
+    "file": "src/app/(main)/dashboard/tasks/_components/columns.tsx"
+  },
+  {
+    "key": "select_row",
+    "en": "Select row",
+    "file": "src/app/(main)/dashboard/tasks/_components/columns.tsx"
+  },
+  {
+    "key": "manage_access_roles_and_permissions_across_your_or",
+    "en": "Manage access roles and permissions across your organization.",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "create_role",
+    "en": "Create role",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "roles",
+    "en": "Roles",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "permission_sets",
+    "en": "Permission sets",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "access_reviews",
+    "en": "Access reviews",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "review_required",
+    "en": "Review required",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "type",
+    "en": "Type:",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "all",
+    "en": "All",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "system",
+    "en": "System",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "custom",
+    "en": "Custom",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "owner",
+    "en": "Owner:",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "jane_doe",
+    "en": "Jane Doe",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "alex_kim",
+    "en": "Alex Kim",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "chris_lee",
+    "en": "Chris Lee",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "active",
+    "en": "Active",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "needs_review",
+    "en": "Needs review",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "search_roles",
+    "en": "Search roles...",
+    "file": "src/app/(main)/dashboard/roles/_components/roles.tsx"
+  },
+  {
+    "key": "review_changes",
+    "en": "Review changes",
+    "file": "src/app/(main)/dashboard/roles/_components/roles-table/columns.tsx"
+  },
+  {
+    "key": "view_details",
+    "en": "View details",
+    "file": "src/app/(main)/dashboard/roles/_components/roles-table/columns.tsx"
+  },
+  {
+    "key": "edit_role",
+    "en": "Edit role",
+    "file": "src/app/(main)/dashboard/roles/_components/roles-table/columns.tsx"
+  },
+  {
+    "key": "duplicate_role",
+    "en": "Duplicate role",
+    "file": "src/app/(main)/dashboard/roles/_components/roles-table/columns.tsx"
+  },
+  {
+    "key": "review_permissions",
+    "en": "Review permissions",
+    "file": "src/app/(main)/dashboard/roles/_components/roles-table/columns.tsx"
+  },
+  {
+    "key": "manage_members",
+    "en": "Manage members",
+    "file": "src/app/(main)/dashboard/roles/_components/roles-table/columns.tsx"
+  },
+  {
+    "key": "good_evening_sarmad",
+    "en": "Good Evening, Sarmad.",
+    "file": "src/app/(main)/dashboard/productivity/page.tsx"
+  },
+  {
+    "key": "this_week",
+    "en": "This Week",
+    "file": "src/app/(main)/dashboard/productivity/_components/weekly-summary-card.tsx"
+  },
+  {
+    "key": "tasks",
+    "en": "Tasks",
+    "file": "src/app/(main)/dashboard/productivity/_components/tasks-section.tsx"
+  },
+  {
+    "key": "today",
+    "en": "Today",
+    "file": "src/app/(main)/dashboard/productivity/_components/tasks-section.tsx"
+  },
+  {
+    "key": "tomorrow",
+    "en": "Tomorrow",
+    "file": "src/app/(main)/dashboard/productivity/_components/tasks-section.tsx"
+  },
+  {
+    "key": "recent_notes",
+    "en": "Recent Notes",
+    "file": "src/app/(main)/dashboard/productivity/_components/recent-notes-card.tsx"
+  },
+  {
+    "key": "small_consistent_actions_lead_to_big_results",
+    "en": "Small, consistent actions lead to big results.",
+    "file": "src/app/(main)/dashboard/productivity/_components/quote-card.tsx"
+  },
+  {
+    "key": "quick_actions",
+    "en": "Quick Actions",
+    "file": "src/app/(main)/dashboard/productivity/_components/quick-actions.tsx"
+  },
+  {
+    "key": "projects",
+    "en": "Projects",
+    "file": "src/app/(main)/dashboard/productivity/_components/projects-section.tsx"
+  },
+  {
+    "key": "planning",
+    "en": "Planning",
+    "file": "src/app/(main)/dashboard/productivity/_components/projects-section.tsx"
+  },
+  {
+    "key": "completed",
+    "en": "Completed",
+    "file": "src/app/(main)/dashboard/productivity/_components/projects-section.tsx"
+  },
+  {
+    "key": "focus",
+    "en": "Focus",
+    "file": "src/app/(main)/dashboard/productivity/_components/focus-card.tsx"
+  },
+  {
+    "key": "start",
+    "en": "Start",
+    "file": "src/app/(main)/dashboard/productivity/_components/focus-card.tsx"
+  },
+  {
+    "key": "mail_preview",
+    "en": "Mail preview",
+    "file": "src/app/(main)/dashboard/mail/page.tsx"
+  },
+  {
+    "key": "open_mail_in_new_tab",
+    "en": "Open mail in new tab",
+    "file": "src/app/(main)/dashboard/mail/page.tsx"
+  },
+  {
+    "key": "southeast_asia_shipment_region_map",
+    "en": "Southeast Asia shipment region map",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-route-map.tsx"
+  },
+  {
+    "key": "cargo",
+    "en": "Cargo",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-list.tsx"
+  },
+  {
+    "key": "eta",
+    "en": "ETA",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-list.tsx"
+  },
+  {
+    "key": "shipments",
+    "en": "Shipments",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-list.tsx"
+  },
+  {
+    "key": "search_shipments",
+    "en": "Search shipments...",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-list.tsx"
+  },
+  {
+    "key": "search_shipments",
+    "en": "Search shipments",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-list.tsx"
+  },
+  {
+    "key": "cargo_details",
+    "en": "Cargo details",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-details.tsx"
+  },
+  {
+    "key": "total_weight",
+    "en": "Total weight",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-details.tsx"
+  },
+  {
+    "key": "transport_mode",
+    "en": "Transport mode",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-details.tsx"
+  },
+  {
+    "key": "status",
+    "en": "Status",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-details.tsx"
+  },
+  {
+    "key": "copy_shipment_id",
+    "en": "Copy shipment ID",
+    "file": "src/app/(main)/dashboard/logistics/_components/shipment-details.tsx"
+  },
+  {
+    "key": "selected_shipment_details_and_route_map",
+    "en": "Selected shipment details and route map.",
+    "file": "src/app/(main)/dashboard/logistics/_components/logistics.tsx"
+  },
+  {
+    "key": "progress",
+    "en": "Progress",
+    "file": "src/app/(main)/dashboard/kanban/_components/task-card.tsx"
+  },
+  {
+    "key": "owner",
+    "en": "Owner",
+    "file": "src/app/(main)/dashboard/kanban/_components/task-card.tsx"
+  },
+  {
+    "key": "due_date",
+    "en": "Due date",
+    "file": "src/app/(main)/dashboard/kanban/_components/task-card.tsx"
+  },
+  {
+    "key": "team",
+    "en": "Team",
+    "file": "src/app/(main)/dashboard/kanban/_components/task-card.tsx"
+  },
+  {
+    "key": "search_tasks",
+    "en": "Search tasks",
+    "file": "src/app/(main)/dashboard/kanban/_components/kanban.tsx"
+  },
+  {
+    "key": "open_add_task_menu",
+    "en": "Open add task menu",
+    "file": "src/app/(main)/dashboard/kanban/_components/kanban.tsx"
+  },
+  {
+    "key": "create_new_invoice",
+    "en": "Create New Invoice",
+    "file": "src/app/(main)/dashboard/invoice/page.tsx"
+  },
+  {
+    "key": "preview",
+    "en": "Preview",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-preview.tsx"
+  },
+  {
+    "key": "invoice",
+    "en": "Invoice",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "payment_account",
+    "en": "Payment account",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "from",
+    "en": "From",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "bill_to",
+    "en": "Bill to",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "description",
+    "en": "Description",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "units",
+    "en": "Units",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "unit_cost",
+    "en": "Unit cost",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "line_total",
+    "en": "Line total",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "net_amount",
+    "en": "Net amount",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "balance_due",
+    "en": "Balance due",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "prepared_for_prompt_processing",
+    "en": "Prepared for prompt processing.",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx"
+  },
+  {
+    "key": "invoice_items",
+    "en": "Invoice Items",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-items.tsx"
+  },
+  {
+    "key": "line_total",
+    "en": "Line Total",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-items.tsx"
+  },
+  {
+    "key": "payment",
+    "en": "Payment",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-form.tsx"
+  },
+  {
+    "key": "business",
+    "en": "Business",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-form.tsx"
+  },
+  {
+    "key": "pick_a_date",
+    "en": "Pick a date",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-details.tsx"
+  },
+  {
+    "key": "adjustments",
+    "en": "Adjustments",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "tax",
+    "en": "Tax",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "discount",
+    "en": "Discount",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "fixed_amount",
+    "en": "Fixed amount",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "percent",
+    "en": "Percent",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "value",
+    "en": "Value",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "select_tax",
+    "en": "Select tax",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "discount_type",
+    "en": "Discount type",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "discount_value",
+    "en": "Discount value",
+    "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx"
+  },
+  {
+    "key": "billed_to",
+    "en": "Billed To",
+    "file": "src/app/(main)/dashboard/invoice/_components/client-selector.tsx"
+  },
+  {
+    "key": "client",
+    "en": "Client",
+    "file": "src/app/(main)/dashboard/invoice/_components/client-selector.tsx"
+  },
+  {
+    "key": "select_client",
+    "en": "Select client",
+    "file": "src/app/(main)/dashboard/invoice/_components/client-selector.tsx"
+  },
+  {
+    "key": "platform",
+    "en": "Platform",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "environment",
+    "en": "Environment",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "health",
+    "en": "Health",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "latency",
+    "en": "Latency",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "uptime",
+    "en": "Uptime",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "resources",
+    "en": "Resources",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "server",
+    "en": "Server",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "no_environments_in_this_project",
+    "en": "No environments in this project",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "cpu",
+    "en": "CPU",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "ram",
+    "en": "RAM",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "disk",
+    "en": "Disk",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx"
+  },
+  {
+    "key": "last_updated_30s_ago",
+    "en": "Last updated: 30s ago",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/infrastructure-header.tsx"
+  },
+  {
+    "key": "search_by_name_or_domain",
+    "en": "Search by name or domain...",
+    "file": "src/app/(main)/dashboard/infrastructure/_components/infrastructure-header.tsx"
+  },
+  {
+    "key": "personal_finances",
+    "en": "Personal Finances",
+    "file": "src/app/(main)/dashboard/finance/page.tsx"
+  },
+  {
+    "key": "dashboard",
+    "en": "Dashboard",
+    "file": "src/app/(main)/dashboard/finance/page.tsx"
+  },
+  {
+    "key": "transactions",
+    "en": "Transactions",
+    "file": "src/app/(main)/dashboard/finance/page.tsx"
+  },
+  {
+    "key": "updated_5_min_ago",
+    "en": "Updated 5 min ago",
+    "file": "src/app/(main)/dashboard/finance/page.tsx"
+  },
+  {
+    "key": "wallet",
+    "en": "Wallet",
+    "file": "src/app/(main)/dashboard/finance/_components/wallet.tsx"
+  },
+  {
+    "key": "ledger_nano_x",
+    "en": "Ledger Nano X",
+    "file": "src/app/(main)/dashboard/finance/_components/wallet.tsx"
+  },
+  {
+    "key": "air_gapped",
+    "en": "Air-Gapped",
+    "file": "src/app/(main)/dashboard/finance/_components/wallet.tsx"
+  },
+  {
+    "key": "spending_overview",
+    "en": "Spending Overview",
+    "file": "src/app/(main)/dashboard/finance/_components/transactions-overview-card.tsx"
+  },
+  {
+    "key": "weekly",
+    "en": "Weekly",
+    "file": "src/app/(main)/dashboard/finance/_components/transactions-overview-card.tsx"
+  },
+  {
+    "key": "monthly",
+    "en": "Monthly",
+    "file": "src/app/(main)/dashboard/finance/_components/transactions-overview-card.tsx"
+  },
+  {
+    "key": "yearly",
+    "en": "Yearly",
+    "file": "src/app/(main)/dashboard/finance/_components/transactions-overview-card.tsx"
+  },
+  {
+    "key": "quick_transfer",
+    "en": "Quick Transfer",
+    "file": "src/app/(main)/dashboard/finance/_components/quick-actions.tsx"
+  },
+  {
+    "key": "usd",
+    "en": "USD",
+    "file": "src/app/(main)/dashboard/finance/_components/quick-actions.tsx"
+  },
+  {
+    "key": "send",
+    "en": "Send",
+    "file": "src/app/(main)/dashboard/finance/_components/quick-actions.tsx"
+  },
+  {
+    "key": "shortcuts",
+    "en": "Shortcuts",
+    "file": "src/app/(main)/dashboard/finance/_components/quick-actions.tsx"
+  },
+  {
+    "key": "net_worth",
+    "en": "Net worth",
+    "file": "src/app/(main)/dashboard/finance/_components/overview-kpis.tsx"
+  },
+  {
+    "key": "available_cash",
+    "en": "Available cash",
+    "file": "src/app/(main)/dashboard/finance/_components/overview-kpis.tsx"
+  },
+  {
+    "key": "monthly_spend",
+    "en": "Monthly spend",
+    "file": "src/app/(main)/dashboard/finance/_components/overview-kpis.tsx"
+  },
+  {
+    "key": "savings_rate",
+    "en": "Savings rate",
+    "file": "src/app/(main)/dashboard/finance/_components/overview-kpis.tsx"
+  },
+  {
+    "key": "income_sources",
+    "en": "Income sources",
+    "file": "src/app/(main)/dashboard/finance/_components/income-breakdown.tsx"
+  },
+  {
+    "key": "credit_score_updated",
+    "en": "Credit score updated",
+    "file": "src/app/(main)/dashboard/finance/_components/finance-notification.tsx"
+  },
+  {
+    "key": "your_score_increased_by_14_points_to_782",
+    "en": "Your score increased by 14 points to 782.",
+    "file": "src/app/(main)/dashboard/finance/_components/finance-notification.tsx"
+  },
+  {
+    "key": "account_allocation",
+    "en": "Account Allocation",
+    "file": "src/app/(main)/dashboard/finance/_components/balance-distribution-card.tsx"
+  },
+  {
+    "key": "store_overview",
+    "en": "Store Overview",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "this_month",
+    "en": "This Month",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "last_month",
+    "en": "Last Month",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "last_30_days",
+    "en": "Last 30 Days",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "year_to_date",
+    "en": "Year to Date",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "all_channels",
+    "en": "All Channels",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "online_store",
+    "en": "Online Store",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "marketplace",
+    "en": "Marketplace",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "social",
+    "en": "Social",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "retail",
+    "en": "Retail",
+    "file": "src/app/(main)/dashboard/ecommerce/page.tsx"
+  },
+  {
+    "key": "traffic_sources",
+    "en": "Traffic Sources",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/traffic-sources.tsx"
+  },
+  {
+    "key": "top_products",
+    "en": "Top Products",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/top-products.tsx"
+  },
+  {
+    "key": "products",
+    "en": "Products",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/top-products.tsx"
+  },
+  {
+    "key": "share",
+    "en": "Share",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/top-products.tsx"
+  },
+  {
+    "key": "sales",
+    "en": "Sales",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/top-products.tsx"
+  },
+  {
+    "key": "sales_by_category",
+    "en": "Sales by category",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/top-products.tsx"
+  },
+  {
+    "key": "store_traffic",
+    "en": "Store Traffic",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/store-traffic.tsx"
+  },
+  {
+    "key": "recent_orders",
+    "en": "Recent Orders",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders.tsx"
+  },
+  {
+    "key": "open_orders",
+    "en": "Open orders",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders.tsx"
+  },
+  {
+    "key": "download_orders",
+    "en": "Download orders",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders.tsx"
+  },
+  {
+    "key": "total_sales",
+    "en": "Total Sales",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/kpi-strip.tsx"
+  },
+  {
+    "key": "total_orders",
+    "en": "Total Orders",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/kpi-strip.tsx"
+  },
+  {
+    "key": "customer_growth",
+    "en": "Customer Growth",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/kpi-strip.tsx"
+  },
+  {
+    "key": "average_order",
+    "en": "Average Order",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/kpi-strip.tsx"
+  },
+  {
+    "key": "return_requests",
+    "en": "Return Requests",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/kpi-strip.tsx"
+  },
+  {
+    "key": "stock_accuracy",
+    "en": "Stock Accuracy",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/kpi-strip.tsx"
+  },
+  {
+    "key": "sales_overview",
+    "en": "Sales Overview",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/kpi-strip.tsx"
+  },
+  {
+    "key": "inventory",
+    "en": "Inventory",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/inventory.tsx"
+  },
+  {
+    "key": "reviews",
+    "en": "Reviews",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/customer-reviews.tsx"
+  },
+  {
+    "key": "melody_macy",
+    "en": "Melody Macy",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/customer-reviews.tsx"
+  },
+  {
+    "key": "customers_reviewed_this_month",
+    "en": "Customers reviewed this month",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/customer-reviews.tsx"
+  },
+  {
+    "key": "previous_review",
+    "en": "Previous review",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/customer-reviews.tsx"
+  },
+  {
+    "key": "next_review",
+    "en": "Next review",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/customer-reviews.tsx"
+  },
+  {
+    "key": "total",
+    "en": "Total",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx"
+  },
+  {
+    "key": "date",
+    "en": "Date",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx"
+  },
+  {
+    "key": "order_actions",
+    "en": "Order Actions",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx"
+  },
+  {
+    "key": "view_order",
+    "en": "View order",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx"
+  },
+  {
+    "key": "contact_customer",
+    "en": "Contact customer",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx"
+  },
+  {
+    "key": "copy_order_id",
+    "en": "Copy order ID",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx"
+  },
+  {
+    "key": "select_all_orders",
+    "en": "Select all orders",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx"
+  },
+  {
+    "key": "open_order_actions",
+    "en": "Open order actions",
+    "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx"
+  },
+  {
+    "key": "recent_customer_records_with_plan_billing_status_a",
+    "en": "Recent customer records with plan, billing, status, and signup activity.",
+    "file": "src/app/(main)/dashboard/default/_components/subscriber-overview.tsx"
+  },
+  {
+    "key": "customer_activity",
+    "en": "Customer Activity",
+    "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx"
+  },
+  {
+    "key": "customer_activity_for_the_last_3_months",
+    "en": "Customer activity for the last 3 months",
+    "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx"
+  },
+  {
+    "key": "last_3_months",
+    "en": "Last 3 months",
+    "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx"
+  },
+  {
+    "key": "period",
+    "en": "Period",
+    "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx"
+  },
+  {
+    "key": "segments",
+    "en": "Segments",
+    "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx"
+  },
+  {
+    "key": "all_segments",
+    "en": "All segments",
+    "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx"
+  },
+  {
+    "key": "paid",
+    "en": "Paid",
+    "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx"
+  },
+  {
+    "key": "organic",
+    "en": "Organic",
+    "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx"
+  },
+  {
+    "key": "total_revenue",
+    "en": "Total Revenue",
+    "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx"
+  },
+  {
+    "key": "visitors_for_the_last_6_months",
+    "en": "Visitors for the last 6 months",
+    "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx"
+  },
+  {
+    "key": "new_customers",
+    "en": "New Customers",
+    "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx"
+  },
+  {
+    "key": "acquisition_needs_attention",
+    "en": "Acquisition needs attention",
+    "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx"
+  },
+  {
+    "key": "active_accounts",
+    "en": "Active Accounts",
+    "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx"
+  },
+  {
+    "key": "engagement_exceeds_targets",
+    "en": "Engagement exceeds targets",
+    "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx"
+  },
+  {
+    "key": "growth_rate",
+    "en": "Growth Rate",
+    "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx"
+  },
+  {
+    "key": "meets_growth_projections",
+    "en": "Meets growth projections",
+    "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx"
+  },
+  {
+    "key": "search_customers",
+    "en": "Search customers...",
+    "file": "src/app/(main)/dashboard/default/_components/recent-customers-table/table.tsx"
+  },
+  {
+    "key": "select_all_customers_on_this_page",
+    "en": "Select all customers on this page",
+    "file": "src/app/(main)/dashboard/default/_components/recent-customers-table/columns.tsx"
+  },
+  {
+    "key": "upcoming_meetings",
+    "en": "Upcoming Meetings",
+    "file": "src/app/(main)/dashboard/crm/_components/task-reminders.tsx"
+  },
+  {
+    "key": "weblabs_studio",
+    "en": "Weblabs Studio",
+    "file": "src/app/(main)/dashboard/crm/_components/task-reminders.tsx"
+  },
+  {
+    "key": "monthly_proposal_goal",
+    "en": "Monthly Proposal Goal",
+    "file": "src/app/(main)/dashboard/crm/_components/task-reminders.tsx"
+  },
+  {
+    "key": "sent",
+    "en": "sent",
+    "file": "src/app/(main)/dashboard/crm/_components/task-reminders.tsx"
+  },
+  {
+    "key": "qualified_lead_flow",
+    "en": "Qualified Lead Flow",
+    "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx"
+  },
+  {
+    "key": "last_30_days",
+    "en": "Last 30 days",
+    "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx"
+  },
+  {
+    "key": "last_quarter",
+    "en": "Last quarter",
+    "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx"
+  },
+  {
+    "key": "last_12_months",
+    "en": "Last 12 months",
+    "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx"
+  },
+  {
+    "key": "leads",
+    "en": "leads",
+    "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx"
+  },
+  {
+    "key": "total_qualified_leads_captured_over_the_last_12_mo",
+    "en": "Total qualified leads captured over the last 12 months.",
+    "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx"
+  },
+  {
+    "key": "meetings",
+    "en": "meetings",
+    "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx"
+  },
+  {
+    "key": "select_range",
+    "en": "Select range",
+    "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx"
+  },
+  {
+    "key": "recent_opportunities",
+    "en": "Recent Opportunities",
+    "file": "src/app/(main)/dashboard/crm/_components/opportunities-section.tsx"
+  },
+  {
+    "key": "search_deals",
+    "en": "Search deals...",
+    "file": "src/app/(main)/dashboard/crm/_components/opportunities-section.tsx"
+  },
+  {
+    "key": "pipeline_overview",
+    "en": "Pipeline Overview",
+    "file": "src/app/(main)/dashboard/crm/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "lead_pipeline_value",
+    "en": "Lead Pipeline Value",
+    "file": "src/app/(main)/dashboard/crm/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "last_month",
+    "en": "last month",
+    "file": "src/app/(main)/dashboard/crm/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "qualified_lead_rate",
+    "en": "Qualified Lead Rate",
+    "file": "src/app/(main)/dashboard/crm/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "open_opportunities",
+    "en": "Open Opportunities",
+    "file": "src/app/(main)/dashboard/crm/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "lead_to_deal_rate",
+    "en": "Lead-to-Deal Rate",
+    "file": "src/app/(main)/dashboard/crm/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "edit_opportunity",
+    "en": "Edit opportunity",
+    "file": "src/app/(main)/dashboard/crm/_components/opportunities-table/columns.tsx"
+  },
+  {
+    "key": "select_all_opportunities",
+    "en": "Select all opportunities",
+    "file": "src/app/(main)/dashboard/crm/_components/opportunities-table/columns.tsx"
+  },
+  {
+    "key": "this_page_is_under_development_and_will_be_availab",
+    "en": "This page is under development and will be available in future updates.",
+    "file": "src/app/(main)/dashboard/coming-soon/page.tsx"
+  },
+  {
+    "key": "chat_preview",
+    "en": "Chat preview",
+    "file": "src/app/(main)/dashboard/chat/page.tsx"
+  },
+  {
+    "key": "open_chat_in_new_tab",
+    "en": "Open chat in new tab",
+    "file": "src/app/(main)/dashboard/chat/page.tsx"
+  },
+  {
+    "key": "hello_aiy",
+    "en": "Hello, Aiy",
+    "file": "src/app/(main)/dashboard/analytics/page.tsx"
+  },
+  {
+    "key": "overview",
+    "en": "Overview",
+    "file": "src/app/(main)/dashboard/analytics/page.tsx"
+  },
+  {
+    "key": "audience",
+    "en": "Audience",
+    "file": "src/app/(main)/dashboard/analytics/page.tsx"
+  },
+  {
+    "key": "acquisition",
+    "en": "Acquisition",
+    "file": "src/app/(main)/dashboard/analytics/page.tsx"
+  },
+  {
+    "key": "engagement",
+    "en": "Engagement",
+    "file": "src/app/(main)/dashboard/analytics/page.tsx"
+  },
+  {
+    "key": "conversions",
+    "en": "Conversions",
+    "file": "src/app/(main)/dashboard/analytics/page.tsx"
+  },
+  {
+    "key": "traffic_quality",
+    "en": "Traffic Quality",
+    "file": "src/app/(main)/dashboard/analytics/_components/traffic-quality.tsx"
+  },
+  {
+    "key": "page_performance",
+    "en": "Page Performance",
+    "file": "src/app/(main)/dashboard/analytics/_components/top-pages.tsx"
+  },
+  {
+    "key": "views",
+    "en": "Views",
+    "file": "src/app/(main)/dashboard/analytics/_components/top-pages.tsx"
+  },
+  {
+    "key": "avg_time",
+    "en": "Avg Time",
+    "file": "src/app/(main)/dashboard/analytics/_components/top-pages.tsx"
+  },
+  {
+    "key": "bounce",
+    "en": "Bounce",
+    "file": "src/app/(main)/dashboard/analytics/_components/top-pages.tsx"
+  },
+  {
+    "key": "realtime_visitors",
+    "en": "Realtime Visitors",
+    "file": "src/app/(main)/dashboard/analytics/_components/realtime-visitors.tsx"
+  },
+  {
+    "key": "per_minute",
+    "en": "per minute",
+    "file": "src/app/(main)/dashboard/analytics/_components/realtime-visitors.tsx"
+  },
+  {
+    "key": "live",
+    "en": "Live",
+    "file": "src/app/(main)/dashboard/analytics/_components/realtime-visitors.tsx"
+  },
+  {
+    "key": "united_states",
+    "en": "United States",
+    "file": "src/app/(main)/dashboard/analytics/_components/realtime-visitors.tsx"
+  },
+  {
+    "key": "united_kingdom",
+    "en": "United Kingdom",
+    "file": "src/app/(main)/dashboard/analytics/_components/realtime-visitors.tsx"
+  },
+  {
+    "key": "canada",
+    "en": "Canada",
+    "file": "src/app/(main)/dashboard/analytics/_components/realtime-visitors.tsx"
+  },
+  {
+    "key": "india",
+    "en": "India",
+    "file": "src/app/(main)/dashboard/analytics/_components/realtime-visitors.tsx"
+  },
+  {
+    "key": "last_7_days",
+    "en": "Last 7 days",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-toolbar.tsx"
+  },
+  {
+    "key": "last_4_weeks",
+    "en": "Last 4 weeks",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-toolbar.tsx"
+  },
+  {
+    "key": "year_to_date",
+    "en": "Year to date",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-toolbar.tsx"
+  },
+  {
+    "key": "analytics_actions",
+    "en": "Analytics actions",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-toolbar.tsx"
+  },
+  {
+    "key": "more_analytics_actions",
+    "en": "More analytics actions",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-toolbar.tsx"
+  },
+  {
+    "key": "unique_visitors",
+    "en": "Unique Visitors",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-kpi-strip.tsx"
+  },
+  {
+    "key": "last_4_weeks",
+    "en": "last 4 weeks",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-kpi-strip.tsx"
+  },
+  {
+    "key": "sessions",
+    "en": "Sessions",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-kpi-strip.tsx"
+  },
+  {
+    "key": "pageviews",
+    "en": "Pageviews",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-kpi-strip.tsx"
+  },
+  {
+    "key": "engagement_rate",
+    "en": "Engagement Rate",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-kpi-strip.tsx"
+  },
+  {
+    "key": "conversion_rate",
+    "en": "Conversion Rate",
+    "file": "src/app/(main)/dashboard/analytics/_components/analytics-kpi-strip.tsx"
+  },
+  {
+    "key": "academy_dashboard",
+    "en": "Academy Dashboard",
+    "file": "src/app/(main)/dashboard/academy/page.tsx"
+  },
+  {
+    "key": "upcoming_events",
+    "en": "Upcoming Events",
+    "file": "src/app/(main)/dashboard/academy/_components/upcoming-events.tsx"
+  },
+  {
+    "key": "performance_highlights",
+    "en": "Performance Highlights",
+    "file": "src/app/(main)/dashboard/academy/_components/performance-highlights.tsx"
+  },
+  {
+    "key": "students_taught",
+    "en": "Students Taught",
+    "file": "src/app/(main)/dashboard/academy/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "across_5_grade_11_sections",
+    "en": "across 5 Grade 11 sections",
+    "file": "src/app/(main)/dashboard/academy/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "avg_attendance",
+    "en": "Avg. Attendance",
+    "file": "src/app/(main)/dashboard/academy/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "vs_last_month",
+    "en": "vs last month",
+    "file": "src/app/(main)/dashboard/academy/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "assignments",
+    "en": "Assignments",
+    "file": "src/app/(main)/dashboard/academy/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "classes_today",
+    "en": "Classes Today",
+    "file": "src/app/(main)/dashboard/academy/_components/kpi-cards.tsx"
+  },
+  {
+    "key": "class_schedule",
+    "en": "Class Schedule",
+    "file": "src/app/(main)/dashboard/academy/_components/class-schedule.tsx"
+  },
+  {
+    "key": "pure_mathematics",
+    "en": "Pure Mathematics",
+    "file": "src/app/(main)/dashboard/academy/_components/class-schedule.tsx"
+  },
+  {
+    "key": "english_literature",
+    "en": "English Literature",
+    "file": "src/app/(main)/dashboard/academy/_components/class-schedule.tsx"
+  },
+  {
+    "key": "physics",
+    "en": "Physics",
+    "file": "src/app/(main)/dashboard/academy/_components/class-schedule.tsx"
+  },
+  {
+    "key": "modern_european_history",
+    "en": "Modern European History",
+    "file": "src/app/(main)/dashboard/academy/_components/class-schedule.tsx"
+  },
+  {
+    "key": "computer_science",
+    "en": "Computer Science",
+    "file": "src/app/(main)/dashboard/academy/_components/class-schedule.tsx"
+  },
+  {
+    "key": "assignment_status",
+    "en": "Assignment Status",
+    "file": "src/app/(main)/dashboard/academy/_components/assignment-status.tsx"
+  },
+  {
+    "key": "looking_for_something_more",
+    "en": "Looking for something more?",
+    "file": "src/app/(main)/dashboard/_components/sidebar/sidebar-support-card.tsx"
+  },
+  {
+    "key": "reach_out_on_x",
+    "en": "Reach out on X",
+    "file": "src/app/(main)/dashboard/_components/sidebar/sidebar-support-card.tsx"
+  },
+  {
+    "key": "documents",
+    "en": "Documents",
+    "file": "src/app/(main)/dashboard/_components/sidebar/nav-documents.tsx"
+  },
+  {
+    "key": "open",
+    "en": "Open",
+    "file": "src/app/(main)/dashboard/_components/sidebar/nav-documents.tsx"
+  },
+  {
+    "key": "delete",
+    "en": "Delete",
+    "file": "src/app/(main)/dashboard/_components/sidebar/nav-documents.tsx"
+  },
+  {
+    "key": "english",
+    "en": "English",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "theme_preset",
+    "en": "Theme Preset",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "fonts",
+    "en": "Fonts",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "theme_mode",
+    "en": "Theme Mode",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "light",
+    "en": "Light",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "dark",
+    "en": "Dark",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "page_layout",
+    "en": "Page Layout",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "centered",
+    "en": "Centered",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "full_width",
+    "en": "Full Width",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "navbar_behavior",
+    "en": "Navbar Behavior",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "sticky",
+    "en": "Sticky",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "scroll",
+    "en": "Scroll",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "sidebar_style",
+    "en": "Sidebar Style",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "inset",
+    "en": "Inset",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "floating",
+    "en": "Floating",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "sidebar_collapse_mode",
+    "en": "Sidebar Collapse Mode",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "icon",
+    "en": "Icon",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "offcanvas",
+    "en": "OffCanvas",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "preset",
+    "en": "Preset",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "select_font",
+    "en": "Select font",
+    "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx"
+  },
+  {
+    "key": "this_section_will_be_added_in_future_updates",
+    "en": "This section will be added in future updates.",
+    "file": "src/app/(main)/dashboard/[...not-found]/page.tsx"
+  },
+  {
+    "key": "spending_breakdown",
+    "en": "Spending Breakdown",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/spending-breakdown.tsx"
+  },
+  {
+    "key": "expense_distribution_by_category",
+    "en": "Expense distribution by category.",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/spending-breakdown.tsx"
+  },
+  {
+    "key": "income_reliability",
+    "en": "Income Reliability",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx"
+  },
+  {
+    "key": "how_consistent_your_income_has_been_recently",
+    "en": "How consistent your income has been recently.",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx"
+  },
+  {
+    "key": "high_reliability",
+    "en": "High Reliability",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx"
+  },
+  {
+    "key": "based_on_last_6_months_of_income",
+    "en": "Based on last 6 months of income",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx"
+  },
+  {
+    "key": "fixed_income",
+    "en": "Fixed Income",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx"
+  },
+  {
+    "key": "variable_income",
+    "en": "Variable Income",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx"
+  },
+  {
+    "key": "fluctuating_sources",
+    "en": "Fluctuating sources",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx"
+  },
+  {
+    "key": "stable",
+    "en": "Stable",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx"
+  },
+  {
+    "key": "cash_flow_overview",
+    "en": "Cash Flow Overview",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/cash-flow-overview.tsx"
+  },
+  {
+    "key": "monthly_income_and_expenses_with_net_cash_impact",
+    "en": "Monthly income and expenses with net cash impact.",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/cash-flow-overview.tsx"
+  },
+  {
+    "key": "last_6_months",
+    "en": "Last 6 Months",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/cash-flow-overview.tsx"
+  },
+  {
+    "key": "this_year",
+    "en": "This Year",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/cash-flow-overview.tsx"
+  },
+  {
+    "key": "income",
+    "en": "Income",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/cash-flow-overview.tsx"
+  },
+  {
+    "key": "expenses",
+    "en": "Expenses",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/cash-flow-overview.tsx"
+  },
+  {
+    "key": "select_period",
+    "en": "Select period",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/cash-flow-overview.tsx"
+  },
+  {
+    "key": "my_card",
+    "en": "My Card",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "valid_thru",
+    "en": "Valid Thru",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "cvv",
+    "en": "CVV",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "card_type",
+    "en": "Card type",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "virtual",
+    "en": "Virtual",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "billing_cycle",
+    "en": "Billing cycle",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "card_limit",
+    "en": "Card Limit",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "available_balance",
+    "en": "Available Balance",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "upcoming_payments",
+    "en": "Upcoming Payments",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx"
+  },
+  {
+    "key": "above_your_average",
+    "en": "Above your average",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/kpis/savings-rate.tsx"
+  },
+  {
+    "key": "available_balance",
+    "en": "Available balance",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/kpis/primary-account.tsx"
+  },
+  {
+    "key": "this_month",
+    "en": "This month",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/kpis/net-worth.tsx"
+  },
+  {
+    "key": "across_all_linked_accounts",
+    "en": "Across all linked accounts",
+    "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/kpis/net-worth.tsx"
+  },
+  {
+    "key": "engagement_exceed_targets",
+    "en": "Engagement exceed targets",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/section-cards.tsx"
+  },
+  {
+    "key": "total_visitors",
+    "en": "Total Visitors",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/chart-area-interactive.tsx"
+  },
+  {
+    "key": "total_for_the_last_3_months",
+    "en": "Total for the last 3 months",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/chart-area-interactive.tsx"
+  },
+  {
+    "key": "select_a_value",
+    "en": "Select a value",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/chart-area-interactive.tsx"
+  },
+  {
+    "key": "outline",
+    "en": "Outline",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/table.tsx"
+  },
+  {
+    "key": "focus_documents",
+    "en": "Focus Documents",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/table.tsx"
+  },
+  {
+    "key": "add_section",
+    "en": "Add Section",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/table.tsx"
+  },
+  {
+    "key": "select_a_view",
+    "en": "Select a view",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/table.tsx"
+  },
+  {
+    "key": "drag_to_reorder",
+    "en": "Drag to reorder",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "showing_total_visitors_for_the_last_6_months",
+    "en": "Showing total visitors for the last 6 months",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "header",
+    "en": "Header",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "type",
+    "en": "Type",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "table_of_contents",
+    "en": "Table of Contents",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "executive_summary",
+    "en": "Executive Summary",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "technical_approach",
+    "en": "Technical Approach",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "design",
+    "en": "Design",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "capabilities",
+    "en": "Capabilities",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "narrative",
+    "en": "Narrative",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "cover_page",
+    "en": "Cover Page",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "done",
+    "en": "Done",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "in_progress",
+    "en": "In Progress",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "not_started",
+    "en": "Not Started",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "target",
+    "en": "Target",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "limit",
+    "en": "Limit",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "reviewer",
+    "en": "Reviewer",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "eddie_lake",
+    "en": "Eddie Lake",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "jamik_tashpulatov",
+    "en": "Jamik Tashpulatov",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "emily_whalen",
+    "en": "Emily Whalen",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "submit",
+    "en": "Submit",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "select_a_type",
+    "en": "Select a type",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "select_a_status",
+    "en": "Select a status",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "select_a_reviewer",
+    "en": "Select a reviewer",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "assign_reviewer",
+    "en": "Assign reviewer",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "sonner",
+    "en": "sonner",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "error",
+    "en": "Error",
+    "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx"
+  },
+  {
+    "key": "new_leads",
+    "en": "New Leads",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/overview-cards.tsx"
+  },
+  {
+    "key": "proposals_sent",
+    "en": "Proposals Sent",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/overview-cards.tsx"
+  },
+  {
+    "key": "revenue",
+    "en": "Revenue",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/overview-cards.tsx"
+  },
+  {
+    "key": "projects_won",
+    "en": "Projects Won",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/overview-cards.tsx"
+  },
+  {
+    "key": "revenue_growth",
+    "en": "Revenue Growth",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/overview-cards.tsx"
+  },
+  {
+    "key": "year_to_date_ytd",
+    "en": "Year to Date (YTD)",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/overview-cards.tsx"
+  },
+  {
+    "key": "sales_pipeline",
+    "en": "Sales Pipeline",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/operational-cards.tsx"
+  },
+  {
+    "key": "sales_by_region",
+    "en": "Sales by Region",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/operational-cards.tsx"
+  },
+  {
+    "key": "action_items",
+    "en": "Action Items",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/operational-cards.tsx"
+  },
+  {
+    "key": "leads_by_source",
+    "en": "Leads by Source",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/insight-cards.tsx"
+  },
+  {
+    "key": "project_revenue_vs_target",
+    "en": "Project Revenue vs. Target",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/insight-cards.tsx"
+  },
+  {
+    "key": "recent_leads",
+    "en": "Recent Leads",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/recent-leads-table/table.tsx"
+  },
+  {
+    "key": "track_and_manage_your_latest_leads_and_their_statu",
+    "en": "Track and manage your latest leads and their status.",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/recent-leads-table/table.tsx"
+  },
+  {
+    "key": "export",
+    "en": "Export",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/recent-leads-table/table.tsx"
+  },
+  {
+    "key": "view",
+    "en": "View",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/recent-leads-table/columns.tsx"
+  },
+  {
+    "key": "assign",
+    "en": "Assign",
+    "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/recent-leads-table/columns.tsx"
+  },
+  {
+    "key": "selected_range",
+    "en": "Selected range",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-overview.tsx"
+  },
+  {
+    "key": "risk_summary",
+    "en": "Risk summary",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-overview.tsx"
+  },
+  {
+    "key": "core_risk_signals_vs_previous_period",
+    "en": "Core risk signals vs previous period",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-overview.tsx"
+  },
+  {
+    "key": "filters",
+    "en": "Filters",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-overview.tsx"
+  },
+  {
+    "key": "forecast_vs_target",
+    "en": "Forecast vs Target",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-forecast-target.tsx"
+  },
+  {
+    "key": "attainment",
+    "en": "Attainment",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-forecast-target.tsx"
+  },
+  {
+    "key": "weighted_pipeline",
+    "en": "Weighted Pipeline",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-forecast-target.tsx"
+  },
+  {
+    "key": "forecast_confidence",
+    "en": "Forecast Confidence",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-forecast-target.tsx"
+  },
+  {
+    "key": "coverage_triage",
+    "en": "Coverage Triage",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-coverage-triage.tsx"
+  },
+  {
+    "key": "decision_ladder_for_this_forecast_cycle",
+    "en": "Decision ladder for this forecast cycle",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-coverage-triage.tsx"
+  },
+  {
+    "key": "leila_zhang",
+    "en": "Leila Zhang",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-coverage-triage.tsx"
+  },
+  {
+    "key": "top_gap_filling_deals",
+    "en": "top gap-filling deals",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-coverage-triage.tsx"
+  },
+  {
+    "key": "before_next_forecast_call",
+    "en": "before next forecast call",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-coverage-triage.tsx"
+  },
+  {
+    "key": "cycle_time",
+    "en": "cycle time",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-coverage-triage.tsx"
+  },
+  {
+    "key": "revenue_risk_ledger",
+    "en": "Revenue Risk Ledger",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-risk-ledger.tsx"
+  },
+  {
+    "key": "accounts_under_pressure_with_blocker_next_action_a",
+    "en": "Accounts under pressure with blocker, next action, and owner responsibility.",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-risk-ledger.tsx"
+  },
+  {
+    "key": "critical_accounts",
+    "en": "Critical accounts",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-risk-ledger.tsx"
+  },
+  {
+    "key": "escalations_due",
+    "en": "Escalations due",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-risk-ledger.tsx"
+  },
+  {
+    "key": "median_inactivity",
+    "en": "Median inactivity",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-risk-ledger.tsx"
+  },
+  {
+    "key": "overdue_revenue",
+    "en": "Overdue revenue",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-risk-ledger.tsx"
+  },
+  {
+    "key": "manager_action_queue",
+    "en": "Manager Action Queue",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "escalate_coach_and_reforecast_before_commit_call",
+    "en": "Escalate, coach, and reforecast before commit call",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "intervention_mix",
+    "en": "Intervention mix",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "escalate",
+    "en": "Escalate",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "coach",
+    "en": "Coach",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "reforecast",
+    "en": "Reforecast",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "manager_focus",
+    "en": "Manager focus",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "this_forecast_cycle",
+    "en": "This forecast cycle",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "coach_queue",
+    "en": "Coach queue",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "primary_owner",
+    "en": "Primary owner",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "stale_pipeline",
+    "en": "Stale pipeline",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "next_interventions",
+    "en": "Next interventions",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "no_action_monitor",
+    "en": "No-action monitor",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "actionable_deals",
+    "en": "Actionable deals",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "revenue_in_play",
+    "en": "Revenue in play",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "owners_engaged",
+    "en": "Owners engaged",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "median_risk",
+    "en": "Median risk",
+    "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx"
+  },
+  {
+    "key": "contact_profile",
+    "en": "Contact profile",
+    "file": "src/app/(main)/chat/_components/chat.tsx"
+  },
+  {
+    "key": "view_contact_details_and_activity",
+    "en": "View contact details and activity",
+    "file": "src/app/(main)/chat/_components/chat.tsx"
+  },
+  {
+    "key": "call",
+    "en": "Call",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "tag",
+    "en": "Tag",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "snooze",
+    "en": "Snooze",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "block_contact",
+    "en": "Block contact",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "may_6_2026",
+    "en": "May 6, 2026",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "type_your_message",
+    "en": "Type your message...",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "write_an_internal_note",
+    "en": "Write an internal note...",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "back_to_conversations",
+    "en": "Back to conversations",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "format",
+    "en": "Format",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "emoji",
+    "en": "Emoji",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "attach_file",
+    "en": "Attach file",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "insert_link",
+    "en": "Insert link",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "ai_assist",
+    "en": "AI assist",
+    "file": "src/app/(main)/chat/_components/chat-thread.tsx"
+  },
+  {
+    "key": "channels",
+    "en": "Channels",
+    "file": "src/app/(main)/chat/_components/chat-sidebar.tsx"
+  },
+  {
+    "key": "details",
+    "en": "Details",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "files",
+    "en": "Files",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "activity",
+    "en": "Activity",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "email",
+    "en": "Email",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "phone",
+    "en": "Phone",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "website",
+    "en": "Website",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "company",
+    "en": "Company",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "role",
+    "en": "Role",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "stage",
+    "en": "Stage",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "qualified_since",
+    "en": "Qualified since",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "timezone",
+    "en": "Timezone",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "location",
+    "en": "Location",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "tags",
+    "en": "Tags",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "close_profile",
+    "en": "Close profile",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "schedule",
+    "en": "Schedule",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "copy_link",
+    "en": "Copy link",
+    "file": "src/app/(main)/chat/_components/chat-profile-details.tsx"
+  },
+  {
+    "key": "bluehub_chat",
+    "en": "BlueHub Chat",
+    "file": "src/app/(main)/chat/_components/chat-header.tsx"
+  },
+  {
+    "key": "search_conversations",
+    "en": "Search conversations...",
+    "file": "src/app/(main)/chat/_components/chat-header.tsx"
+  },
+  {
+    "key": "new_conversation",
+    "en": "New conversation",
+    "file": "src/app/(main)/chat/_components/chat-header.tsx"
+  },
+  {
+    "key": "notifications",
+    "en": "Notifications",
+    "file": "src/app/(main)/chat/_components/chat-header.tsx"
+  },
+  {
+    "key": "settings",
+    "en": "Settings",
+    "file": "src/app/(main)/chat/_components/chat-header.tsx"
+  },
+  {
+    "key": "closed",
+    "en": "Closed",
+    "file": "src/app/(main)/chat/_components/chat-conversation-list.tsx"
+  },
+  {
+    "key": "design_build_launch_repeat",
+    "en": "Design. Build. Launch. Repeat.",
+    "file": "src/app/(main)/auth/v2/layout.tsx"
+  },
+  {
+    "key": "ready_to_launch",
+    "en": "Ready to launch?",
+    "file": "src/app/(main)/auth/v2/layout.tsx"
+  },
+  {
+    "key": "clone_the_repo_install_dependencies_and_your_dashb",
+    "en": "Clone the repo, install dependencies, and your dashboard is live in minutes.",
+    "file": "src/app/(main)/auth/v2/layout.tsx"
+  },
+  {
+    "key": "need_help",
+    "en": "Need help?",
+    "file": "src/app/(main)/auth/v2/layout.tsx"
+  },
+  {
+    "key": "create_your_account",
+    "en": "Create your account",
+    "file": "src/app/(main)/auth/v2/register/page.tsx"
+  },
+  {
+    "key": "please_enter_your_details_to_register",
+    "en": "Please enter your details to register.",
+    "file": "src/app/(main)/auth/v2/register/page.tsx"
+  },
+  {
+    "key": "or_continue_with",
+    "en": "Or continue with",
+    "file": "src/app/(main)/auth/v2/register/page.tsx"
+  },
+  {
+    "key": "login_to_your_account",
+    "en": "Login to your account",
+    "file": "src/app/(main)/auth/v2/login/page.tsx"
+  },
+  {
+    "key": "please_enter_your_details_to_login",
+    "en": "Please enter your details to login.",
+    "file": "src/app/(main)/auth/v2/login/page.tsx"
+  },
+  {
+    "key": "register",
+    "en": "Register",
+    "file": "src/app/(main)/auth/v1/register/page.tsx"
+  },
+  {
+    "key": "welcome",
+    "en": "Welcome!",
+    "file": "src/app/(main)/auth/v1/register/page.tsx"
+  },
+  {
+    "key": "hello_again",
+    "en": "Hello again",
+    "file": "src/app/(main)/auth/v1/login/page.tsx"
+  },
+  {
+    "key": "login_to_continue",
+    "en": "Login to continue",
+    "file": "src/app/(main)/auth/v1/login/page.tsx"
+  },
+  {
+    "key": "login",
+    "en": "Login",
+    "file": "src/app/(main)/auth/v1/login/page.tsx"
+  },
+  {
+    "key": "email_address",
+    "en": "Email Address",
+    "file": "src/app/(main)/auth/_components/register-form.tsx"
+  },
+  {
+    "key": "password",
+    "en": "Password",
+    "file": "src/app/(main)/auth/_components/register-form.tsx"
+  },
+  {
+    "key": "confirm_password",
+    "en": "Confirm Password",
+    "file": "src/app/(main)/auth/_components/register-form.tsx"
+  },
+  {
+    "key": "text_white",
+    "en": "text-white",
+    "file": "src/app/(main)/auth/_components/register-form.tsx"
+  },
+  {
+    "key": "coming_soon",
+    "en": "Coming Soon",
+    "file": "src/app/(external)/page.tsx"
+  }
+]

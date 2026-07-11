@@ -1,0 +1,144 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
+
+const NEXT_INTERVENTIONS = [
+  {
+    dealId: "OPP-489",
+    priority: "Escalate",
+    owner: "Leila Zhang",
+    risk: 81,
+    recommendation: "Join next customer call and reset close plan.",
+  },
+  {
+    dealId: "OPP-475",
+    priority: "Coach",
+    owner: "Omar Ali",
+    risk: 76,
+    recommendation: "Review deal strategy and unblock stage exit.",
+  },
+  {
+    dealId: "OPP-447",
+    priority: "Coach",
+    owner: "Sofia Bautista",
+    risk: 75,
+    recommendation: "Review deal strategy and unblock stage exit.",
+  },
+] as const;
+
+export function ActionsManagerQueue() {
+  const t = useTranslations("Legacy.Analytics.queue");
+
+  return (
+    <Card className="h-full shadow-xs">
+      <CardHeader>
+        <CardTitle>{t("title")}</CardTitle>
+        <CardDescription>{t("description")}</CardDescription>
+      </CardHeader>
+
+      <CardContent className="flex h-full flex-col gap-4">
+        <div className="flex h-full flex-col gap-3">
+          <div className="grid grid-cols-2 gap-2">
+            <StatCard label={t("stats.actionable_deals")} value="7" />
+            <StatCard label={t("stats.revenue_in_play")} value={formatCurrency(811000, { noDecimals: true })} mono />
+            <StatCard label={t("stats.owners_engaged")} value="3" />
+            <StatCard label={t("stats.median_risk")} value="72" mono />
+          </div>
+
+          <div className="space-y-2 rounded-md border bg-muted/20 px-3 py-2">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-muted-foreground text-xs">{t("intervention_mix")}</p>
+              <Badge variant="outline" className="h-5 px-2 text-[11px]">
+                {t("escalate")} {formatCurrency(174000, { noDecimals: true })}
+              </Badge>
+            </div>
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between rounded-md border bg-background/70 px-2.5 py-1.5">
+                <span className="text-xs">{t("escalate")}</span>
+                <span className="text-muted-foreground text-xs">
+                  {t("deals_count", { count: 1 })} · 14% · {formatCurrency(174000, { noDecimals: true })}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-md border bg-background/70 px-2.5 py-1.5">
+                <span className="text-xs">{t("coach")}</span>
+                <span className="text-muted-foreground text-xs">
+                  {t("deals_count", { count: 4 })} · 57% · {formatCurrency(478000, { noDecimals: true })}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-md border bg-background/70 px-2.5 py-1.5">
+                <span className="text-xs">{t("reforecast")}</span>
+                <span className="text-muted-foreground text-xs">
+                  {t("deals_count", { count: 2 })} · 29% · {formatCurrency(159000, { noDecimals: true })}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2 rounded-md border bg-muted/20 px-3 py-2">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-muted-foreground text-xs">{t("manager_focus")}</p>
+              <span className="text-muted-foreground text-xs">{t("forecast_cycle")}</span>
+            </div>
+
+            <div className="space-y-1.5 text-xs">
+              <div className="flex items-center justify-between gap-2 rounded-md border bg-background/70 px-2.5 py-1.5">
+                <span>{t("coach_queue")}</span>
+                <span className="text-muted-foreground">
+                  {t("deals_count", { count: 4 })} · {formatCurrency(478000, { noDecimals: true })}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 rounded-md border bg-background/70 px-2.5 py-1.5">
+                <span>{t("primary_owner")}</span>
+                <span className="text-muted-foreground">{t("leila_zhang")} · {t("deals_count", { count: 3 })}</span>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 rounded-md border bg-background/70 px-2.5 py-1.5">
+                <span>{t("stale_pipeline")}</span>
+                <span className="text-muted-foreground">
+                  {t("deals_count", { count: 8 })} · {formatCurrency(1151000, { noDecimals: true })}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 space-y-2">
+            <p className="text-muted-foreground text-xs">{t("next_interventions")}</p>
+
+            {NEXT_INTERVENTIONS.map((item) => (
+              <div key={`${item.priority}-${item.dealId}`} className="space-y-1 rounded-md border px-3 py-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-medium text-sm">{item.dealId}</span>
+                  <Badge variant="outline" className="h-5 px-2 text-[11px]">
+                    {t(`priority.${item.priority.toLowerCase()}`)}
+                  </Badge>
+                </div>
+                <p className="text-muted-foreground text-xs">
+                  {item.owner} · {item.risk} {t("risk")}
+                </p>
+                <p className="text-xs">{item.recommendation}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between gap-2 rounded-md border bg-muted/20 px-3 py-2">
+            <span className="text-muted-foreground text-xs">{t("no_action_monitor")}</span>
+            <span className="font-medium text-xs">{t("deals_count", { count: 3 })}</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function StatCard({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div className="rounded-md border bg-muted/20 px-2.5 py-2">
+      <p className="text-muted-foreground text-xs">{label}</p>
+      <p className={mono ? "font-semibold text-base" : "font-semibold text-base"}>{value}</p>
+    </div>
+  );
+}

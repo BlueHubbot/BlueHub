@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -11,6 +11,10 @@ RUN npm install
 
 # Copy source files
 COPY . .
+
+# --- مقداردهی مستقیم به آدرس ای‌پ‌آی سرور برای زمان بیلد ---
+ARG NEXT_PUBLIC_API_URL=http://109.199.108.30:8000/api/v1
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # Build the application
 RUN npm run build

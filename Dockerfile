@@ -46,4 +46,4 @@ ENV APP_ENV=test
 ENV DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost:5432/bluehub_test
 
 # Execute pipeline
-ENTRYPOINT ["/app/test.sh"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

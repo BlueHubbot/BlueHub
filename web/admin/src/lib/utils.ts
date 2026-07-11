@@ -5,53 +5,62 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatNumber(num: number): string {
-  return new Intl.NumberFormat("en-US").format(num);
-}
+export const getInitials = (str: string): string => {
+  if (typeof str !== "string" || !str.trim()) return "?";
 
-export function formatCurrency(amount: number, currency = "USD"): string {
-  return new Intl.NumberFormat("en-US", {
+  return (
+    str
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase() || "?"
+  );
+};
+
+export function formatCurrency(
+  amount: number,
+  opts?: {
+    currency?: string;
+    locale?: string;
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+    noDecimals?: boolean;
+  },
+) {
+  const { currency = "USD", locale = "fa-IR", minimumFractionDigits, maximumFractionDigits, noDecimals } = opts ?? {};
+
+  const formatOptions: Intl.NumberFormatOptions = {
     style: "currency",
     currency,
-  }).format(amount);
-}
-
-export function formatDate(date: string | Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(date));
-}
-
-export function formatRelativeTime(date: string | Date): string {
-  const now = new Date();
-  const d = new Date(date);
-  const diffMs = now.getTime() - d.getTime();
-  const diffSecs = Math.floor(diffMs / 1000);
-  const diffMins = Math.floor(diffSecs / 60);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffSecs < 60) return "just now";
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
-  return formatDate(date);
-}
-
-export function getStatusColor(status: string): string {
-  const colors: Record<string, string> = {
-    active: "text-green-500 bg-green-500/10",
-    inactive: "text-gray-500 bg-gray-500/10",
-    suspended: "text-red-500 bg-red-500/10",
-    pending: "text-yellow-500 bg-yellow-500/10",
-    cancelled: "text-red-500 bg-red-500/10",
-    expired: "text-orange-500 bg-orange-500/10",
-    enabled: "text-green-500 bg-green-500/10",
-    disabled: "text-gray-500 bg-gray-500/10",
+    minimumFractionDigits: noDecimals ? 0 : minimumFractionDigits,
+    maximumFractionDigits: noDecimals ? 0 : maximumFractionDigits,
   };
-  return colors[status.toLowerCase()] || "text-gray-500 bg-gray-500/10";
+
+  return new Intl.NumberFormat(locale, formatOptions).format(amount);
+}
+
+/**
+ * تبدیل هر نوع عدد یا رشته حاوی کاراکترهای عددی فارسی/عربی به انگلیسی/لاتین
+ */
+export function toEnglishDigits(str: string | number): string {
+  return String(str)
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 1632))
+    .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 1776));
+}
+
+/**
+ * فرمت دیت استاندارد با تقویم جلالی (شمسی) با خروجی کاراکترها و گلیف‌های عددی نیتیو فارسی
+ */
+export function formatJalaliDate(date: Date, options?: Intl.DateTimeFormatOptions): string {
+  return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+    ...options,
+  }).format(date);
+}
+
+export function farsiNumber(value: string | number | undefined | null): string {
+  if (value === undefined || value === null) return "";
+  const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+  return String(value).replace(/[0-9]/g, (w) => persianDigits[parseInt(w)]);
 }

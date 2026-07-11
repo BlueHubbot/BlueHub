@@ -149,17 +149,20 @@ class User(UUIDMixin, TimestampMixin, CoreBase):
     @property
     def is_superadmin(self) -> bool:
         """Check if user has superadmin role."""
-        return self.role == UserRole.SUPERADMIN
+        role_str = self.role.value if hasattr(self.role, 'value') else str(self.role)
+        return role_str.upper() == "SUPERADMIN"
 
     @property
     def is_admin(self) -> bool:
-        """Check if user has admin or superadmin role."""
-        return self.role in (UserRole.SUPERADMIN, UserRole.ADMIN)
+        """Check if user has admin-level privileges."""
+        role_str = self.role.value if hasattr(self.role, 'value') else str(self.role)
+        return role_str.upper() in ["ADMIN", "SUPERADMIN"]
 
     @property
     def is_reseller(self) -> bool:
         """Check if user has reseller role."""
-        return self.role == UserRole.RESELLER
+        role_str = self.role.value if hasattr(self.role, 'value') else str(self.role)
+        return role_str.upper() == "RESELLER"
 
     def __repr__(self) -> str:
         return f"<User(email={self.email!r}, role={self.role.value})>"

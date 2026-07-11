@@ -12,7 +12,7 @@ from datetime import UTC, datetime
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from sqlalchemy import cast, String
 from core.admin.schemas import ProductCreate, ProductUpdate, TenantCreate, TenantUpdate
 from shared.models.abuse_report import AbuseReport
 from shared.models.enums import AbuseReportStatus
@@ -20,7 +20,7 @@ from shared.models.product import Product
 from shared.models.service import Service
 from shared.models.tenant import Tenant
 from shared.models.user import User
-
+from shared.models.enums import ServiceStatus
 
 class TenantNotFoundError(Exception):
     """Raised when a tenant is not found."""
@@ -95,10 +95,17 @@ class AdminService:
             select(func.count(Service.id))
         )
         total_services = total_services_result.scalar() or 0
-
+        
+        from sqlalchemy import cast, String
+        
         active_services_result = await self.session.execute(
             select(func.count(Service.id)).where(
-                Service.status == "active"
+                cast(Service.status, String) == "active"
+            )
+        )
+        active_services_result = await self.session.execute(
+            select(func.count(Service.id)).where(
+                cast(Service.status, String) == "active"
             )
         )
         active_services = active_services_result.scalar() or 0

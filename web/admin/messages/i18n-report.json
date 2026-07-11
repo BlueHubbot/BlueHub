@@ -1,0 +1,1575 @@
+{
+  "files": [
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/columns.tsx",
+      "hardcodedTexts": 45,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/_components/chat-profile-details.tsx",
+      "hardcodedTexts": 35,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/roles/_components/roles.tsx",
+      "hardcodedTexts": 29,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/_components/chat-thread.tsx",
+      "hardcodedTexts": 29,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-manager-queue.tsx",
+      "hardcodedTexts": 28,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/_components/mail-view.tsx",
+      "hardcodedTexts": 25,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/invoice-paper.tsx",
+      "hardcodedTexts": 22,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/layout-controls.tsx",
+      "hardcodedTexts": 22,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/card-overview.tsx",
+      "hardcodedTexts": 17,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/analytics/_components/analytics-kpi-strip.tsx",
+      "hardcodedTexts": 15,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/users/_components/users.tsx",
+      "hardcodedTexts": 14,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/crm/_components/kpi-cards.tsx",
+      "hardcodedTexts": 14,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/income-reliability.tsx",
+      "hardcodedTexts": 14,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/table.tsx",
+      "hardcodedTexts": 14,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/page.tsx",
+      "hardcodedTexts": 13,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/analytics/_components/realtime-visitors.tsx",
+      "hardcodedTexts": 13,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/recent-leads-table/table.tsx",
+      "hardcodedTexts": 13,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/invoice-items.tsx",
+      "hardcodedTexts": 12,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/infrastructure/_components/project-environments.tsx",
+      "hardcodedTexts": 12,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/default/_components/metric-cards.tsx",
+      "hardcodedTexts": 12,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/invoice-adjustments.tsx",
+      "hardcodedTexts": 11,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/columns.tsx",
+      "hardcodedTexts": 11,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/default/_components/performance-overview.tsx",
+      "hardcodedTexts": 11,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/crm/_components/pipeline-activity.tsx",
+      "hardcodedTexts": 11,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/nav-documents.tsx",
+      "hardcodedTexts": 11,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/cash-flow-overview.tsx",
+      "hardcodedTexts": 11,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/chart-area-interactive.tsx",
+      "hardcodedTexts": 11,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/tasks/_components/columns.tsx",
+      "hardcodedTexts": 10,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/overview-cards.tsx",
+      "hardcodedTexts": 10,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/recent-leads-table/columns.tsx",
+      "hardcodedTexts": 10,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-coverage-triage.tsx",
+      "hardcodedTexts": 10,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/default/_components/recent-customers-table/table.tsx",
+      "hardcodedTexts": 9,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/_components/chat-header.tsx",
+      "hardcodedTexts": 9,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/users/_components/users-columns.tsx",
+      "hardcodedTexts": 8,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/logistics/_components/shipment-details.tsx",
+      "hardcodedTexts": 8,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/kanban/_components/task-card.tsx",
+      "hardcodedTexts": 8,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/analytics/_components/analytics-toolbar.tsx",
+      "hardcodedTexts": 8,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/section-cards.tsx",
+      "hardcodedTexts": 8,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/auth/v2/layout.tsx",
+      "hardcodedTexts": 8,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/components/ui/pagination.tsx",
+      "hardcodedTexts": 8,
+      "needsTranslation": true,
+      "type": "component"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/page.tsx",
+      "hardcodedTexts": 7,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/kpi-strip.tsx",
+      "hardcodedTexts": 7,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/customer-reviews.tsx",
+      "hardcodedTexts": 7,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/analytics/page.tsx",
+      "hardcodedTexts": 7,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-overview.tsx",
+      "hardcodedTexts": 7,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/components/ui/sidebar.tsx",
+      "hardcodedTexts": 7,
+      "needsTranslation": true,
+      "type": "component"
+    },
+    {
+      "file": "src/app/not-found.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/_components/mail-sidebar.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/tasks/_components/tasks.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/roles/_components/roles-table/columns.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/tasks-section.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/projects-section.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/logistics/_components/shipment-list.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/top-products.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/academy/_components/kpi-cards.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/academy/_components/class-schedule.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-actions-risk-ledger.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/auth/v2/register/page.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/auth/v2/login/page.tsx",
+      "hardcodedTexts": 6,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/mail/page.tsx",
+      "hardcodedTexts": 5,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/_components/wallet.tsx",
+      "hardcodedTexts": 5,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/_components/quick-actions.tsx",
+      "hardcodedTexts": 5,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders.tsx",
+      "hardcodedTexts": 5,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/crm/_components/task-reminders.tsx",
+      "hardcodedTexts": 5,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/crm/_components/opportunities-table/columns.tsx",
+      "hardcodedTexts": 5,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/chat/page.tsx",
+      "hardcodedTexts": 5,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/tasks/page.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/client-selector.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/_components/transactions-overview-card.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/_components/overview-kpis.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/coming-soon/page.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/analytics/_components/top-pages.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/[...not-found]/page.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/kpis/net-worth.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/_components/analytics-drivers-forecast-target.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/components/ui/dialog.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/carousel.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/breadcrumb.tsx",
+      "hardcodedTexts": 4,
+      "needsTranslation": true,
+      "type": "component"
+    },
+    {
+      "file": "src/app/(main)/mail/_components/mail.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/_components/mail-inbox.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/focus-card.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/kanban/_components/kanban.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/invoice-form.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/infrastructure/_components/infrastructure-header.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/sidebar-support-card.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/operational-cards.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/_components/chat-conversation-list.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/auth/v1/register/page.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/auth/v1/login/page.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/auth/_components/register-form.tsx",
+      "hardcodedTexts": 3,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/unauthorized/page.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/users/_components/users-table.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/tasks/_components/tasks-toolbar.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/roles/_components/roles-table/table.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/page.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/quote-card.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/quick-actions.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/logistics/_components/shipment-route-map.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/page.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/invoice-preview.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/_components/finance-notification.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/default/_components/recent-customers-table/columns.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/crm/_components/opportunities-section.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/academy/page.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/nav-main.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/spending-breakdown.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/kpis/savings-rate.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/kpis/primary-account.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/insight-cards.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/_components/chat.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/_components/chat-sidebar.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/auth/_components/login-form.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/components/ui/spinner.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/sheet.tsx",
+      "hardcodedTexts": 2,
+      "needsTranslation": true,
+      "type": "component"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/weekly-summary-card.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/recent-notes-card.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/logistics/_components/logistics.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/_components/income-breakdown.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/_components/balance-distribution-card.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/traffic-sources.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/store-traffic.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/inventory.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/default/_components/subscriber-overview.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/analytics/_components/traffic-quality.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/analytics/_components/top-traffic-sources.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/academy/_components/upcoming-events.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/academy/_components/performance-highlights.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/academy/_components/assignment-status.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/page.tsx",
+      "hardcodedTexts": 1,
+      "needsTranslation": true,
+      "type": "page"
+    },
+    {
+      "file": "src/app/layout.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/layout.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/_components/use-mail.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/_components/mail-list.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/_components/mail-layout-config.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/mail/_components/data.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/layout.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/users/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/users/_components/data.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/tasks/_components/task-status-filter.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/tasks/_components/task-priority-filter.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/tasks/_components/data.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/roles/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/roles/_components/roles-table/data.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/summary-cards.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/productivity/_components/calendar-panel.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/logistics/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/logistics/_components/shipment-data.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/kanban/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/kanban/_components/utils.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/kanban/_components/types.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/kanban/_components/sortable-task-card.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/kanban/_components/kanban-column.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/kanban/_components/data.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/use-visible-center-position.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/print-invoice.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/invoice.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/invoice-details.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/invoice/_components/data.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/infrastructure/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/infrastructure/_components/infrastructure-data.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/finance/_components/upcoming-transactions.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/schema.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/ecommerce/_components/recent-orders-table/formatters.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/default/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/default/_components/recent-customers-table/schema.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/crm/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/crm/_components/opportunities-table/schema.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/calendar/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/calendar/_components/events-data.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/calendar/_components/calendar.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/theme-switcher.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/search-dialog.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/nav-user.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/nav-secondary.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/app-sidebar.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/_components/sidebar/account-switcher.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/finance-v1/_components/kpis/monthly-cash-flow.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/default-v1/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/default-v1/_components/proposal-sections-table/schema.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/crm-v1/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/crm.config.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/crm-v1/_components/recent-leads-table/schema.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/dashboard/(legacy)/analytics-v1/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/layout.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/_components/use-chat.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/chat/_components/data.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(main)/auth/_components/social-auth/google-button.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/app/(external)/page.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "page"
+    },
+    {
+      "file": "src/components/simple-icon.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/date-range-picker.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/tooltip.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/toggle.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/toggle-group.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/textarea.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/tabs.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/table.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/switch.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/sonner.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/slider.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/skeleton.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/separator.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/select.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/scroll-area.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/resizable.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/radio-group.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/progress.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/popover.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/navigation-menu.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/native-select.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/message.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/message-scroller.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/menubar.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/marker.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/label.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/kbd.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/item.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/input.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/input-otp.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/input-group.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/hover-card.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/field.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/empty.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/dropdown-menu.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/drawer.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/direction.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/context-menu.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/command.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/combobox.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/collapsible.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/checkbox.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/chart.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/card.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/calendar.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/button.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/button-group.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/bubble.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/badge.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/avatar.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/attachment.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/aspect-ratio.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/alert.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/alert-dialog.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/ui/accordion.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/components/calendar/event-calendar-views.tsx",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "component"
+    },
+    {
+      "file": "src/navigation/sidebar/sidebar-items.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "navigation"
+    },
+    {
+      "file": "src/lib/utils.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/local-storage.client.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/cookie.client.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/preferences/theme.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/preferences/theme-utils.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/preferences/preferences-storage.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/preferences/preferences-config.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/preferences/preference-runtime.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/preferences/layout.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/lib/fonts/registry.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "lib"
+    },
+    {
+      "file": "src/hooks/use-mobile.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "other"
+    },
+    {
+      "file": "src/hooks/use-lg.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "other"
+    },
+    {
+      "file": "src/stores/preferences/preferences-store.ts",
+      "hardcodedTexts": 0,
+      "needsTranslation": false,
+      "type": "other"
+    }
+  ],
+  "summary": {
+    "totalFiles": 261,
+    "filesWithHardcoded": 129,
+    "totalHardcoded": 891
+  }
+}

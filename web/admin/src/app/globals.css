@@ -1,94 +1,248 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Theme preset styles: these override CSS variables based on the selected data-theme-preset */
+@import "../styles/presets/brutalist.css";
+@import "../styles/presets/soft-pop.css";
+@import "../styles/presets/tangerine.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+}
+
+/* Default theme styles (used when no data-theme-preset is set or when 'default' is selected) */
+:root {
+  --radius: 0.625rem;
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* fonts - فونت پیش‌فرض سیستم به وزیرمتن تغییر یافت */
+  --font-sans: var(--font-vazirmatn);
+  --font-mono: var(--font-geist-mono);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 40% 20%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
-    --accent: 220 14% 96%;
-    --accent-foreground: 220 40% 20%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 40% 20%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 40% 20%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 217 91% 60%;
-    --radius: 0.5rem;
-    --sidebar-background: 220 20% 98%;
-    --sidebar-foreground: 220 10% 40%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-accent: 220 14% 96%;
-    --sidebar-accent-foreground: 220 40% 20%;
-  }
-
-  .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 215 25% 27%;
-    --secondary-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 100%;
-    --muted: 215 25% 27%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 215 25% 27%;
-    --accent-foreground: 210 40% 98%;
-    --popover: 220 40% 16%;
-    --popover-foreground: 210 40% 98%;
-    --card: 220 40% 16%;
-    --card-foreground: 210 40% 98%;
-    --border: 215 25% 27%;
-    --input: 215 25% 27%;
-    --ring: 217 91% 60%;
-    --sidebar-background: 220 40% 13%;
-    --sidebar-foreground: 215 20% 65%;
-    --sidebar-border: 215 25% 27%;
-    --sidebar-accent: 215 25% 27%;
-    --sidebar-accent-foreground: 210 40% 98%;
-  }
-
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-sans), system-ui, sans-serif;
   }
 
-  [dir="rtl"] .sidebar-nav {
-    margin-right: 0;
-    margin-left: auto;
-  }
-
-  [dir="rtl"] .ltr-text {
-    direction: ltr;
-    unicode-bidi: embed;
+  html {
+    @apply font-sans;
   }
 }
 
-@layer components {
-  .status-active {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-green-700 bg-green-100 dark:text-green-400 dark:bg-green-900/30;
+@layer utilities {
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow-2xs { box-shadow: var(--shadow-2xs); }
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow-xs { box-shadow: var(--shadow-xs); }
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow-sm { box-shadow: var(--shadow-sm); }
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow { box-shadow: var(--shadow); }
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow-md { box-shadow: var(--shadow-md); }
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow-lg { box-shadow: var(--shadow-lg); }
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow-xl { box-shadow: var(--shadow-xl); }
+  [data-theme-preset]:not([data-theme-preset="default"]) .shadow-2xl { box-shadow: var(--shadow-2xl); }
+
+  /* نگاشت دقیق فونت‌های انگلیسی */
+  html[data-font="inter"] body { --font-sans: var(--font-inter); }
+  html[data-font="notoSans"] body { --font-sans: var(--font-noto-sans); }
+  html[data-font="nunitoSans"] body { --font-sans: var(--font-nunito-sans); }
+  html[data-font="figtree"] body { --font-sans: var(--font-figtree); }
+  html[data-font="roboto"] body { --font-sans: var(--font-roboto); }
+  html[data-font="geist"] body { --font-sans: var(--font-geist); }
+  html[data-font="raleway"] body { --font-sans: var(--font-raleway); }
+  html[data-font="dmSans"] body { --font-sans: var(--font-dm-sans); }
+  html[data-font="publicSans"] body { --font-sans: var(--font-public-sans); }
+  html[data-font="outfit"] body { --font-sans: var(--font-outfit); }
+  html[data-font="geistMono"] body { --font-sans: var(--font-geist-mono); }
+  html[data-font="geistPixelSquare"] body { --font-sans: var(--font-geist-pixel-square); }
+  html[data-font="jetBrainsMono"] body { --font-sans: var(--font-jetbrains-mono); }
+  html[data-font="notoSerif"] body { --font-sans: var(--font-noto-serif); }
+  html[data-font="robotoSlab"] body { --font-sans: var(--font-roboto-slab); }
+  html[data-font="merriweather"] body { --font-sans: var(--font-merriweather); }
+  html[data-font="lora"] body { --font-sans: var(--font-lora); }
+  html[data-font="playfairDisplay"] body { --font-sans: var(--font-playfair-display); }
+
+  /* نگاشت قفل سراسری گلیف بر روی تمام کامپوننت‌های رندرکننده عدد انگلیسی */
+  html[data-font="vazirmatn"] body,
+  html[data-font="vazirmatn"] table,
+  html[data-font="vazirmatn"] input,
+  html[data-font="vazirmatn"] select,
+  html[data-font="vazirmatn"] textarea,
+  html[data-font="vazirmatn"] span,
+  html[data-font="vazirmatn"] div,
+  html[data-font="vazirmatn"] svg text,
+  html[data-font="vazirmatn"] button { 
+    --font-sans: var(--font-vazirmatn); 
+    font-feature-settings: "ss01" on, "locl" on !important;
+    -webkit-font-feature-settings: "ss01" on, "locl" on !important;
   }
-  .status-inactive {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-900/30;
+  
+  html[data-font="systemTahoma"] body { --font-sans: Tahoma, Geneva, sans-serif; }
+  html[data-font="systemSans"] body { --font-sans: system-ui, -apple-system, sans-serif; }
+  html[data-font="shabnam"] body { --font-sans: Shabnam, "Shabnam FD", Tahoma, sans-serif; }
+  html[data-font="samim"] body { --font-sans: Samim, "Samim FD", Tahoma, sans-serif; }
+  html[data-font="sahel"] body { --font-sans: Sahel, "Sahel FD", Arial, sans-serif; }
+  html[data-font="gandom"] body { --font-sans: Gandom, "Gandom FD", Arial, sans-serif; }
+}
+
+html {
+  overscroll-behavior: none;
+}
+
+.disable-transitions * {
+  transition: none !important;
+}
+
+[data-print-root] {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: Letter;
+    margin: 0;
   }
-  .status-suspended {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-red-700 bg-red-100 dark:text-red-400 dark:bg-red-900/30;
+
+  html,
+  body {
+    width: 8.5in !important;
+    height: 11in !important;
+    margin: 0 !important;
+    overflow: hidden !important;
   }
-  .status-pending {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-yellow-700 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/30;
+
+  body > *:not([data-print-root]) {
+    display: none !important;
+  }
+
+  [data-print-root] {
+    display: block !important;
+    width: 8.5in !important;
+    height: 11in !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background: white !important;
+  }
+
+  [data-print-root] [data-print-paper] {
+    width: 8.5in !important;
+    height: 11in !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  [data-print-root] [data-print-paper],
+  [data-print-root] [data-print-paper] * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 }

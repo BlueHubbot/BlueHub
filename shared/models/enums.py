@@ -10,10 +10,10 @@ from enum import Enum
 class UserRole(str, Enum):
     """User roles for RBAC."""
 
-    SUPERADMIN = "superadmin"
-    ADMIN = "admin"
-    RESELLER = "reseller"
-    USER = "user"
+    SUPERADMIN = "SUPERADMIN"  # <-- بزرگ
+    ADMIN = "ADMIN"
+    RESELLER = "RESELLER"
+    USER = "USER"
 
 
 class ServiceStatus(str, Enum):

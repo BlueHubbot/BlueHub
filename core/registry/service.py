@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import os
+import json
 from collections.abc import Sequence
 from typing import Any
 
@@ -84,9 +85,11 @@ class ModuleRegistryService:
             if not os.path.isfile(metadata_path):
                 continue
 
-            module_name = self._import_metadata(modules_dir, entry)
-            if module_name:
-                discovered[module_name] = module_name  # type: ignore[assignment]
+            metadata_obj = self._import_metadata(modules_dir, entry)
+            if metadata_obj:
+                # استخراج نام ماژول از ویژگی شیء متادیتا جهت جلوگیری از خطای TypeError
+                module_key = getattr(metadata_obj, "name", entry)
+                discovered[str(module_key)] = metadata_obj
 
         return discovered
 
@@ -212,32 +215,51 @@ class ModuleRegistryService:
                 meta.admin_menu.model_dump() if meta.admin_menu else None
             )
 
+            # ── استخراج و تبدیل اجباری داده‌های چندزبانه به JSON متنی ──
+            def serialize_field(field_value: Any) -> str:
+                if field_value is None:
+                    return ""
+                if hasattr(field_value, "model_dump"):  # اگر مدل Pydantic بود
+                    return json.dumps(field_value.model_dump(), ensure_ascii=False)
+                if isinstance(field_value, (dict, list)):  # اگر دیکشنری یا لیست بود
+                    return json.dumps(field_value, ensure_ascii=False)
+                # در سایر حالات (اگر شیء کاستوم یا کلاس لوکالیزیشن بود) تبدیل به دیکشنری یا رشته ساده‌اش می‌کنیم
+                try:
+                    return json.dumps(dict(field_value), ensure_ascii=False)
+                except (TypeError, ValueError):
+                    return json.dumps(getattr(field_value, "__dict__", str(field_value)), ensure_ascii=False)
+
+            display_name_str = serialize_field(meta.display_name)
+            description_str = serialize_field(meta.description)
+            config_schema_str = serialize_field(meta.config_schema) if meta.config_schema else "null"
+            default_config_str = serialize_field(meta.default_config) if meta.default_config else "null"
+
             if existing:
                 # Update existing record
-                existing.display_name = meta.display_name
-                existing.description = meta.description or ""
+                existing.display_name = display_name_str
+                existing.description = description_str
                 existing.version = meta.version
                 existing.order = meta.order
-                existing.config_schema = meta.config_schema
+                existing.config_schema = config_schema_str
                 existing.flags = flag_dict
                 existing.bot_keyboard = bot_keyboard_dict
                 existing.admin_menu = admin_menu_dict
-                existing.default_config = meta.default_config
+                existing.default_config = default_config_str
                 logger.info("Updated module registration: %s", module_name)
             else:
                 # Create new record
                 entry = ModuleRegistry(
                     module_name=module_name,
-                    display_name=meta.display_name,
-                    description=meta.description or "",
+                    display_name=display_name_str,
+                    description=description_str,
                     version=meta.version,
                     enabled=meta.default_flags.enabled if meta.default_flags else True,
                     order=meta.order,
-                    config_schema=meta.config_schema,
+                    config_schema=config_schema_str,
                     flags=flag_dict,
                     bot_keyboard=bot_keyboard_dict,
                     admin_menu=admin_menu_dict,
-                    default_config=meta.default_config,
+                    default_config=default_config_str,
                 )
                 session.add(entry)
                 logger.info("Registered new module: %s", module_name)
@@ -321,8 +343,6 @@ class ModuleRegistryService:
             try:
                 cached = await redis.get(f"{_MODULE_FLAGS_PREFIX}{module_name}")
                 if cached is not None:
-                    import json
-
                     data = json.loads(cached)
                     return ModuleFlag(**data)
             except Exception:
@@ -349,8 +369,6 @@ class ModuleRegistryService:
         # Cache the flags
         if redis:
             try:
-                import json
-
                 await redis.setex(
                     f"{_MODULE_FLAGS_PREFIX}{module_name}",
                     _CACHE_TTL,
