@@ -2,6 +2,7 @@
 "use no memo";
 
 import type { Table } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
 import { ListFilter, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ interface TaskPriorityFilterProps<TData> {
 }
 
 export function TaskPriorityFilter<TData>({ table }: TaskPriorityFilterProps<TData>) {
+  const t = useTranslations("Tasks");
   const column = table.getColumn("priority");
 
   if (!column) {
@@ -57,7 +59,7 @@ export function TaskPriorityFilter<TData>({ table }: TaskPriorityFilterProps<TDa
           className={cn("border-dashed", selectedValues.size > 0 && "border-solid bg-muted text-foreground")}
         >
           <ListFilter data-icon="inline-start" />
-          Priority
+          {t("priority")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-50">
@@ -73,7 +75,7 @@ export function TaskPriorityFilter<TData>({ table }: TaskPriorityFilterProps<TDa
                 onSelect={(event) => event.preventDefault()}
               >
                 <priority.icon className="text-muted-foreground" />
-                {priority.label}
+                {t(`priorities.${priority.value}`)}
               </DropdownMenuCheckboxItem>
             );
           })}
@@ -84,7 +86,7 @@ export function TaskPriorityFilter<TData>({ table }: TaskPriorityFilterProps<TDa
             <DropdownMenuGroup>
               <DropdownMenuItem onSelect={clearFilter} className="justify-center text-center">
                 <X />
-                Clear filters
+                {t("clear_filters")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </>

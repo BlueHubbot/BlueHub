@@ -1,6 +1,7 @@
 "use client";
 
 import type { Column, ColumnDef } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal, RotateCcw } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -35,36 +36,36 @@ function SortIcon({ sortDirection }: { sortDirection: false | "asc" | "desc" }) 
   if (sortDirection === "desc") {
     return <ArrowDown data-icon="inline-end" />;
   }
-
   if (sortDirection === "asc") {
     return <ArrowUp data-icon="inline-end" />;
   }
-
   return <ArrowUpDown data-icon="inline-end" />;
 }
 
 function TitleColumnHeader({ column }: { column: Column<Task, unknown> }) {
+  const t = useTranslations("Tasks");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="-ml-3 text-muted-foreground data-[state=open]:bg-accent">
-          Title
+          {t("title")}
           <SortIcon sortDirection={column.getIsSorted()} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuItem onSelect={() => column.toggleSorting(false)}>
           <ArrowUp />
-          Asc
+          {t("asc")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => column.toggleSorting(true)}>
           <ArrowDown />
-          Desc
+          {t("desc")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => column.clearSorting()}>
           <RotateCcw />
-          Reset
+          {t("reset")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -74,28 +75,37 @@ function TitleColumnHeader({ column }: { column: Column<Task, unknown> }) {
 export const columns: ColumnDef<Task>[] = [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-0.5"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-0.5"
-      />
-    ),
+    header: ({ table }) => {
+      const t = useTranslations("Tasks");
+      return (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label={t("select_all")}
+          className="translate-y-0.5"
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const t = useTranslations("Tasks");
+      return (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label={t("select_row")}
+          className="translate-y-0.5"
+        />
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: "id",
-    header: "Task",
+    header: () => {
+      const t = useTranslations("Tasks");
+      return t("task");
+    },
     cell: ({ row }) => <div className="w-20 font-mono text-muted-foreground text-sm">{row.getValue("id")}</div>,
     enableSorting: false,
     enableHiding: false,
@@ -104,13 +114,14 @@ export const columns: ColumnDef<Task>[] = [
     accessorKey: "title",
     header: ({ column }) => <TitleColumnHeader column={column} />,
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
+      const t = useTranslations("Tasks");
+      const label = labels.find((l) => l.value === row.original.label);
 
       return (
         <div className="flex min-w-0 items-center gap-2">
           {label && (
             <Badge className="rounded-sm bg-transparent" variant="outline">
-              {label.label}
+              {t(`labels.${label.value}`)}
             </Badge>
           )}
           <span className="max-w-lg truncate font-medium text-sm">{row.getValue("title")}</span>
@@ -120,18 +131,20 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: () => {
+      const t = useTranslations("Tasks");
+      return t("status");
+    },
     cell: ({ row }) => {
-      const status = statuses.find((status) => status.value === row.getValue("status"));
+      const t = useTranslations("Tasks");
+      const status = statuses.find((s) => s.value === row.getValue("status"));
 
-      if (!status) {
-        return null;
-      }
+      if (!status) return null;
 
       return (
         <Badge className={cn("gap-1.5 rounded-sm border font-medium", statusStyles[status.value])} variant="outline">
           {status.icon && <status.icon className="size-4" />}
-          {status.label}
+          {t(`statuses.${status.value.replace(/\s/g, "_")}`)}
         </Badge>
       );
     },
@@ -141,18 +154,20 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "priority",
-    header: "Priority",
+    header: () => {
+      const t = useTranslations("Tasks");
+      return t("priority");
+    },
     cell: ({ row }) => {
-      const priority = priorities.find((priority) => priority.value === row.getValue("priority"));
+      const t = useTranslations("Tasks");
+      const priority = priorities.find((p) => p.value === row.getValue("priority"));
 
-      if (!priority) {
-        return null;
-      }
+      if (!priority) return null;
 
       return (
         <div className="flex items-center gap-2 text-sm">
           {priority.icon && <priority.icon className="size-4 text-muted-foreground" />}
-          {priority.label}
+          {t(`priorities.${priority.value}`)}
         </div>
       );
     },
@@ -163,6 +178,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const t = useTranslations("Tasks");
       const task = row.original as Task;
 
       return (
@@ -171,21 +187,21 @@ export const columns: ColumnDef<Task>[] = [
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon-sm" className="text-muted-foreground data-[state=open]:bg-muted">
                 <MoreHorizontal />
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">{t("open_menu")}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Make a copy</DropdownMenuItem>
-              <DropdownMenuItem>Favorite</DropdownMenuItem>
+              <DropdownMenuItem>{t("actions.edit")}</DropdownMenuItem>
+              <DropdownMenuItem>{t("actions.make_copy")}</DropdownMenuItem>
+              <DropdownMenuItem>{t("actions.favorite")}</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuSub>
-                <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
+                <DropdownMenuSubTrigger>{t("actions.labels")}</DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
                   <DropdownMenuRadioGroup value={task.label}>
                     {labels.map((label) => (
                       <DropdownMenuRadioItem key={label.value} value={label.value}>
-                        {label.label}
+                        {t(`labels.${label.value}`)}
                       </DropdownMenuRadioItem>
                     ))}
                   </DropdownMenuRadioGroup>
@@ -193,7 +209,7 @@ export const columns: ColumnDef<Task>[] = [
               </DropdownMenuSub>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                Delete
+                {t("actions.delete")}
                 <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>

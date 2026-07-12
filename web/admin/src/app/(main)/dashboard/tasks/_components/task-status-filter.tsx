@@ -2,6 +2,7 @@
 "use no memo";
 
 import type { Table } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
 import { ListFilter, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ interface TaskStatusFilterProps<TData> {
 }
 
 export function TaskStatusFilter<TData>({ table }: TaskStatusFilterProps<TData>) {
+  const t = useTranslations("Tasks");
   const column = table.getColumn("status");
 
   if (!column) {
@@ -57,7 +59,7 @@ export function TaskStatusFilter<TData>({ table }: TaskStatusFilterProps<TData>)
           className={cn("border-dashed", selectedValues.size > 0 && "border-solid bg-muted text-foreground")}
         >
           <ListFilter data-icon="inline-start" />
-          Status
+          {t("status")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-50">
@@ -73,7 +75,7 @@ export function TaskStatusFilter<TData>({ table }: TaskStatusFilterProps<TData>)
                 onSelect={(event) => event.preventDefault()}
               >
                 <status.icon className="text-muted-foreground" />
-                {status.label}
+                {t(`statuses.${status.value.replace(/\s/g, "_")}`)}
               </DropdownMenuCheckboxItem>
             );
           })}
@@ -84,7 +86,7 @@ export function TaskStatusFilter<TData>({ table }: TaskStatusFilterProps<TData>)
             <DropdownMenuGroup>
               <DropdownMenuItem onSelect={clearFilter} className="justify-center text-center">
                 <X />
-                Clear filters
+                {t("clear_filters")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </>

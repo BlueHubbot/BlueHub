@@ -2340,7 +2340,7 @@
   "sidebar_collapse_label": "Sidebar Collapse Mode",
   "sidebar_collapse_icon": "Icon",
   "sidebar_collapse_offcanvas": "OffCanvas",
-  
+
 "Legacy": {
   "Analytics": {
     "title": "Analytics Dashboard",
@@ -2893,22 +2893,139 @@
     "tags_label": "Tags"
   }
 },
+"Infrastructure": {
+  "title": "Infrastructure Overview",
+  "subtitle": "Monitor environments, server health, uptime, and resource usage across every project.",
+  "last_updated": "Last updated: 30s ago",
+  "search_placeholder": "Search by name or domain...",
+  "add_environment": "Add Environment",
+  "no_environments": "No environments in this project",
+  "stats": {
+    "projects": "{count} Projects",
+    "environments": "{count} Environments",
+    "servers": "{count} Servers",
+    "uptime": "{uptime} Global Uptime"
+  },
+  "filters": {
+    "organization": "Organization",
+    "stack": "Stack",
+    "cloud_provider": "Cloud provider",
+    "project_type": "Project type",
+    "environment": "Environment",
+    "filters": "Filters"
+  },
+  "table": {
+    "domain": "Domain",
+    "platform": "Platform",
+    "environment": "Environment",
+    "health": "Health",
+    "latency": "Latency",
+    "uptime": "Uptime",
+    "resources": "Resources",
+    "server": "Server"
+  },
+  "environment_types": {
+    "expired": "Expired",
+    "production": "Production",
+    "staging": "Staging"
+  },
+  "status": {
+    "online": "Online",
+    "unhealthy": "Unhealthy"
+  },
+  "resources": {
+    "cpu": "CPU",
+    "ram": "RAM",
+    "disk": "Disk"
+  },
+  "menu": {
+    "activity_logs": "Activity Logs",
+    "open_console": "Open Console",
+    "project_settings": "Project Settings",
+    "sync_status": "Sync Status",
+    "manage_alerts": "Manage Alerts",
+    "copy_project_id": "Copy Project ID"
+  },
+  "row_actions": {
+    "view_logs": "View Logs",
+    "open_console": "Open Console",
+    "restart": "Restart",
+    "copy_url": "Copy URL"
+  }
+},
+"Tasks": {
+  "welcome": "Welcome back!",
+  "subtitle": "Here's a list of your tasks for this month!",
+  "title": "Title",
+  "task": "Task",
+  "status": "Status",
+  "priority": "Priority",
+  "filter_placeholder": "Filter tasks...",
+  "reset": "Reset",
+  "view": "View",
+  "toggle_columns": "Toggle columns",
+  "columns": {
+    "id": "ID",
+    "title": "Title",
+    "status": "Status",
+    "priority": "Priority"
+  },
+  "select_all": "Select all",
+  "select_row": "Select row",
+  "no_results": "No results.",
+  "rows_per_page": "Rows per page",
+  "page": "Page",
+  "of": "of",
+  "rows_selected": "row(s) selected",
+  "prev": "Prev",
+  "next": "Next",
+  "first_page": "Go to first page",
+  "last_page": "Go to last page",
+  "clear_filters": "Clear filters",
+  "open_menu": "Open menu",
+  "asc": "Asc",
+  "desc": "Desc",
+  "actions": {
+    "edit": "Edit",
+    "make_copy": "Make a copy",
+    "favorite": "Favorite",
+    "labels": "Labels",
+    "delete": "Delete"
+  },
+  "labels": {
+    "bug": "Bug",
+    "feature": "Feature",
+    "documentation": "Documentation"
+  },
+  "statuses": {
+    "backlog": "Backlog",
+    "todo": "Todo",
+    "in_progress": "In Progress",
+    "done": "Done",
+    "canceled": "Canceled"
+  },
+  "priorities": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  }
+},
 "Logistics": {
   "shipment": "Shipment",
-  "shipment_details": "Shipment details",
+  "shipment_details": "Shipment Details",
   "sheet_description": "Selected shipment details and route map.",
   "shipments": "Shipments",
   "cargo": "Cargo",
   "eta": "ETA",
-  "complete": "complete",
+  "complete": "Complete",
   "status": "Status",
   "empty_details": "Select a shipment to view details.",
-  "cargo_details": "Cargo details",
-  "total_weight": "Total weight",
-  "transport_mode": "Transport mode",
-  "copy_id": "Copy shipment ID",
+  "cargo_details": "Cargo Details",
+  "total_weight": "Total Weight",
+  "transport_mode": "Transport Mode",
+  "copy_id": "Copy Shipment ID",
   "search_placeholder": "Search shipments...",
-  "map_aria": "Shipment region map",
+  "map_aria": "Shipment Region Map",
   "tabs": {
     "all": "All",
     "in_transit": "In Transit",
@@ -2935,9 +3052,9 @@
     "sea": "Call Captain"
   },
   "transport_label": {
-    "land": "Vehicle number",
-    "air": "Flight number",
-    "sea": "Vessel number"
+    "land": "Vehicle Number",
+    "air": "Flight Number",
+    "sea": "Vessel Number"
   },
   "coming_soon": {
     "route": "Route view coming soon.",
@@ -3082,14 +3199,37 @@
       "Processing": "Processing",
       "Fulfilled": "Fulfilled",
       "Cancelled": "Cancelled",
-      "Refunded": "Refunded"
+      "Refunded": "Refunded",
+      "Unfulfilled": "Unfulfilled",
+      "Unpaid": "Unpaid",
+      "Returns": "Returns"
     },
-    "open_orders": "Open orders",
-    "download_orders": "Download orders",
+    "open_orders": "Open Orders",
+    "download_orders": "Download Orders",
     "no_orders": "No orders found.",
     "viewing": "Viewing",
     "out_of": "out of",
-    "orders": "orders"
+    "orders": "orders",
+    "order": "Order",
+    "customer": "Customer",
+    "status": "Status",
+    "total": "Total",
+    "date": "Date",
+    "actions": "Actions",
+    "paid": "Paid",
+    "refunded": "Refunded",
+    "pending": "Pending",
+    "fulfilled": "Fulfilled",
+    "returned": "Returned",
+    "unfulfilled": "Unfulfilled",
+    "select_all_orders": "Select all orders",
+    "select_order": "Select order {id}",
+    "order_actions": "Order Actions",
+    "view_order": "View Order",
+    "contact_customer": "Contact Customer",
+    "copy_order_id": "Copy Order ID",
+    "previous": "Previous",
+    "next": "Next"
   },
   "products": {
     "title": "Top Products",
@@ -3583,4 +3723,3 @@
   }
   }
 }
-

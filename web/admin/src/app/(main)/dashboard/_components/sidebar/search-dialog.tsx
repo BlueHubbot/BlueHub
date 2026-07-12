@@ -46,10 +46,14 @@ export function SearchDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="relative w-full justify-start text-muted-foreground">
-          <Search className="size-4" />
+        <Button
+          variant="outline"
+          size="sm"
+          className="relative w-full justify-start text-muted-foreground rtl:justify-start"
+        >
+          <Search className="size-4 shrink-0 rtl:ml-2 ltr:mr-2" />
           <span className="hidden lg:inline-flex">{t("search")}</span>
-          <kbd className="pointer-events-none absolute right-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+          <kbd className="pointer-events-none absolute right-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex rtl:left-2 rtl:right-auto">
             <span className="text-xs">⌘</span>K
           </kbd>
         </Button>
@@ -63,6 +67,7 @@ export function SearchDialog() {
             placeholder={t("search_placeholder")}
             value={query}
             onValueChange={setQuery}
+            className="rtl:text-right"
           />
           <CommandList>
             <CommandEmpty>{t("no_results")}</CommandEmpty>
@@ -76,9 +81,10 @@ export function SearchDialog() {
                     }
                     setOpen(false);
                   }}
+                  className="rtl:flex-row-reverse rtl:justify-between"
                 >
                   <span>{item.title}</span>
-                  <span className="ml-auto text-xs text-muted-foreground">
+                  <span className="ml-auto text-xs text-muted-foreground rtl:ml-0">
                     {item.group}
                   </span>
                 </CommandItem>

@@ -20,7 +20,7 @@ function formatOrderDate(date: string) {
   return format(parseISO(date), "h:mm a, d MMM yyyy");
 }
 
-function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
+function PaymentBadge({ status, t }: { status: OrderRow["payment"], t: any }) {
   if (status === "Paid") {
     return (
       <Badge
@@ -28,7 +28,7 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
         variant="outline"
       >
         <span className="size-1.5 rounded-full bg-current" />
-        Paid
+        {t("paid")}
       </Badge>
     );
   }
@@ -37,7 +37,7 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
     return (
       <Badge variant="destructive">
         <span className="size-1.5 rounded-full bg-current" />
-        Refunded
+        {t("refunded")}
       </Badge>
     );
   }
@@ -48,12 +48,12 @@ function PaymentBadge({ status }: { status: OrderRow["payment"] }) {
       variant="outline"
     >
       <span className="size-1.5 rounded-full bg-current" />
-      Pending
+      {t("pending")}
     </Badge>
   );
 }
 
-function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
+function FulfillmentBadge({ status, t }: { status: OrderRow["fulfillment"], t: any }) {
   if (status === "Fulfilled") {
     return (
       <Badge
@@ -61,7 +61,7 @@ function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
         variant="outline"
       >
         <span className="size-1.5 rounded-full bg-current" />
-        Fulfilled
+        {t("fulfilled")}
       </Badge>
     );
   }
@@ -70,7 +70,7 @@ function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
     return (
       <Badge variant="destructive">
         <span className="size-1.5 rounded-full bg-current" />
-        Returned
+        {t("returned")}
       </Badge>
     );
   }
@@ -78,18 +78,18 @@ function FulfillmentBadge({ status }: { status: OrderRow["fulfillment"] }) {
   return (
     <Badge variant="destructive">
       <span className="size-1.5 rounded-full bg-current" />
-      Unfulfilled
+      {t("unfulfilled")}
     </Badge>
   );
 }
 
-export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
+export const recentOrdersColumns = (t: any): ColumnDef<OrderRow>[] => [
   {
     id: "select",
     header: ({ table }) => (
       <div className="w-10">
         <Checkbox
-          aria-label="Select all orders"
+          aria-label={t("select_all_orders")}
           checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         />
@@ -98,7 +98,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
     cell: ({ row }) => (
       <div className="w-10">
         <Checkbox
-          aria-label={`Select order ${row.original.id}`}
+          aria-label={t("select_order", { id: row.original.id })}
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
         />
@@ -109,7 +109,7 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
   },
   {
     accessorKey: "id",
-    header: "Order",
+    header: t("order"),
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
         <div className="font-medium leading-none">{row.original.id}</div>
@@ -120,15 +120,15 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
   },
   {
     accessorKey: "customer",
-    header: "Customer",
+    header: t("customer"),
   },
   {
     id: "statusSummary",
-    header: "Status",
+    header: t("status"),
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <PaymentBadge status={row.original.payment} />
-        <FulfillmentBadge status={row.original.fulfillment} />
+        <PaymentBadge status={row.original.payment} t={t} />
+        <FulfillmentBadge status={row.original.fulfillment} t={t} />
       </div>
     ),
     filterFn: (row, _columnId, value) => {
@@ -158,17 +158,17 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
   },
   {
     accessorKey: "total",
-    header: () => <div className="w-28">Total</div>,
-    cell: ({ row }) => <div className="w-28 ">{row.original.total}</div>,
+    header: () => <div className="w-28">{t("total")}</div>,
+    cell: ({ row }) => <div className="w-28">{row.original.total}</div>,
   },
   {
     accessorKey: "date",
-    header: () => <div className="w-44">Date</div>,
+    header: () => <div className="w-44">{t("date")}</div>,
     cell: ({ row }) => <div className="w-44 text-muted-foreground">{formatOrderDate(row.original.date)}</div>,
   },
   {
     id: "actions",
-    header: () => <div className="flex w-full justify-end">Actions</div>,
+    header: () => <div className="flex w-full justify-end">{t("actions")}</div>,
     cell: () => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -179,11 +179,11 @@ export const recentOrdersColumns: ColumnDef<OrderRow>[] = [
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-40">
-          <DropdownMenuLabel>Order Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("order_actions")}</DropdownMenuLabel>
           <DropdownMenuGroup>
-            <DropdownMenuItem>View order</DropdownMenuItem>
-            <DropdownMenuItem>Contact customer</DropdownMenuItem>
-            <DropdownMenuItem>Copy order ID</DropdownMenuItem>
+            <DropdownMenuItem>{t("view_order")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("contact_customer")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("copy_order_id")}</DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

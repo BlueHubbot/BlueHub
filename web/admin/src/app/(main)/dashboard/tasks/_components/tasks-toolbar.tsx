@@ -2,6 +2,7 @@
 "use no memo";
 
 import type { Table } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
 import { Settings2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ interface TasksToolbarProps<TData> {
 }
 
 export function TasksToolbar<TData>({ table }: TasksToolbarProps<TData>) {
+  const t = useTranslations("Tasks");
   const isFiltered = table.getState().columnFilters.length > 0;
   const searchValue = (table.getColumn("title")?.getFilterValue() as string | undefined) ?? "";
   const hideableColumns = table
@@ -36,7 +38,7 @@ export function TasksToolbar<TData>({ table }: TasksToolbarProps<TData>) {
     <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-1 flex-wrap items-center gap-2">
         <Input
-          placeholder="Filter tasks..."
+          placeholder={t("filter_placeholder")}
           value={searchValue}
           onChange={(event) => {
             table.getColumn("title")?.setFilterValue(event.target.value);
@@ -55,7 +57,7 @@ export function TasksToolbar<TData>({ table }: TasksToolbarProps<TData>) {
             }}
           >
             <X data-icon="inline-start" />
-            Reset
+            {t("reset")}
           </Button>
         )}
       </div>
@@ -68,11 +70,11 @@ export function TasksToolbar<TData>({ table }: TasksToolbarProps<TData>) {
               className={cn("ml-auto hidden lg:flex", hiddenColumns.length > 0 && "bg-muted text-foreground")}
             >
               <Settings2 data-icon="inline-start" />
-              View
+              {t("view")}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-38">
-            <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+            <DropdownMenuLabel>{t("toggle_columns")}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               {hideableColumns.map((column) => (
@@ -82,7 +84,7 @@ export function TasksToolbar<TData>({ table }: TasksToolbarProps<TData>) {
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
-                  {column.id}
+                  {t(`columns.${column.id}`)}
                 </DropdownMenuCheckboxItem>
               ))}
             </DropdownMenuGroup>

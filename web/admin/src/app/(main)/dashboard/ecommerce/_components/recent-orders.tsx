@@ -53,7 +53,7 @@ export function RecentOrders() {
 
   const table = useReactTable({
     data: recentOrders,
-    columns: recentOrdersColumns,
+    columns: recentOrdersColumns(t),
     state: {
       rowSelection,
       sorting,
@@ -187,7 +187,9 @@ export function RecentOrders() {
                     preventPaginationNavigation(event);
                     table.previousPage();
                   }}
-                />
+                >
+                  {t("previous")}
+                </PaginationPrevious>
               </PaginationItem>
               {pageNumbers[0] > 1 ? (
                 <PaginationItem>
@@ -221,7 +223,9 @@ export function RecentOrders() {
                     preventPaginationNavigation(event);
                     table.nextPage();
                   }}
-                />
+                >
+                  {t("next")}
+                </PaginationNext>
               </PaginationItem>
             </PaginationContent>
           </Pagination>
