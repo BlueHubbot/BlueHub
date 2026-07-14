@@ -91,7 +91,7 @@ class GameServer(CoreBase):
 
     # Relationships
     service: Mapped["Service"] = relationship(
-        "Service", back_populates="game_server", lazy="selectin", uselist=False
+        "Service", back_populates="game_servers", lazy="selectin", uselist=False
     )
     backups: Mapped[list["GameServerBackup"]] = relationship(
         "GameServerBackup", back_populates="server", lazy="selectin",
