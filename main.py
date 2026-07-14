@@ -19,6 +19,7 @@ from api.v1 import (
     audit,
     auth,
     billing,
+    game,
     modules,
     monitoring,
     rbac,
@@ -134,6 +135,7 @@ app.include_router(audit.router)
 app.include_router(tenants.router)
 app.include_router(vpn.router)
 app.include_router(vps.router)
+app.include_router(game.router)
 app.include_router(smartdns.router)
 
 

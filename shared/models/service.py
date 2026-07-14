@@ -18,6 +18,7 @@ from shared.models.base import CoreBase, TimestampMixin, UUIDMixin
 from shared.models.enums import ServiceStatus
 
 if TYPE_CHECKING:
+    from modules.game.models import GameServer
     from modules.smartdns.models import SmartDnsProfile
     from modules.vpn.models import VpnAccount
     from modules.vps.models import VpsInstance
@@ -123,6 +124,12 @@ class Service(UUIDMixin, TimestampMixin, CoreBase):
     )
 
     # Module-specific polymorphic relationships
+    game_servers: Mapped[list[GameServer]] = relationship(
+        "GameServer",
+        back_populates="service",
+        lazy="selectin",
+        uselist=True,
+    )
     vpn_account: Mapped[VpnAccount | None] = relationship(
         "VpnAccount",
         back_populates="service",
