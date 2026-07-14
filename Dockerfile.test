@@ -1,0 +1,29 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY pyproject.toml ./
+RUN pip install --no-cache-dir poetry
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-interaction --no-ansi || pip install --no-cache-dir \
+    pytest pytest-asyncio pytest-cov httpx fastapi uvicorn[standard] \
+    pydantic pydantic-settings sqlalchemy asyncpg alembic redis \
+    python-jose[cryptography] passlib[bcrypt] python-multipart \
+    celery aiogram httpx boto3 minio pybreaker backoff tenacity \
+    slowapi babel structlog ruff
+
+# Copy project files
+COPY . .
+
+# Create test reports directory
+RUN mkdir -p test-reports
+
+# Run tests
+CMD ["bash", "test.sh"]
